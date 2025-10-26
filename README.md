@@ -135,3 +135,8 @@
 ### インフラ・デプロイ
 - **開発環境:** Docker
 - **本番環境:** Render
+
+## 画面設計
+- [Figma画面遷移図](https://www.figma.com/design/TjaySCxNl9baPdRhg3EZZU/Study-Keeper?node-id=0-1&p=f&t=uuc96RvBcHTE4ZBv-0)
+
+
