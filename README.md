@@ -85,7 +85,6 @@
    - 軽いプッシュ通知（1日1〜2回）
 5. 簡易トップページ
    - アプリ概要＋「今すぐ始める」ボタン
-   - 今日の振り返りサマリー表示
 
 ---
 
@@ -135,3 +134,8 @@
 ### インフラ・デプロイ
 - **開発環境:** Docker
 - **本番環境:** Render
+
+## 画面設計
+- [Figma画面遷移図](https://www.figma.com/design/TjaySCxNl9baPdRhg3EZZU/Study-Keeper?node-id=0-1&p=f&t=uuc96RvBcHTE4ZBv-0)
+
+
