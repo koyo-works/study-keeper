@@ -138,4 +138,6 @@
 ## 画面設計
 - [Figma画面遷移図](https://www.figma.com/design/TjaySCxNl9baPdRhg3EZZU/Study-Keeper?node-id=0-1&p=f&t=uuc96RvBcHTE4ZBv-0)
 
+## ER図
+![ER図](https://i.gyazo.com/abcd0156f9626e700b51a6583fad320e.png)
 
