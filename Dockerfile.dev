@@ -1,0 +1,28 @@
+# ベースイメージ
+FROM ruby:3.3.6
+
+# Node.js /Yarn / PostgreSQL client など開発に必要なツール
+RUN apt-get update -qq && apt-get install -y \
+ build-essential \
+ libpq-dev \
+ nodejs \
+ yarn \
+ postgresql-client \
+ git \
+ curl \
+ vim \
+&& rm -rf /var/lib/apt/lists/*
+
+# 作業ディレクトリ
+WORKDIR /app
+
+# Gemfile先にコピーしてbundle install(キャッシュ効率のため)
+COPY Gemfile* ./
+RUN gem install bundler
+RUN bundle install
+
+# アプリケーションのコピー
+COPY . .
+
+# tmp/pids/server.pid削除してRailsサーバー起動(ローカル開発用)
+CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bin/rails server -b 0.0.0.0"]
