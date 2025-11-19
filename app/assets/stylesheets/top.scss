@@ -1,0 +1,36 @@
+.top-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  background-color: #FAF3E0;
+}
+
+.top-inner-text h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.top-inner-text p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.top-button .start-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  margin-bottom: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.top-button .login-link a {
+  color: #4CAF50;
+  text-decoration: underline;
+}
