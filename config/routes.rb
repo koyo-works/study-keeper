@@ -11,6 +11,6 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   Rails.application.routes.draw do
-    root 'home#index'
+    root 'static_pages#top'
   end
 end
