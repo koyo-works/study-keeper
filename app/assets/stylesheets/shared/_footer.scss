@@ -1,0 +1,13 @@
+.footer {
+  width: 100%;
+  padding: 16px 20px;
+  background: #047429;
+}
+
+.footer-items {
+  display: flex;
+  justify-content: flex-start; // 左寄せ
+  gap: 16px; // テキスト同士の余白
+  align-items: center;
+  color: #fff;
+}

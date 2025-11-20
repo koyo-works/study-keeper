@@ -1,0 +1,18 @@
+.header {
+  background: #047429;
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 2rem;
+
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-nav a {
+    margin-left: 1rem;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+  }
+}
