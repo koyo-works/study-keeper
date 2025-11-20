@@ -1,0 +1,19 @@
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <%= link_to "Study-keeper", root_path %>
+    </div>
+  
+    <div class="header-nav">
+      <% if false %> 
+        <!-- ログイン後 ここは後で user_signed_in? に変える -->
+        <span class="username">ユーザー名</span>
+        <%= link_to "ログアウト", "#", method: :delete, class: "logout-btn" %>
+      <% else %>
+        <!-- 未ログイン -->
+        <%= link_to "ログイン", "#", class: "login-btn" %>
+        <%= link_to "ユーザー登録", "#", class: "signup-btn" %>
+      <% end %>
+    </div>
+  </div>
+</header>
