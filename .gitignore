@@ -36,3 +36,5 @@
 
 .DS_Store
 /vendor/bundle
+
+/config/credentials/production.key
