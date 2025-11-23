@@ -3,13 +3,15 @@ services:
   db:
     image: postgres:17
     environment:
-      POSTGRES_USER: study_user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: study_keeper_development
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+    env_file:
+      - .env
   
   app:
     build:
@@ -22,6 +24,8 @@ services:
     depends_on:
       - db
     command: bash -c "rm -f tmp/pids/server.pid && bin/rails server -b 0.0.0.0"
+    env_file:
+      - .env
 
 volumes:
   db_data:
