@@ -2,3 +2,9 @@
 @import 'top';
 @import 'shared/header';
 @import 'shared/footer';
+
+body {
+  outline: 1px solid red; /* 赤線で body の範囲確認 */
+  margin: 0;
+  padding: 0;
+}
