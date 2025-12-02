@@ -7,10 +7,11 @@
     <div class="header-nav">
       <% if user_signed_in? %> 
         <span class="username"><%= current_user.email %></span>
-        <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "logout-btn" %>
+        <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "logout-btn" %>
       <% else %>
         <%= link_to "ログイン", new_user_session_path, class: "login-btn" %>
         <%= link_to "ユーザー登録", new_user_registration_path, class: "signup-btn" %>
       <% end %>
     </div>
   </div>
+</header>
