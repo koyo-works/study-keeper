@@ -4,7 +4,13 @@
 @import 'shared/footer';
 
 body {
-  outline: 1px solid red; /* 赤線で body の範囲確認 */
   margin: 0;
   padding: 0;
+  width: 100%;
+  background: #FAF3E0 !important;
+}
+
+* {
+  outline: 1px solid red;  /* 全ての要素に赤枠を付ける */
+  background-color: rgba(255,0,0,0.1); /* 半透明の赤で重なりがわかる */
 }

@@ -1,7 +1,7 @@
 .top-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center;  /* ← ここを修正 */
   align-items: center;
   min-height: 100vh;
   text-align: center;
