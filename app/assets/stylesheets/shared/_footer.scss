@@ -1,13 +1,17 @@
 .footer {
-  width: 100%;
+  width: 100%; // すでにあるが確認
   padding: 16px 20px;
   background: #047429;
+  margin: 0; // 追加
+  box-sizing: border-box; // 追加（paddingを含めた幅を100%にする）
 }
 
 .footer-items {
   display: flex;
-  justify-content: flex-start; // 左寄せ
-  gap: 16px; // テキスト同士の余白
+  justify-content: flex-start;
+  gap: 16px;
   align-items: center;
   color: #fff;
+  max-width: 1200px; // 追加（コンテンツの最大幅を制限）
+  margin: 0 auto; // 追加（中央寄せ）
 }

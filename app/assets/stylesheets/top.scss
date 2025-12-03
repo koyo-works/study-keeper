@@ -3,34 +3,64 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 90vh;
   text-align: center;
   background-color: #FAF3E0;
+  padding: 2rem;
 }
 
-.top-inner-text h1 {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
+.top-inner-text {
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 2rem;
+  }
 }
 
-.top-inner-text p {
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 2rem;
+.top-button {
+  .start-btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    margin-bottom: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+
+  .login-link a {
+    color: #4CAF50;
+    text-decoration: underline;
+  }
 }
 
-.top-button .start-btn {
-  display: inline-block;
-  padding: 1rem 2rem;
-  margin-bottom: 1rem;
-  background-color: #4CAF50;
-  color: white;
-  font-weight: bold;
-  border-radius: 8px;
-  text-decoration: none;
-}
+// フォームのスタイル
+.top-form {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem; // 追加：上部に余白を追加
 
-.top-button .login-link a {
-  color: #4CAF50;
-  text-decoration: underline;
+  // Bootstrapのスタイルを上書き
+  .form-control {
+    margin-bottom: 0.5rem;
+  }
+
+  .form-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .btn {
+    width: 100%; // ボタンを横幅いっぱいに
+  }
 }

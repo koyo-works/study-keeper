@@ -1,10 +1,11 @@
 @import 'bootstrap';
-@import 'top';
 @import 'shared/header';
 @import 'shared/footer';
+@import 'top';
 
 body {
-  outline: 1px solid red; /* 赤線で body の範囲確認 */
   margin: 0;
   padding: 0;
+  width: 100%;
+  background-color: #FAF3E0;
 }
