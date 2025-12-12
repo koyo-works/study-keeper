@@ -19,6 +19,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ".:/app"
+      - bundle:/usr/local/bundle
     ports:
       - "3000:3000"
     depends_on:
@@ -29,4 +30,5 @@ services:
 
 volumes:
   db_data:
+  bundle: 
 
