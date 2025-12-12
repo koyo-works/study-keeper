@@ -76,3 +76,5 @@ gem 'bootstrap', '~> 5.3.0'
 gem 'sassc-rails' # SCSS を使う場合
 
 gem  'devise'
+
+gem 'devise-i18n'
