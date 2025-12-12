@@ -1,13 +1,17 @@
 <header class="header">
   <div class="header-inner">
     <div class="logo">
-      <%= link_to "Study-keeper", root_path %>
+        <%= link_to logo_link_path do %>
+          <%= image_tag "logo.png", alt: "Study-keeper", class: "logo-img" %>
+        <% end %>
     </div>
   
     <div class="header-nav">
       <% if user_signed_in? %> 
-        <span class="username"><%= current_user.email %></span>
-        <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "logout-btn" %>
+        <div class="user-info">
+          <span class="username">ユーザー名：<%= current_user.name %></span>
+          <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "logout-btn" %>
+        </div>
       <% else %>
         <%= link_to "ログイン", new_user_session_path, class: "login-btn" %>
         <%= link_to "ユーザー登録", new_user_registration_path, class: "signup-btn" %>

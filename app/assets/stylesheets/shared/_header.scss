@@ -15,4 +15,35 @@
     color: #fff;
     font-weight: bold;
   }
+
+  .logo-img {
+    height: 40px; // 好きなサイズでOK
+    display: block;
+  }
+
+  .header-nav {
+  .user-info {
+    display: flex;          // 横並びに
+    align-items: center;    // 縦方向中央揃え
+    gap: 1rem;              // メール/ボタン間のスペース
+  }
+
+  .username {
+    font-weight: bold;
+    background-color: #edf2f7;
+    color: #2d3748;
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+  }
+
+  .logout-btn {
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    background-color: #f56565;  // 赤系
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+}
 }
