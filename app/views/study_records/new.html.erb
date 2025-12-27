@@ -1,2 +1,21 @@
-<h1>行動選択画面</h1>
-<p>次のイシューで実装予定です</p>
+<h1>行動選択</h1>
+
+<%= form_with model: @record, url: learning_path, local: true do |f| %>
+
+  <div class="activities">
+    <% @activities.each do |activity| %>
+      <label class="activity-card">
+        <%= f.radio_button :activity_id, activity.id %>
+        <span class="icon"><%= activity.icon %></span>
+        <span class="name"><%= activity.name %></span>
+      </label>
+    <% end %>
+  </div>
+
+  <div class="memo">
+    <%= f.text_area :memo, placeholder: "メモ（任意）" %>
+  </div>
+
+  <%= f.submit "記録する", class: "btn btn-success" %>
+
+<% end %>

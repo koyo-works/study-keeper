@@ -15,5 +15,6 @@ Rails.application.routes.draw do
   # root "posts#index"
   root 'static_pages#top'
 
-  get 'learning_path', to: 'study_records#new', as: :learning
+  get  'learning_path', to: 'study_records#new', as: :learning
+  post 'learning_path', to: 'study_records#create'
 end
