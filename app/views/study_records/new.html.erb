@@ -5,17 +5,31 @@
   <div class="activities">
     <% @activities.each do |activity| %>
       <label class="activity-card">
-        <%= f.radio_button :activity_id, activity.id %>
-        <span class="icon"><%= activity.icon %></span>
-        <span class="name"><%= activity.name %></span>
+        <%= f.radio_button :activity_id, activity.id, class: "activity-radio" %>
+        <div class="card-content">
+          <div class="icon"><%= activity.icon %></div>
+          <div class="name"><%= activity.name %></div>
+        </div>
       </label>
     <% end %>
   </div>
 
-  <div class="memo">
-    <%= f.text_area :memo, placeholder: "メモ（任意）" %>
+  <div class="record-form">
+    <div class="memo-area">
+      <%= f.text_area :memo, rows: 3, placeholder: "メモ（任意）" %>
+    </div>
+
+    <%= f.submit "記録する", class: "btn btn-primary submit-btn" %>
   </div>
-
-  <%= f.submit "記録する", class: "btn btn-success" %>
-
 <% end %>
+
+<script>
+document.querySelectorAll('.activity-radio').forEach(radio => {
+  radio.addEventListener('click', function() {
+    if (this.wasChecked) {
+      this.checked = false; // 同じラジオをもう一度クリックしたら解除
+    }
+    this.wasChecked = this.checked;
+  });
+});
+</script>

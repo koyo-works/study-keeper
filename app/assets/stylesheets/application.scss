@@ -3,10 +3,22 @@
 @import 'shared/footer';
 @import 'top';
 @import 'login';
+@import 'select_active';
 
 body {
   margin: 0;
   padding: 0;
   width: 100%;
   background-color: #FAF3E0;
+  display: flex;           
+  flex-direction: column; 
+  min-height: 100vh;       // ← 画面全体の高さ
+}
+
+html, body {
+  height: 100%;
+}
+
+.main-content {
+  flex: 1;
 }
