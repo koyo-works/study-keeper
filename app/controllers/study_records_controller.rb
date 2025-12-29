@@ -12,6 +12,7 @@ class StudyRecordsController < ApplicationController
       redirect_to learning_path, notice: "記録しました"
     else
       @activities = Activity.all
+      flash.now[:alert] = "行動を選択してください"
       render :new, status: :unprocessable_entity
     end
   end
