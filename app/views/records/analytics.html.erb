@@ -1,5 +1,3 @@
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-
 <h1>記録サマリー</h1>
 
 <div class="analytics-wrapper p-6" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
@@ -19,3 +17,79 @@
   <h2 class="text-xl font-bold mb-3">今日の履歴</h2>
   <p>ここに今日の活動や履歴を表示</p>
 </div>
+
+<!-- Chart.js CDN (UMD版) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+
+<script>
+  const initAnalytics = () => {
+    const canvas = document.getElementById("weeklyChart");
+    if (!canvas) return;
+
+    // 前回のチャートがあれば破棄
+    if (window.weeklyChartInstance) window.weeklyChartInstance.destroy();
+
+    fetch("/records/analytics.json")
+      .then(res => res.json())
+      .then(data => {
+        const labels = data.chart.labels;
+        const counts = data.chart.counts;
+
+        if (counts.length === 0) {
+          canvas.remove();
+          document.getElementById("activityCounts").innerHTML =
+            "<p>今週の記録はまだありません</p>";
+          return;
+        }
+
+        const ctx = canvas.getContext("2d");
+        window.weeklyChartInstance = new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: labels,
+            datasets: [{
+              data: counts,
+              backgroundColor: ["#60a5fa","#34d399","#fbbf24","#f87171","#a78bfa"]
+            }]
+          },
+          options: {
+            plugins: {
+              legend: { position: "top" },
+              tooltip: {
+                callbacks: {
+                  label(context) {
+                    const value = context.raw;
+                    const total = context.dataset.data.reduce((a,b)=>a+b,0);
+                    const percent = Math.round((value/total)*100);
+                    return `${context.label}: ${value}回（${percent}%）`;
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        // 左側リスト表示
+        const colors = ["#60a5fa","#34d399","#fbbf24","#f87171","#a78bfa"];
+        const list = document.getElementById("activityCounts");
+        list.innerHTML = "";
+        labels.forEach((label,i)=>{
+          const li = document.createElement("li");
+          li.className = "activity-count-item";
+          li.innerHTML = `
+            <div class="activity-left">
+              <span class="activity-color" style="background-color:${colors[i % colors.length]}"></span>
+              <span>${label}</span>
+            </div>
+            <span class="activity-count">${counts[i]}回</span>
+          `;
+          list.appendChild(li);
+        });
+      })
+      .catch(err => console.error("Chart fetch error:", err));
+  };
+
+  // DOM & Turbo 両方に対応
+  document.addEventListener("DOMContentLoaded", initAnalytics);
+  document.addEventListener("turbo:load", initAnalytics);
+</script>
