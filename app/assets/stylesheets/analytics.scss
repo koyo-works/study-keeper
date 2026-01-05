@@ -1,0 +1,31 @@
+.activity-count-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.activity-count-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  font-size: 0.9rem;
+}
+
+.activity-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.activity-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.activity-count {
+  font-weight: bold;
+}
