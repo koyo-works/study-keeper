@@ -1,26 +1,21 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+
 <h1>記録サマリー</h1>
 
 <div class="analytics-wrapper p-6" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-  <!-- 左上(円グラフ)カード -->
   <div class="analytics-container bg-white p-3 rounded shadow-md" style="width: 450px; margin-right: 1rem;">
     <h2 class="text-xl font-bold mb-3">今週の割合</h2>
     <canvas id="weeklyChart" width="300" height="250"></canvas>
     <ul id="activityCounts" class="activity-count-list"></ul>
   </div>
 
-  <!-- 右上(今週のサマリー)カード -->
   <div class="summary-container bg-white p-3 rounded shadow-md" style="width: 450px; margin-left: 1rem;">
     <h2 class="text-xl font-bold mb-3">今週のサマリー</h2>
     <p>ここにストリークやその他簡易データを表示</p>
   </div>
 </div>
 
-<!-- 下(今日の履歴)カード -->
 <div class="today-history-container bg-white p-4 rounded shadow-md" style="width: 950px; margin: 1rem auto 0; clear: both;">
   <h2 class="text-xl font-bold mb-3">今日の履歴</h2>
   <p>ここに今日の活動や履歴を表示</p>
 </div>
-
-<!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="/assets/records_analytics.js"></script>
