@@ -1,4 +1,13 @@
-document.addEventListener("DOMContentLoaded", () => {
+console.log("📦 records_analytics.js loaded");
+
+const initAnalytics = () => {
+  console.log("🚀 initAnalytics");
+
+  const canvas = document.getElementById("weeklyChart");
+  if (!canvas) return;
+
+  if (window.weeklyChartInstance) window.weeklyChartInstance.destroy();
+
   fetch("/records/analytics.json")
     .then(res => res.json())
     .then(data => {
@@ -6,19 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const counts = data.chart.counts;
 
       if (counts.length === 0) {
-        document.getElementById("weeklyChart").remove();
+        canvas.remove();
         document.getElementById("activityCounts").innerHTML =
           "<p>今週の記録はまだありません</p>";
         return;
       }
 
-      // ▼ 円グラフ
-      const ctx = document.getElementById("weeklyChart").getContext("2d");
+      const ctx = canvas.getContext("2d");
 
-      new Chart(ctx, {
+      window.weeklyChartInstance = new Chart(ctx, {
         type: "pie",
         data: {
-          labels: labels, // ← 凡例は名前だけ
+          labels: labels,
           datasets: [{
             data: counts,
             backgroundColor: [
@@ -32,17 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         options: {
           plugins: {
-            legend: {
-              position: "top"
-            },
+            legend: { position: "top" },
             tooltip: {
               callbacks: {
-                label: function(context) {
-                  const label = context.label;
+                label(context) {
                   const value = context.raw;
                   const total = context.dataset.data.reduce((a, b) => a + b, 0);
                   const percent = Math.round((value / total) * 100);
-                  return `${label}: ${value}回（${percent}%）`;
+                  return `${context.label}: ${value}回（${percent}%）`;
                 }
               }
             }
@@ -58,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "#a78bfa"
       ];
 
-      // ▼ 下の回数リスト（ここで数値を見せる）
       const list = document.getElementById("activityCounts");
       list.innerHTML = "";
 
@@ -75,4 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
         list.appendChild(li);
       });
     });
-});
+};
+
+document.addEventListener("turbo:load", initAnalytics);
