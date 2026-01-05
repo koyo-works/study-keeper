@@ -17,4 +17,10 @@ Rails.application.routes.draw do
 
   get  'learning_path', to: 'study_records#new', as: :learning
   post 'learning_path', to: 'study_records#create'
+
+  resources :records do
+    collection do
+      get :analytics
+    end
+  end
 end
