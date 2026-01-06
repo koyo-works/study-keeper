@@ -13,9 +13,30 @@
   </div>
 </div>
 
-<div class="today-history-container bg-white p-4 rounded shadow-md" style="width: 950px; margin: 1rem auto 0; clear: both;">
+<div class="today-history-container bg-white p-4 rounded shadow-md" style="width: 950px; margin: 1rem auto 0;">
   <h2 class="text-xl font-bold mb-3">今日の履歴</h2>
-  <p>ここに今日の活動や履歴を表示</p>
+  <ul class="time-line-list" style="list-style: none; padding: 0; margin: 0;">
+    <% @today_records.each do |record| %>
+      <li class="timeline-item" style="display: flex; align-items: flex-start; background: #fff; padding: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-bottom: 0.5rem;">
+        <div class="icon" style="font-size: 1.5rem; margin-right: 0.75rem; flex-shrink: 0; line-height: 1;">
+          <%= record.activity.icon %>
+        </div>
+        <div class="details" style="flex: 1;">
+          <span class="time" style="font-family: monospace; color: #6B7280; font-size: 0.875rem;">
+            <%= record.created_at.to_fs(:time) %>
+          </span>
+          <p class="activity-name" style="font-weight: 600; color: #111827; margin: 0.125rem 0;">
+            <%= record.activity.name %>
+          </p>
+          <% if record.memo.present? %>
+            <p class="memo" style="color: #4B5563; font-size: 0.875rem; margin-top: 0.25rem;">
+              <%= record.memo %>
+            </p>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
 </div>
 
 <!-- Chart.js CDN (UMD版) -->

@@ -2,6 +2,8 @@ class RecordsController < ApplicationController
   before_action :authenticate_user!
 
   def analytics
+    @today_records = today_records_timeline
+    
     respond_to do |format|
       format.html
       format.json do
@@ -32,13 +34,6 @@ class RecordsController < ApplicationController
                 .includes(:activity)
                 .where(created_at: Time.zone.now.all_day)
                 .order(created_at: :desc)
-                .map do |record|
-                  {
-                    time: record.created_at.strftime("%H:%M"),
-                    activity: record.activity.name,
-                    memo: record.memo
-                  }
-                end
   end
 
   def today_activity_counts
