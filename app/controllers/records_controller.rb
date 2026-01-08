@@ -50,7 +50,7 @@ class RecordsController < ApplicationController
   end
 
   def chart_data_for_week
-    data = Record
+    data = current_user.records
       .where(created_at: Time.current.beginning_of_week..Time.current.end_of_week)
       .joins(:activity)
       .group("activities.name")
