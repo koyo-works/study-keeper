@@ -2,10 +2,15 @@ class RecordsController < ApplicationController
   before_action :authenticate_user!
 
   def analytics
-    @today_records = today_records_timeline
-    
     respond_to do |format|
-      format.html
+      format.html do
+        @today_records = today_records_timeline
+        @today_total = today_activity_counts.values.sum
+        @week_total  = week_activity_counts.values.sum
+        @study_ratio = calculate_study_ratio
+        @streak      = current_user.streak
+      end
+
       format.json do
         render json: {
           today_activity_counts: today_activity_counts,
@@ -74,6 +79,16 @@ class RecordsController < ApplicationController
       end
 
     "今週は#{activity_text}を#{max_count}回行いました。全体では#{total}回の記録があります。"
+  end
+
+  def calculate_study_ratio
+    counts = week_activity_counts
+    return 0 if counts.empty?
+
+    study_count = counts["勉強する"].to_i
+    total = counts.values.sum
+
+    ((study_count.to_f / total) * 100).round
   end
 
 end
