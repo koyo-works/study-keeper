@@ -1,15 +1,80 @@
 <h1>記録サマリー</h1>
 
-<div class="analytics-wrapper p-6" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-  <div class="analytics-container bg-white p-3 rounded shadow-md" style="width: 450px; margin-right: 1rem;">
-    <h2 class="text-xl font-bold mb-3">今週の割合</h2>
-    <canvas id="weeklyChart" width="300" height="250"></canvas>
-    <ul id="activityCounts" class="activity-count-list"></ul>
+<!今週の割合>
+<div class="analytics-wrapper" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+  <div class="analytics-container p-6" style="width: 450px;">
+    <div style="margin-bottom: 28px; border-left: 6px solid #ea6666ff; padding-left: 16px; background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%); padding-top: 8px; padding-bottom: 8px; border-radius: 0 8px 8px 0;">
+      <h2 style="font-size: 32px; font-weight: 900; color: #ea6666ff; display: flex; align-items: center; gap: 12px; margin: 0;">
+        <span style="font-size: 24px;">📊</span>
+        今週の割合
+      </h2>
+    </div>
+    <div style="background: linear-gradient(135deg, #ff7f7f 0%, #ff4d4d 100%); padding: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px;">
+      <canvas id="weeklyChart" width="300" height="250" style="display: block; margin-bottom: 16px;"></canvas>
+      <ul id="activityCounts" class="activity-count-list"></ul>
+    </div>
   </div>
 
-  <div class="summary-container bg-white p-3 rounded shadow-md" style="width: 450px; margin-left: 1rem;">
-    <h2 class="text-xl font-bold mb-3">今週のサマリー</h2>
-    <p>ここにストリークやその他簡易データを表示</p>
+<!-- 今週のサマリー -->
+<div class="summary-container bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl shadow-2xl" style="width: 480px; margin-left: 1rem;">
+  <div style="margin-bottom: 28px; border-left: 6px solid #667eea; padding-left: 16px; background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%); padding-top: 8px; padding-bottom: 8px; border-radius: 0 8px 8px 0;">
+    <h2 style="font-size: 32px; font-weight: 900; color: #667eea; display: flex; align-items: center; gap: 12px; margin: 0;">
+      <span style="font-size: 36px;">📊</span>
+      今週のサマリー
+    </h2>
+  </div>
+  
+  <!-- ストリークカード -->
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px; border-radius: 16px; box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4); margin-bottom: 20px; position: relative; overflow: hidden;">
+    <!-- 背景装飾 -->
+    <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+    <div style="position: absolute; bottom: -30px; left: -30px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+    
+    <div style="display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1;">
+      <div style="flex: 1;">
+        <p style="font-size: 14px; opacity: 0.9; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">連続記録</p>
+        <p style="font-size: 48px; font-weight: 900; margin-top: 8px; text-shadow: 0 4px 8px rgba(0,0,0,0.2); line-height: 1;">
+          <%= @streak || 0 %><span style="font-size: 24px; margin-left: 8px;">日</span>
+        </p>
+      </div>
+      <div style="font-size: 72px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">🔥</div>
+    </div>
+  </div>
+
+  <!-- サマリーカード -->
+  <div class="summary-cards space-y-4">
+    <!-- 今日の記録 -->
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); transition: all 0.3s ease; cursor: pointer;" 
+         onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 20px rgba(102, 126, 234, 0.4)';" 
+         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
+      <div>
+        <p style="font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">今日の記録</p>
+        <p style="font-size: 40px; font-weight: 900; color: white; margin-top: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);"><%= @today_total %><span style="font-size: 20px;">回</span></p>
+      </div>
+      <span style="font-size: 56px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">📅</span>
+    </div>
+
+    <!-- 今週の記録 -->
+    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3); transition: all 0.3s ease; cursor: pointer;" 
+         onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 20px rgba(245, 87, 108, 0.4)';" 
+         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 87, 108, 0.3)';">
+      <div>
+        <p style="font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">今週の記録</p>
+        <p style="font-size: 40px; font-weight: 900; color: white; margin-top: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);"><%= @week_total %><span style="font-size: 20px;">回</span></p>
+      </div>
+      <span style="font-size: 56px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">📊</span>
+    </div>
+
+    <!-- 1日平均 -->
+    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 20px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3); transition: all 0.3s ease; cursor: pointer;" 
+         onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 20px rgba(79, 172, 254, 0.4)';" 
+         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(79, 172, 254, 0.3)';">
+      <div>
+        <p style="font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">1日平均勉強回数</p>
+        <p style="font-size: 40px; font-weight: 900; color: white; margin-top: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);"><%= (@week_total / 7.0).round(1) %>回<span style="font-size: 20px;">回</span></p>
+      </div>
+      <span class="text-4xl">📈</span>
+    </div>
   </div>
 </div>
 
