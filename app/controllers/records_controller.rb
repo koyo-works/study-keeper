@@ -4,11 +4,11 @@ class RecordsController < ApplicationController
   def analytics
     respond_to do |format|
       format.html do
-        @today_records = today_records_timeline
-        @today_total = today_activity_counts.values.sum
-        @week_total  = week_activity_counts.values.sum
-        @study_ratio = calculate_study_ratio
         @streak      = current_user.streak
+        @week_study_count = week_activity_counts["勉強する"].to_i
+        @week_recorded_days = calculate_week_recorded_days
+        @week_study_ratio = calculate_week_study_ratio
+        @today_records = today_records_timeline
       end
 
       format.json do
@@ -30,8 +30,6 @@ class RecordsController < ApplicationController
                           .where(created_at: Time.zone.now.all_week)
                           .group("activities.name")
                           .count
-    
-    records                   
   end
 
   def today_records_timeline
@@ -62,33 +60,27 @@ class RecordsController < ApplicationController
     }
   end
 
-  def calculate_week_summary
-    counts = week_activity_counts
-    return "今週はまだ記録がありません。" if counts.empty?
-
-    total = counts.values.sum
-    max_count = counts.values.max
-
-    top_activities = counts.select { |_, v| v == max_count }.keys
-
-    activity_text =
-      if top_activities.size == 1
-        "「#{top_activities.first}」"
-      else
-        top_activities.map { |a| "「#{a}」" }.join("、")
-      end
-
-    "今週は#{activity_text}を#{max_count}回行いました。全体では#{total}回の記録があります。"
+  # 今週の記録日数
+  def calculate_week_recorded_days
+    current_user.records
+                .where(created_at: Time.zone.now.all_week)
+                .select(:created_at)
+                .map { |r| r.created_at.to_date }
+                .uniq
+                .count
   end
 
-  def calculate_study_ratio
+  # 今週「勉強する」を選択した割合
+  def calculate_week_study_ratio
     counts = week_activity_counts
     return 0 if counts.empty?
 
     study_count = counts["勉強する"].to_i
-    total = counts.values.sum
-
-    ((study_count.to_f / total) * 100).round
+    total_count = counts.values.sum  # 全体の行動回数
+    
+    return 0 if total_count.zero?
+    
+    (study_count.to_f / total_count * 100).round(1)  # パーセンテージ
   end
 
 end
