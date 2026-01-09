@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :store_devise_errors_as_flash, if: :devise_controller?
 
   protected
 
@@ -10,5 +11,11 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
     # アカウント編集時に name を更新
     devise_parameter_sanitizer.permit(:account_update, keys: [:name])
+  end
+
+  def store_devise_errors_as_flash
+    return unless resource&.errors&.any?
+
+    flash.now[:alert] = "入力内容に不備がある"
   end
 end

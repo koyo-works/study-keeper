@@ -1,4 +1,11 @@
-<h1>行動選択</h1>
+<div style="text-align: center; margin-bottom: 2rem;">
+  <h1 style="font-size: 36px; font-weight: 700; color: #667eea; margin-bottom: 8px;">
+    📝 行動記録
+  </h1>
+  <p style="color: #6B7280; font-size: 16px;">
+    今取り組んでいることを選択してください
+  </p>
+</div>
 
 <%= form_with model: @record, url: learning_path, local: true do |f| %>
 
@@ -22,6 +29,24 @@
     <%= f.submit "記録する", class: "btn btn-primary submit-btn" %>
   </div>
 <% end %>
+
+<div style="text-align: center; margin-top: 2rem;">
+  <%= link_to analytics_records_path, 
+      style: "display: inline-block;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 14px 28px;
+              border-radius: 12px;
+              text-decoration: none;
+              font-weight: 700;
+              font-size: 16px;
+              box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+              transition: all 0.3s ease;",
+      onmouseover: "this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(102, 126, 234, 0.4)';",
+      onmouseout: "this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';" do %>
+    📊 記録サマリーを見る
+  <% end %>
+</div>
 
 <script>
 document.querySelectorAll('.activity-radio').forEach(radio => {

@@ -1,4 +1,11 @@
-<h1>記録サマリー</h1>
+<div style="text-align: center; margin-bottom: 2rem;">
+  <h1 style="font-size: 36px; font-weight: 700; color: #667eea; margin-bottom: 8px;">
+    📊 記録サマリー
+  </h1>
+  <p style="color: #6B7280; font-size: 16px;">
+    今取り組んでいることを選択してください
+  </p>
+</div>
 
 <!今週の割合>
 <div class="analytics-wrapper" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
@@ -43,15 +50,15 @@
 
   <!-- サマリーカード -->
   <div class="summary-cards space-y-4">
-    <!-- 今日の記録 -->
+    <!-- 今週「勉強する」を選んだ回数 -->
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); transition: all 0.3s ease; cursor: pointer;" 
          onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 20px rgba(102, 126, 234, 0.4)';" 
          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
       <div>
-        <p style="font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">今日の記録</p>
-        <p style="font-size: 40px; font-weight: 900; color: white; margin-top: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);"><%= @today_total %><span style="font-size: 20px;">回</span></p>
+        <p style="font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">今週「勉強する」を選んだ回数</p>
+        <p style="font-size: 40px; font-weight: 900; color: white; margin-top: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);"><%= @week_study_count %><span style="font-size: 20px;">回</span></p>
       </div>
-      <span style="font-size: 56px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">📅</span>
+      <span style="font-size: 56px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">📊</span>
     </div>
 
     <!-- 今週の記録 -->
@@ -59,10 +66,10 @@
          onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 20px rgba(245, 87, 108, 0.4)';" 
          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 87, 108, 0.3)';">
       <div>
-        <p style="font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">今週の記録</p>
-        <p style="font-size: 40px; font-weight: 900; color: white; margin-top: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);"><%= @week_total %><span style="font-size: 20px;">回</span></p>
+        <p style="font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">今週の記録日数</p>
+        <p style="font-size: 40px; font-weight: 900; color: white; margin-top: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);"><%= @week_recorded_days %><span style="font-size: 20px;">日</span></p>
       </div>
-      <span style="font-size: 56px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">📊</span>
+      <span style="font-size: 56px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">📅</span>
     </div>
 
     <!-- 1日平均 -->
@@ -70,10 +77,10 @@
          onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 20px rgba(79, 172, 254, 0.4)';" 
          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(79, 172, 254, 0.3)';">
       <div>
-        <p style="font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">1日平均勉強回数</p>
-        <p style="font-size: 40px; font-weight: 900; color: white; margin-top: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);"><%= (@week_total / 7.0).round(1) %><span style="font-size: 20px;">回</span></p>
+        <p style="font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">今週「勉強する」を選んだ割合</p>
+        <p style="font-size: 40px; font-weight: 900; color: white; margin-top: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);"><%= @week_study_ratio %><span style="font-size: 20px;">%</span></p>
       </div>
-      <span class="text-4xl">📈</span>
+      <span style="font-size: 56px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">📈</span>
     </div>
   </div>
 </div>
@@ -104,6 +111,24 @@
   </ul>
 </div>
 
+<div style="text-align: center; margin: 2rem auto; width: 950px;">
+  <%= link_to learning_path,
+      style: "display: inline-block;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 16px 32px;
+              border-radius: 12px;
+              text-decoration: none;
+              font-weight: 700;
+              font-size: 18px;
+              box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+              transition: all 0.3s ease;",
+      onmouseover: "this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(102, 126, 234, 0.4)';",
+      onmouseout: "this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';" do %>
+    📚 行動選択画面に行く
+  <% end %>
+</div>
+
 <!-- Chart.js CDN (UMD版) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 
@@ -115,7 +140,7 @@
     // 前回のチャートがあれば破棄
     if (window.weeklyChartInstance) window.weeklyChartInstance.destroy();
 
-    fetch("/records/analytics.json")
+    fetch("/analytics_path.json")
       .then(res => res.json())
       .then(data => {
         const labels = data.chart.labels;
