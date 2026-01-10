@@ -4,7 +4,6 @@ class RecordsController < ApplicationController
   def analytics
     respond_to do |format|
       format.html do
-        @streak      = current_user.streak
         @week_study_count = week_activity_counts["勉強する"].to_i
         @week_recorded_days = calculate_week_recorded_days
         @week_study_ratio = calculate_week_study_ratio
@@ -13,9 +12,6 @@ class RecordsController < ApplicationController
 
       format.json do
         render json: {
-          today_activity_counts: today_activity_counts,
-          today_total: today_activity_counts.values.sum,
-          week: week_activity_counts,
           chart: chart_data_for_week
         }
       end
@@ -37,14 +33,6 @@ class RecordsController < ApplicationController
                 .includes(:activity)
                 .where(created_at: Time.zone.now.all_day)
                 .order(created_at: :desc)
-  end
-
-  def today_activity_counts
-    current_user.records
-      .where(created_at: Time.zone.today.all_day)
-      .joins(:activity)
-      .group('activities.name')
-      .count
   end
 
   def chart_data_for_week

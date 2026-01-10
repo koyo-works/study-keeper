@@ -3,7 +3,6 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :store_devise_errors_as_flash, if: :devise_controller?
-  before_action :check_streak, if: :user_signed_in?
 
   protected
 
@@ -18,9 +17,5 @@ class ApplicationController < ActionController::Base
     return unless resource&.errors&.any?
 
     flash.now[:alert] = "入力内容に不備がある"
-  end
-
-  def check_streak
-    current_user.reset_streak_if_needed!
   end
 end
