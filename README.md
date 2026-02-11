@@ -200,5 +200,5 @@
 - [Figma画面遷移図](https://www.figma.com/design/TjaySCxNl9baPdRhg3EZZU/Study-Keeper?node-id=0-1&p=f&t=uuc96RvBcHTE4ZBv-0)
 
 ## ER図
-![ER図](https://i.gyazo.com/34df8da86b5c9db20b22e8bd5457281f.png)
+![ER図](https://i.gyazo.com/229dd20c74bad7235f7a93c563d33c53.png)
 
