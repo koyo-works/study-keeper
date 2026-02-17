@@ -7,6 +7,7 @@ class StudyRecordsController < ApplicationController
 
   def create
     @record = current_user.records.new(record_params)
+    @record.logged_at ||= Time.current
 
     if @record.save
       redirect_to learning_path, notice: "記録しました"
