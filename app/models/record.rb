@@ -3,8 +3,15 @@ class Record < ApplicationRecord
   belongs_to :activity
 
   validates :activity_id, presence: true
+  before_create :set_logged_at
 
   def to_param
     public_id
+  end
+
+  private
+
+  def set_logged_at
+    selef.logged_at ||= Time.current
   end
 end

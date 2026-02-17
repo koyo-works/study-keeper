@@ -20,4 +20,8 @@ Rails.application.routes.draw do
 
   get 'analytics_path', to: 'records#analytics', as: 'analytics_records'
   resources :records
+
+  namespace :api do
+    get "dashboard/today", to: "dashboard#today"
+  end
 end
