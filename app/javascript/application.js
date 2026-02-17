@@ -2,3 +2,4 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 // import "./records_analytics"
+import "./react/mount_dashboard"
