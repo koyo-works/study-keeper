@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_09_142408) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_17_063937) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "activities", force: :cascade do |t|
@@ -27,7 +28,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_09_142408) do
     t.text "memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "public_id", default: -> { "gen_random_uuid()" }, null: false
     t.index ["activity_id"], name: "index_records_on_activity_id"
+    t.index ["public_id"], name: "index_records_on_public_id", unique: true
     t.index ["user_id"], name: "index_records_on_user_id"
   end
 

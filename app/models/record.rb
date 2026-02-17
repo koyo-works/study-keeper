@@ -4,4 +4,7 @@ class Record < ApplicationRecord
 
   validates :activity_id, presence: true
 
+  def to_param
+    public_id
+  end
 end
