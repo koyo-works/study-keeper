@@ -78,3 +78,5 @@ gem 'sassc-rails' # SCSS を使う場合
 gem  'devise'
 
 gem 'devise-i18n'
+
+gem "jsbundling-rails", "~> 1.3"
