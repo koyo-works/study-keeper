@@ -23,5 +23,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     get "dashboard/today", to: "dashboard#today"
+    get "activities", to: "activities#index"
+    post "dashboard/logs", to: "dashboard_logs#create"
   end
 end
