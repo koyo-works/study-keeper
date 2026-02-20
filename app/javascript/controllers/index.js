@@ -1,6 +1,3 @@
-// Import and register all your controllers from the importmap via controllers/**/*_controller
-import { application } from "./application"
-import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
+import { Application } from "@hotwired/stimulus"
 
-const context = require.context(".", true, /_controller\.(js|ts)$/)
-application.load(definitionsFromContext(context))
+export const application = Application.start()

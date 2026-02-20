@@ -12,6 +12,6 @@ class Record < ApplicationRecord
   private
 
   def set_logged_at
-    selef.logged_at ||= Time.current
+    self.logged_at ||= Time.current
   end
 end
