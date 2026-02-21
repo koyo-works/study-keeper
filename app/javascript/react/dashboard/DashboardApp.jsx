@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchToday, fetchActivities, postLog } from "./api";
 import LogForm from "./components/LogForm";
+import TodayHistory from "./components/TodayHistory";
 
 export default function DashboardApp() {
   const [dashboard, setDashboard] = useState(null);
@@ -8,42 +9,27 @@ export default function DashboardApp() {
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function loadToday() {
-    const data = await fetchToday();
-    setDashboard(data);
-  }
-
-  async function loadActivities() {
-    const list = await fetchActivities();
-    setActivities(list);
-  }
-
   async function loadAll() {
     setError(null);
     try {
-      await Promise.all([loadToday(), loadActivities()]);
+      const [todayData, activityList] = await Promise.all([fetchToday(), fetchActivities()]);
+      setDashboard(todayData);
+      setActivities(activityList);
     } catch (e) {
       console.error(e);
       setError(e.message);
     }
   }
 
-  useEffect(() => {
-    loadAll();
-  }, []);
+  useEffect(() => { loadAll(); }, []);
 
   async function handleSubmit({ activityId, memo, onSuccess }) {
     setError(null);
-    console.log("DashboardApp.handleSubmit", { activityId, memo });
-
     try {
       setIsSubmitting(true);
       await postLog({ activityId, memo });
-
       onSuccess?.();
-
-      // 動作確認しやすいようにリダイレクト
-      window.location.href = "/learning_path";
+      await loadAll();
     } catch (e) {
       console.error(e);
       setError(e.message);
@@ -52,21 +38,20 @@ export default function DashboardApp() {
     }
   }
 
+  const logs = dashboard?.logs ?? [];
+
   return (
-    <div>
-      {error && <div className="alert alert-danger">{error}</div>}
+    <div style={{ display: "flex", gap: 24, alignItems: "flex-start", padding: 24 }}>
+      <div>
+        {error && <div className="alert alert-danger">{error}</div>}
+        <LogForm
+          activities={activities}
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+        />
+      </div>
 
-      <LogForm
-        activities={activities}
-        onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-      />
-
-      <hr />
-
-      <pre style={{ whiteSpace: "pre-wrap" }}>
-        {dashboard ? JSON.stringify(dashboard, null, 2) : "loading..."}
-      </pre>
+      <TodayHistory logs={logs} activities={activities} />
     </div>
   );
 }
