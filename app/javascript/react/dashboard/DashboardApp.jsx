@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchToday, fetchActivities, postLog } from "./api";
 import LogForm from "./components/LogForm";
 import TodayHistory from "./components/TodayHistory";
+import CurrentStatus from "./components/CurrentStatus"; 
 
 export default function DashboardApp() {
   const [dashboard, setDashboard] = useState(null);
@@ -42,15 +43,15 @@ export default function DashboardApp() {
 
   return (
     <div style={{ display: "flex", gap: 24, alignItems: "flex-start", padding: 24 }}>
-      <div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         {error && <div className="alert alert-danger">{error}</div>}
         <LogForm
           activities={activities}
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
         />
+        <CurrentStatus dashboard={dashboard} activities={activities} />
       </div>
-
       <TodayHistory logs={logs} activities={activities} />
     </div>
   );
