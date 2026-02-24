@@ -3,6 +3,7 @@ import { fetchToday, fetchActivities, postLog } from "./api";
 import LogForm from "./components/LogForm";
 import TodayHistory from "./components/TodayHistory";
 import CurrentStatus from "./components/CurrentStatus"; 
+import SummaryStatus from "./components/SummaryStatus";
 
 export default function DashboardApp() {
   const [dashboard, setDashboard] = useState(null);
@@ -52,6 +53,7 @@ export default function DashboardApp() {
         />
         <CurrentStatus dashboard={dashboard} activities={activities} />
       </div>
+      <SummaryStatus dashboard={dashboard} />
       <TodayHistory logs={logs} activities={activities} />
     </div>
   );
