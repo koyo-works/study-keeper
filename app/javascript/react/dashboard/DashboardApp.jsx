@@ -10,6 +10,7 @@ export default function DashboardApp() {
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [now, setNow] = useState(new Date());
 
   async function loadAll() {
     setError(null);
@@ -25,6 +26,18 @@ export default function DashboardApp() {
 
   useEffect(() => { loadAll(); }, []);
 
+  // 1秒ごとにnowを更新
+  useEffect(() => {
+    const currentLog = dashboard?.current_log;
+    if (!currentLog) return; //ログが無ければタイマー不要
+
+    const timer = setInterval(() => {
+      setNow(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer); // unmount時にクリア
+  }, [dashboard?.current_log]);
+
   async function handleSubmit({ activityId, memo, onSuccess }) {
     setError(null);
     try {
@@ -39,6 +52,8 @@ export default function DashboardApp() {
         current_log: data.record,
         now: data.now,
       }));
+
+      setNow(new Date()); // タイマーリセット
 
       onSuccess?.();
     } catch (e) {
@@ -65,15 +80,16 @@ export default function DashboardApp() {
           />
         </div>
         <div style={{ flex: 1 }}>  {/* ← width: 320 から残り幅に変更 */}
-          <SummaryStatus dashboard={dashboard} />
+          <SummaryStatus dashboard={dashboard} now={now}/>
         </div>
       </div>
 
-      {/* 中段：今日の履歴 */}
+      {/* 中段：推定時間 */}
+      <CurrentStatus dashboard={dashboard} activities={activities} />
+      
+      {/* 下段：今日の履歴 */}
       <TodayHistory logs={logs} activities={activities} />
 
-      {/* 下段：推定時間 */}
-      <CurrentStatus dashboard={dashboard} activities={activities} />
     </div>
   );
 }

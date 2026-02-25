@@ -1,15 +1,27 @@
 import React from "react";
 
-export default function CurrentStatus({ dashboard, activities }) {
+export default function CurrentStatus({ dashboard, activities, now }) {
   const currentLog = dashboard?.current_log ?? null;
-  const now = dashboard?.now ? new Date(dashboard.now) : new Date();
+  const currentNow = now ?? new Date();
 
   const activity = activities.find((a) => a.id === currentLog?.activity?.id);
   const activityName = activity ? `${activity.icon} ${activity.name}` : "未選択";
 
-  const elapsedMinutes = currentLog
-    ? Math.min(Math.floor((now - new Date(currentLog.logged_at)) / 1000 / 60), 360)
+  // 経過秒数を計算
+  const elapsedSeconds = currentLog
+    ? Math.max(0, Math.floor((currentNow - new Date(currentLog.logged_at)) / 1000))
     : 0;
+
+  // 最大6時間（21600秒）
+  const cappedSeconds = Math.min(elapsedSeconds, 21600);
+  const hours = Math.floor(cappedSeconds / 3600);
+  const minutes = Math.floor((cappedSeconds % 3600) / 60);
+  const seconds = cappedSeconds % 60;
+  const timeStr = currentLog
+    ? hours > 0
+        ?  `${hours}時間${minutes}分${seconds}秒`
+        : `${minutes}分${seconds}秒`
+    : "0分0秒";
 
   return (
     <div style={{
@@ -36,7 +48,7 @@ export default function CurrentStatus({ dashboard, activities }) {
             現在：{activityName}中
           </div>
           <div style={{ fontSize: 13, color: "#64748b", fontWeight: 600 }}>
-            推定経過時間：<span style={{ color: "#4f46e5", fontFamily: "monospace", fontWeight: 700, fontSize: 16 }}>{elapsedMinutes}分</span>
+            推定経過時間：<span style={{ color: "#4f46e5", fontFamily: "monospace", fontWeight: 700, fontSize: 16 }}>{timeStr}</span>
           </div>
         </div>
       </div>
