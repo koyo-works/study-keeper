@@ -29,9 +29,18 @@ export default function DashboardApp() {
     setError(null);
     try {
       setIsSubmitting(true);
-      await postLog({ activityId, memo });
+      const data = await postLog({ activityId, memo });
+
+      // POSTレスポンスで直接stateを更新（loadAll不要）
+      setDashboard((prev) => ({
+        ...prev,
+        logs: [...(prev?.logs ?? []), data.record],
+        summary_per_category: data.summary_per_category,
+        current_log: data.record,
+        now: data.now,
+      }));
+
       onSuccess?.();
-      await loadAll();
     } catch (e) {
       console.error(e);
       setError(e.message);
