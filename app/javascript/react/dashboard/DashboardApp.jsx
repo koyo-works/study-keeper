@@ -43,18 +43,28 @@ export default function DashboardApp() {
   const logs = dashboard?.logs ?? [];
 
   return (
-    <div style={{ display: "flex", gap: 24, alignItems: "flex-start", padding: 24 }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-        {error && <div className="alert alert-danger">{error}</div>}
-        <LogForm
-          activities={activities}
-          onSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
-        />
-        <CurrentStatus dashboard={dashboard} activities={activities} />
+    <div style={{ padding: "24px 32px", display: "flex", flexDirection: "column", gap: 16, maxWidth: 1100,  margin: "0 auto",}}>
+      {error && <div className="alert alert-danger">{error}</div>}
+
+      {/* 上段：フォーム＋サマリー */}
+      <div style={{ display: "flex", gap: 16, alignItems: "stretch" }}>  
+        <div style={{ flex: "0 0 500px" }}>  {/* ← flex: 1 から固定幅に変更 */}
+          <LogForm
+            activities={activities}
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+          />
+        </div>
+        <div style={{ flex: 1 }}>  {/* ← width: 320 から残り幅に変更 */}
+          <SummaryStatus dashboard={dashboard} />
+        </div>
       </div>
-      <SummaryStatus dashboard={dashboard} />
+
+      {/* 中段：今日の履歴 */}
       <TodayHistory logs={logs} activities={activities} />
+
+      {/* 下段：推定時間 */}
+      <CurrentStatus dashboard={dashboard} activities={activities} />
     </div>
   );
 }

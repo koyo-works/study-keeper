@@ -10,10 +10,18 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  background-color: #FAF3E0;
-  display: flex;           
-  flex-direction: column; 
-  min-height: 100vh;       // ← 画面全体の高さ
+  background: linear-gradient(
+    -45deg,
+    #FAF3E0,
+    #EBE6FA, /* 紫を薄くして優しさだけ残す */
+    #E0F5FF,
+    #E8F5E9
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 html, body {
@@ -22,4 +30,10 @@ html, body {
 
 .main-content {
   flex: 1;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

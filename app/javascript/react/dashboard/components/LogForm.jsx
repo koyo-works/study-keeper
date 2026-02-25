@@ -4,7 +4,7 @@ export default function LogForm({ activities, onSubmit, isSubmitting }) {
   const [selectedId, setSelectedId] = useState(null);
   const [memo, setMemo] = useState("");
   const [hoveredId, setHoveredId] = useState(null);
-  const [btnHover, setBtnHover] = useState(false); 
+  const [btnHover, setBtnHover] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -23,43 +23,36 @@ export default function LogForm({ activities, onSubmit, isSubmitting }) {
 
   return (
     <div style={{
-      width: 480,
-      background: "#ffffff",
-      borderRadius: 16,
-      border: "1px solid #e5e7eb",
-      padding: "20px",
-      boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
+      width: "100%",
+      height: "100%",
+      background: "rgba(255,255,255,0.75)",
+      backdropFilter: "blur(16px)",
+      borderRadius: 20,
+      border: "1px solid rgba(255,255,255,0.9)",
+      padding: "22px 24px",
+      boxShadow: "0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
     }}>
-      {/* ヘッダー */}
-      <div style={{ marginBottom: 16 }}>
-        <p style={{
-          color: "#9ca3af",
-          fontSize: 10,
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-          margin: "0 0 4px",
-        }}>NOW DOING</p>
-        <h2 style={{
-          color: "#111827",
-          fontSize: 16,
-          fontWeight: 700,
-          margin: 0,
-          minHeight: 24,
-        }}>
-          {selected ? `${selected.icon} ${selected.name}` : "行動を選んでください"}
-        </h2>
+      {/* タイトル */}
+      <div style={{
+        fontSize: 15, fontWeight: 800, color: "#1e293b",
+        marginBottom: 18, display: "flex", alignItems: "center", gap: 8,
+        paddingBottom: 12, borderBottom: "2px solid #f1f5f9",
+      }}>
+        <div style={{ width: 28, height: 28, borderRadius: 8, background: "linear-gradient(135deg, #eef2ff, #e0e7ff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>✏️</div>
+        今、何をしようとしてる？
       </div>
 
       <form onSubmit={handleSubmit}>
         {/* カードグリッド */}
         <div style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          gap: 8,
+          gridTemplateColumns: "repeat(5, 1fr)",
+          gap: 10,
           marginBottom: 14,
         }}>
           {activities.map((a) => {
             const isSelected = selectedId === a.id;
+            const isHovered = hoveredId === a.id;
             return (
               <button
                 key={a.id}
@@ -68,24 +61,29 @@ export default function LogForm({ activities, onSubmit, isSubmitting }) {
                 onMouseEnter={() => setHoveredId(a.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 style={{
-                  background: isSelected ? "#f3e8ff"  : hoveredId === a.id ? "#ede9fe" : "#f9fafb",
-                  border: isSelected ? "2px solid #a855f7" : hoveredId === a.id ? "2px solid #c4b5fd" : "2px solid #e5e7eb",
-                  borderRadius: 12,
-                  padding: "12px 8px",
+                  border: isSelected ? "2px solid #818cf8" : isHovered ? "2px solid #c7d2fe" : "2px solid rgba(255,255,255,0.8)",
+                  borderRadius: 16,
+                  padding: "14px 8px",
                   cursor: "pointer",
-                  transition: "all 0.15s ease",
+                  background: isSelected
+                    ? "linear-gradient(135deg, rgba(238,242,255,0.95), rgba(224,231,255,0.95))"
+                    : isHovered ? "rgba(238,242,255,0.9)" : "rgba(255,255,255,0.6)",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  gap: 4,
-                  transform: isSelected ? "scale(1.03)" : hoveredId === a.id ? "scale(1.02)" : "scale(1)",
+                  gap: 6,
+                  transition: "all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                  transform: isSelected ? "translateY(-4px) scale(1.04)" : isHovered ? "translateY(-4px)" : "none",
+                  boxShadow: isSelected
+                    ? "0 10px 28px rgba(99,102,241,0.28)"
+                    : isHovered ? "0 8px 20px rgba(99,102,241,0.2)" : "0 2px 8px rgba(0,0,0,0.04)",
                 }}
               >
-                <span style={{ fontSize: 22 }}>{a.icon || "⚡"}</span>
+                <span style={{ fontSize: 26 }}>{a.icon || "⚡"}</span>
                 <span style={{
-                  color: isSelected ? "#7c3aed" : "#374151",
+                  color: isSelected ? "#4f46e5" : "#475569",
                   fontSize: 11,
-                  fontWeight: isSelected ? 700 : 500,
+                  fontWeight: 700,
                 }}>{a.name}</span>
               </button>
             );
@@ -95,22 +93,23 @@ export default function LogForm({ activities, onSubmit, isSubmitting }) {
         {/* メモ欄 */}
         <textarea
           rows={2}
-          placeholder="メモ（任意）"
+          placeholder="今の気分ややることをメモしておこう"
           value={memo}
           onChange={(e) => setMemo(e.target.value)}
           style={{
             width: "100%",
-            background: "#f9fafb",
-            border: "1.5px solid #e5e7eb",
-            borderRadius: 10,
-            padding: "8px 10px",
-            color: "#111827",
-            fontSize: 12,
+            background: "rgba(255,255,255,0.7)",
+            border: "2px solid rgba(226,232,240,0.8)",
+            borderRadius: 12,
+            padding: "11px 14px",
+            color: "#1e293b",
+            fontSize: 13,
             resize: "none",
             outline: "none",
             boxSizing: "border-box",
             marginBottom: 12,
             fontFamily: "inherit",
+            transition: "all 0.15s",
           }}
         />
 
@@ -118,23 +117,26 @@ export default function LogForm({ activities, onSubmit, isSubmitting }) {
         <button
           type="submit"
           disabled={!selectedId || isSubmitting}
-          onMouseEnter={() => setBtnHover(true)} 
+          onMouseEnter={() => setBtnHover(true)}
           onMouseLeave={() => setBtnHover(false)}
           style={{
             width: "100%",
-            padding: "11px",
-            borderRadius: 10,
+            padding: "13px",
+            borderRadius: 14,
             border: "none",
             background: selectedId
-              ? "linear-gradient(135deg, #a855f7, #7c3aed)"
-              : "#e5e7eb",
-            color: selectedId ? "#fff" : "#9ca3af",
-            fontSize: 13,
-            fontWeight: 700,
+              ? "linear-gradient(135deg, #818cf8, #6366f1, #4f46e5)"
+              : "rgba(241,245,249,0.8)",
+            color: selectedId ? "#fff" : "#94a3b8",
+            fontSize: 14,
+            fontWeight: 800,
             cursor: selectedId ? "pointer" : "not-allowed",
-            transition: "all 0.15s ease",
+            transition: "all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)",
             transform: btnHover && selectedId ? "translateY(-2px)" : "none",
-            boxShadow: btnHover && selectedId ? "0 6px 20px rgba(124,58,237,0.4)" : "none",
+            boxShadow: btnHover && selectedId
+              ? "0 8px 28px rgba(99,102,241,0.5)"
+              : selectedId ? "0 4px 20px rgba(99,102,241,0.4)" : "none",
+            letterSpacing: "0.02em",
           }}
         >
           {isSubmitting ? "記録中..." : "記録する"}
