@@ -85,7 +85,7 @@ export default function DashboardApp() {
       </div>
 
       {/* 中段：推定時間 */}
-      <CurrentStatus dashboard={dashboard} activities={activities} />
+      <CurrentStatus dashboard={dashboard} activities={activities} now={now} />
       
       {/* 下段：今日の履歴 */}
       <TodayHistory logs={logs} activities={activities} />
