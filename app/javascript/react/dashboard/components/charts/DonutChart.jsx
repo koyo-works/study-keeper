@@ -15,11 +15,14 @@ export default function DonutChart({ labels, values, colors, size = 160 }) {
           data: values,
           backgroundColor: colors,
           borderWidth: 2,
-          borderColor: "#ffffff",
+          borderRadius: 20,
+          hoverOffset: 4,
+          // borderColor: "#ffffff",
         }],
       },
       options: {
         responsive: false,
+        cutout: "78%",
         animation: {
           duration: 600,
           easing: "easeInOutQuart",

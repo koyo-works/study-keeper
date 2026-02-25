@@ -12,6 +12,8 @@ export default function TodayHistory({ logs, activities }) {
       border: "1px solid rgba(255,255,255,0.9)",
       padding: "22px 24px",
       boxShadow: "0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
+      maxHeight: 400,
+      overflowY: "auto",
     }}>
       <div style={{
         fontSize: 15, fontWeight: 800, color: "#1e293b",
