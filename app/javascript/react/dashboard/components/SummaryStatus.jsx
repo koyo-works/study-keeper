@@ -11,9 +11,30 @@ function getMessage(logs) {
   return MESSAGES[logs.length % MESSAGES.length];
 }
 
-export default function SummaryStatus({ dashboard }) {
+// 現在進行中の行動の経過時間をsummaryに加算する
+function buildLiveSummary(summary, currentLog, now) {
+  if (!currentLog || !summary.length) return summary;
+
+  const elapsedMinutes = Math.min(
+    Math.floor((now - new Date(currentLog.logged_at)) / 1000 / 60),
+    360
+  );
+
+  return summary.map((s) => {
+    if (s.activity_id === currentLog.activity.id) {
+      return { ...s, total_minutes: s.total_minutes + elapsedMinutes };
+    }
+    return s;
+  });
+}
+
+export default function SummaryStatus({ dashboard, now }) {
   const summary = dashboard?.summary_per_category ?? [];
   const logs = dashboard?.logs ?? [];
+  const currentLog = dashboard?.current_log ?? null;
+  const currentNow = now ?? new Date();
+
+  const liveSummary = buildLiveSummary(summary, currentLog, currentNow);
 
   return (
     <div style={{
@@ -25,7 +46,6 @@ export default function SummaryStatus({ dashboard }) {
       padding: "22px 24px",
       boxShadow: "0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
     }}>
-      {/* タイトル */}
       <div style={{
         fontSize: 15, fontWeight: 800, color: "#1e293b",
         marginBottom: 18, display: "flex", alignItems: "center", gap: 8,
@@ -35,20 +55,25 @@ export default function SummaryStatus({ dashboard }) {
         今日の記録まとめ
       </div>
 
-      {summary.length === 0 ? (
+      {liveSummary.length === 0 ? (
         <p style={{ color: "#9ca3af", fontSize: 13 }}>まだ記録がありません</p>
       ) : (
         <>
           <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
-            {summary.map((s, i) => {
+            {liveSummary.map((s, i) => {
               const hours = Math.floor(s.total_minutes / 60);
               const minutes = s.total_minutes % 60;
               const timeStr = hours > 0 ? `${hours}時間${minutes}分` : `${minutes}分`;
+
+              const total = liveSummary.reduce((acc, x) => acc + x.total_minutes, 0);
+              const pct = total > 0 ? Math.round((s.total_minutes / total) * 100) : 0;
+
               return (
-                <div key={s.activity_id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 12, background: "rgba(248,250,252,0.8)", transition: "all 0.15s" }}>
+                <div key={s.activity_id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 12, background: "rgba(248,250,252,0.8)" }}>
                   <div style={{ width: 10, height: 10, borderRadius: "50%", background: COLORS[i % COLORS.length], flexShrink: 0, boxShadow: "0 2px 4px rgba(0,0,0,0.15)" }} />
                   <span style={{ fontSize: 13, color: "#334155", flex: 1, fontWeight: 700 }}>{s.activity_name}</span>
                   <span style={{ fontSize: 12, color: "#64748b", fontFamily: "monospace" }}>{timeStr}</span>
+                  <span style={{ fontSize: 11, color: "#6366f1", background: "#eef2ff", padding: "2px 6px", borderRadius: 20, fontWeight: 700 }}>{pct}%</span>
                   <span style={{ fontSize: 11, color: "#94a3b8", background: "#f1f5f9", padding: "2px 6px", borderRadius: 20 }}>{s.count}回</span>
                 </div>
               );
@@ -57,15 +82,16 @@ export default function SummaryStatus({ dashboard }) {
 
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
             <DonutChart
-              labels={summary.map((s) => s.activity_name)}
-              values={summary.map((s) => s.total_minutes === 0 ? 1 : s.total_minutes)}
-              colors={summary.map((_, i) => COLORS[i % COLORS.length])}
+              labels={liveSummary.filter((s) => s.total_minutes > 0).map((s) => s.activity_name)}
+              values={liveSummary.filter((s) => s.total_minutes > 0).map((s) => s.total_minutes)}
+              colors={liveSummary.filter((s) => s.total_minutes > 0).map((_, i) => COLORS[i % COLORS.length])}
             />
           </div>
 
           <div style={{
             textAlign: "center", fontSize: 13, color: "#4f46e5", fontWeight: 800,
-            padding: "10px 14px", background: "linear-gradient(135deg, rgba(238,242,255,0.9), rgba(224,231,255,0.9))",
+            padding: "10px 14px",
+            background: "linear-gradient(135deg, rgba(238,242,255,0.9), rgba(224,231,255,0.9))",
             borderRadius: 12, border: "1px solid rgba(199,210,254,0.5)",
           }}>
             🐹「{getMessage(logs)}」
