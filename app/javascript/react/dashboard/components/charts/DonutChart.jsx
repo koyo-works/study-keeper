@@ -32,7 +32,7 @@ export default function DonutChart({ labels, values, colors, size = 160 }) {
     return () => {
       if (chartRef.current) chartRef.current.destroy();
     };
-  }, [labels, values, colors]);
+  }, [labels.join(","), values.join(","), colors.join(",")]);
 
   return <canvas ref={canvasRef} width={size} height={size} />;
 }
