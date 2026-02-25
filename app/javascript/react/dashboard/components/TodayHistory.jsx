@@ -5,61 +5,64 @@ export default function TodayHistory({ logs, activities }) {
 
   return (
     <div style={{
-      width: 320,
-      background: "#ffffff",
-      borderRadius: 16,
-      border: "1px solid #e5e7eb",
-      padding: "20px",
-      boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
+      width: "100%",
+      background: "rgba(255,255,255,0.75)",
+      backdropFilter: "blur(16px)",
+      borderRadius: 20,
+      border: "1px solid rgba(255,255,255,0.9)",
+      padding: "22px 24px",
+      boxShadow: "0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
     }}>
-      <p style={{
-        color: "#9ca3af",
-        fontSize: 10,
-        letterSpacing: "0.15em",
-        textTransform: "uppercase",
-        margin: "0 0 12px",
-      }}>TODAY'S LOG</p>
+      <div style={{
+        fontSize: 15, fontWeight: 800, color: "#1e293b",
+        marginBottom: 18, display: "flex", alignItems: "center", gap: 8,
+        paddingBottom: 12, borderBottom: "2px solid #f1f5f9",
+      }}>
+        <div style={{ width: 28, height: 28, borderRadius: 8, background: "linear-gradient(135deg, #dcfce7, #bbf7d0)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>📋</div>
+        今日の履歴
+      </div>
 
       {sorted.length === 0 ? (
         <p style={{ color: "#9ca3af", fontSize: 13 }}>今日の記録はまだありません</p>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {sorted.map((log) => {
-            const time = new Date(log.logged_at).toLocaleTimeString("ja-JP", {
-              hour: "2-digit",
-              minute: "2-digit",
-            });
+            const time = new Date(log.logged_at).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" });
             const activity = activities.find((a) => a.id === log.activity.id);
             return (
-              <li key={log.id} style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 10,
-                padding: "10px 12px",
-                background: "#f9fafb",
-                borderRadius: 10,
-                border: "1px solid #e5e7eb",
+              <div key={log.id} style={{
+                display: "flex", alignItems: "center", gap: 12,
+                padding: "12px 16px",
+                background: "rgba(248,250,252,0.8)",
+                borderRadius: 14,
+                border: "1px solid rgba(226,232,240,0.6)",
+                transition: "all 0.18s ease",
+                cursor: "default",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(238,242,255,0.8)";
+                e.currentTarget.style.borderColor = "rgba(199,210,254,0.6)";
+                e.currentTarget.style.transform = "translateX(4px)";
+                e.currentTarget.style.boxShadow = "0 4px 12px rgba(99,102,241,0.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(248,250,252,0.8)";
+                e.currentTarget.style.borderColor = "rgba(226,232,240,0.6)";
+                e.currentTarget.style.transform = "none";
+                e.currentTarget.style.boxShadow = "none";
               }}>
-                <span style={{ color: "#9ca3af", fontSize: 12, minWidth: 36 }}>{time}</span>
-                <div>
-                  <span style={{ fontSize: 14 }}>{activity?.icon} </span>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "#111827" }}>{log.activity.name}</span>
-                  {log.memo && (
-                    <p style={{
-                      fontSize: 11,
-                      color: "#6b7280",
-                      margin: "2px 0 0",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      maxWidth: 200,
-                    }}>{log.memo}</p>
-                  )}
-                </div>
-              </li>
+                <span style={{ fontSize: 11, color: "#94a3b8", fontFamily: "monospace", minWidth: 38 }}>{time}</span>
+                <span style={{ fontSize: 18 }}>{activity?.icon}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#334155", flex: 1 }}>{log.activity.name}</span>
+                {log.memo && (
+                  <span style={{ fontSize: 11, color: "#94a3b8", background: "#f8fafc", padding: "2px 8px", borderRadius: 20, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 240 }}>
+                    {log.memo}
+                  </span>
+                )}
+              </div>
             );
           })}
-        </ul>
+        </div>
       )}
     </div>
   );
