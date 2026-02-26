@@ -1,7 +1,41 @@
 import React from "react";
 
-export default function TodayHistory({ logs, activities }) {
-  const sorted = [...logs].sort((a, b) => new Date(a.logged_at) - new Date(b.logged_at));
+export default function TodayHistory({ logs, activities, now, dashboard }) {
+  const currentLog = dashboard?.current_log ?? null;
+  const currentNow = now ?? new Date();
+
+  const sorted = [...logs].sort((a, b) => new Date(b.logged_at) - new Date(a.logged_at));
+  const chronological = [...logs].sort((a, b) => new Date(a.logged_at) - new Date(b.logged_at));
+
+  function getDuration(log) {
+    const idx = chronological.findIndex((l) => l.id === log.id);
+    const next = chronological[idx + 1];
+
+    if (!next) {
+      // ストップ済みの場合はended_atとの差
+      if (log.ended_at) {
+        const diff = Math.floor((new Date(log.ended_at) - new Date(log.logged_at)) / 1000 / 60);
+        if (diff <= 0) return null;
+        const h = Math.floor(diff / 60);
+        const m = diff % 60;
+        return h > 0 ? `${h}時間${m}分` : `${m}分`;
+      }
+      // 計測中の場合はリアルタイム
+      if (!currentLog || currentLog.id !== log.id) return null;
+      const diff = Math.floor((currentNow - new Date(log.logged_at)) / 1000);
+      const h = Math.floor(diff / 3600);
+      const m = Math.floor((diff % 3600) / 60);
+      const s = diff % 60;
+      return h > 0 ? `${h}時間${m}分${s}秒` : `${m}分${s}秒`;
+    }
+
+    // 過去のログは次のログとの差
+    const diff = Math.floor((new Date(next.logged_at) - new Date(log.logged_at)) / 1000 / 60);
+    if (diff <= 0) return null;
+    const h = Math.floor(diff / 60);
+    const m = diff % 60;
+    return h > 0 ? `${h}時間${m}分` : `${m}分`;
+  }
 
   return (
     <div style={{
@@ -31,6 +65,9 @@ export default function TodayHistory({ logs, activities }) {
           {sorted.map((log) => {
             const time = new Date(log.logged_at).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" });
             const activity = activities.find((a) => a.id === log.activity.id);
+            const duration = getDuration(log);
+            const isLive = !chronological[chronological.findIndex((l) => l.id === log.id) + 1] && currentLog?.id === log.id;
+
             return (
               <div key={log.id} style={{
                 display: "flex", alignItems: "center", gap: 12,
@@ -56,8 +93,13 @@ export default function TodayHistory({ logs, activities }) {
                 <span style={{ fontSize: 11, color: "#94a3b8", fontFamily: "monospace", minWidth: 38 }}>{time}</span>
                 <span style={{ fontSize: 18 }}>{activity?.icon}</span>
                 <span style={{ fontSize: 13, fontWeight: 700, color: "#334155", flex: 1 }}>{log.activity.name}</span>
+                {duration && (
+                  <span style={{ fontSize: 11, color: isLive ? "#f43f5e" : "#6366f1", background: isLive ? "#fff1f2" : "#eef2ff", padding: "2px 8px", borderRadius: 20, fontWeight: 700, fontFamily: "monospace" }}>
+                    {isLive ? "⏱ " : ""}{duration}
+                  </span>
+                )}
                 {log.memo && (
-                  <span style={{ fontSize: 11, color: "#94a3b8", background: "#f8fafc", padding: "2px 8px", borderRadius: 20, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 240 }}>
+                  <span style={{ fontSize: 11, color: "#94a3b8", background: "#f8fafc", padding: "2px 8px", borderRadius: 20, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 180 }}>
                     {log.memo}
                   </span>
                 )}
