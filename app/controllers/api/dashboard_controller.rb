@@ -33,6 +33,7 @@ class Api::DashboardController < ApplicationController
         name: record.activity.name
       },
       logged_at: record.logged_at.in_time_zone("Tokyo").iso8601,
+      ended_at: record.ended_at&.in_time_zone("Tokyo")&.iso8601,  # ← 追加
       memo: record.memo
     }
   end
