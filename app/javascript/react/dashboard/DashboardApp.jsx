@@ -80,29 +80,29 @@ export default function DashboardApp() {
   const logs = dashboard?.logs ?? [];
 
   return (
-    <div style={{ padding: "24px 32px", display: "flex", flexDirection: "column", gap: 16, maxWidth: 1100,  margin: "0 auto",}}>
+    <div className="dashboard-wrap">
       {error && <div className="alert alert-danger">{error}</div>}
 
-      {/* 上段：フォーム＋サマリー */}
-      <div style={{ display: "flex", gap: 16, alignItems: "stretch" }}>  
-        <div style={{ flex: "0 0 500px" }}>  {/* ← flex: 1 から固定幅に変更 */}
+      <div className="dashboard-top-row">
+        <div className="dashboard-form-col">
           <LogForm
             activities={activities}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
           />
         </div>
-        <div style={{ flex: 1 }}>  {/* ← width: 320 から残り幅に変更 */}
-          <SummaryStatus dashboard={dashboard} now={now}/>
+        <div className="dashboard-right-col">
+          {/* PC：推定時間→記録まとめの順 / SP：推定時間→記録まとめの順 */}
+          <div className="dashboard-current-status">
+            <CurrentStatus dashboard={dashboard} activities={activities} now={now} onStop={handleStopTimer} />
+          </div>
+          <div className="dashboard-summary">
+            <SummaryStatus dashboard={dashboard} now={now} />
+          </div>
         </div>
       </div>
 
-      {/* 中段：推定時間 */}
-      <CurrentStatus dashboard={dashboard} activities={activities} now={now} onStop={handleStopTimer}/>
-      
-      {/* 下段：今日の履歴 */}
-      <TodayHistory logs={logs} activities={activities} />
-
+      <TodayHistory logs={logs} activities={activities} now={now} dashboard={dashboard} />
     </div>
   );
 }

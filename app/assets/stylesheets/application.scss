@@ -37,3 +37,77 @@ html, body {
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+// ダッシュボード レスポンシブ
+.dashboard-wrap {
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.dashboard-top-row {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+
+  .dashboard-form-col {
+    flex: 0 0 500px;
+  }
+
+  .dashboard-right-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-wrap {
+    padding: 12px;
+  }
+
+  .dashboard-top-row {
+    flex-direction: column;
+
+    .dashboard-form-col,
+    .dashboard-right-col {
+      flex: none;
+      width: 100%;
+    }
+  }
+
+  // ボタン3列に
+  .activity-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  // 円グラフを縦並びに
+  .summary-chart-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .summary-legend {
+    width: 100%;
+  }
+
+  .current-status-inner {
+    flex-direction: column;
+    align-items: flex-start;
+
+    button {
+      width: 100%;
+    }
+  }
+}

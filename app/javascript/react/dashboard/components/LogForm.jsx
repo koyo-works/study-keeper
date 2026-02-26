@@ -44,7 +44,7 @@ export default function LogForm({ activities, onSubmit, isSubmitting }) {
 
       <form onSubmit={handleSubmit}>
         {/* カードグリッド */}
-        <div style={{
+        <div className="activity-grid" style={{
           display: "grid",
           gridTemplateColumns: "repeat(5, 1fr)",
           gap: 10,
