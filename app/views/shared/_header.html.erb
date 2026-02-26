@@ -1,21 +1,53 @@
 <header class="header">
   <div class="header-inner">
     <div class="logo">
-        <%= link_to logo_link_path do %>
-          <%= image_tag "logo.png", alt: "Study-keeper", class: "logo-img" %>
-        <% end %>
-    </div>
-  
-    <div class="header-nav">
-      <% if user_signed_in? %> 
-        <div class="user-info">
-          <span class="username">ユーザー名：<%= current_user.name %></span>
-          <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "logout-btn" %>
-        </div>
-      <% else %>
-        <%= link_to "ログイン", new_user_session_path, class: "login-btn" %>
-        <%= link_to "ユーザー登録", new_user_registration_path, class: "signup-btn" %>
+      <%= link_to logo_link_path do %>
+        <%= image_tag "logo.png", alt: "Study-keeper", class: "logo-img" %>
       <% end %>
     </div>
+
+    <% if user_signed_in? %>
+      <nav class="header-nav">
+        <%= link_to "今日の記録", learning_path, class: "nav-link #{'active' if current_page?(learning_path)}" %>
+        <%= link_to "週次記録", "#", class: "nav-link" %>
+        <%= link_to "カレンダー", "#", class: "nav-link" %>
+        <%= link_to "ユーザー設定", "#", class: "nav-link" %>
+      </nav>
+
+      <div class="header-right">
+        <span class="username"><%= current_user.name %></span>
+        <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "logout-btn" %>
+      </div>
+    <% else %>
+      <div class="header-right">
+        <%= link_to "ログイン", new_user_session_path, class: "nav-link" %>
+        <%= link_to "ユーザー登録", new_user_registration_path, class: "nav-link active" %>
+      </div>
+    <% end %>
+
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <% if user_signed_in? %>
+      <%= link_to "今日の記録", learning_path, class: "mobile-link #{'active' if current_page?(learning_path)}" %>
+      <%= link_to "週次記録", "#", class: "mobile-link" %>
+      <%= link_to "カレンダー", "#", class: "mobile-link" %>
+      <%= link_to "ユーザー設定", "#", class: "mobile-link" %>
+      <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "mobile-logout" %>
+    <% else %>
+      <%= link_to "ログイン", new_user_session_path, class: "mobile-link" %>
+      <%= link_to "ユーザー登録", new_user_registration_path, class: "mobile-link" %>
+    <% end %>
   </div>
 </header>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+</script>
