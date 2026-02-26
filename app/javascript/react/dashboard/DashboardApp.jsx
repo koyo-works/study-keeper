@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchToday, fetchActivities, postLog } from "./api";
 import LogForm from "./components/LogForm";
 import TodayHistory from "./components/TodayHistory";
 import CurrentStatus from "./components/CurrentStatus"; 
 import SummaryStatus from "./components/SummaryStatus";
+import { fetchToday, fetchActivities, postLog, stopLog } from "./api";
 
 export default function DashboardApp() {
   const [dashboard, setDashboard] = useState(null);
@@ -64,6 +64,19 @@ export default function DashboardApp() {
     }
   }
 
+  async function handleStopTimer() {
+    try {
+      await stopLog();
+      setDashboard((prev) => ({
+        ...prev,
+        current_log: null,
+      }));
+    } catch (e) {
+      console.error(e);
+      setError(e.message);
+    }
+  }
+
   const logs = dashboard?.logs ?? [];
 
   return (
@@ -85,7 +98,7 @@ export default function DashboardApp() {
       </div>
 
       {/* 中段：推定時間 */}
-      <CurrentStatus dashboard={dashboard} activities={activities} now={now} />
+      <CurrentStatus dashboard={dashboard} activities={activities} now={now} onStop={handleStopTimer}/>
       
       {/* 下段：今日の履歴 */}
       <TodayHistory logs={logs} activities={activities} />

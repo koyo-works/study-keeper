@@ -41,3 +41,19 @@ export async function postLog({ activityId, memo }) {
 
   return data;
 }
+
+export async function stopLog() {
+  const res = await fetch("/api/dashboard/stop", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "X-CSRF-Token": csrfToken(),
+    },
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || data.ok === false) {
+    throw new Error(data.error || "計測の停止に失敗しました");
+  }
+  return data;
+}

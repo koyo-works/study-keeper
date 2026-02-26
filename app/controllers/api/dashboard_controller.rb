@@ -14,7 +14,7 @@ class Api::DashboardController < ApplicationController
     render json: {
       logs: build_logs_json(logs),
       summary_per_category: summarize_per_activity(logs, now),
-      current_log: logs.last ? build_record_json(logs.last) : nil,
+      current_log: logs.select { |l| l.ended_at.nil? }.last&.then { |l| build_record_json(l) },
       now: now.iso8601
     }
   end
