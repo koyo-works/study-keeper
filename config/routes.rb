@@ -25,5 +25,6 @@ Rails.application.routes.draw do
     get "dashboard/today", to: "dashboard#today"
     get "activities", to: "activities#index"
     post "dashboard/logs", to: "dashboard_logs#create"
+    post "dashboard/stop", to: "dashboard_stop#create"
   end
 end
