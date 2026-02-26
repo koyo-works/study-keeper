@@ -12,7 +12,6 @@ export default function TodayHistory({ logs, activities, now, dashboard }) {
     const next = chronological[idx + 1];
 
     if (!next) {
-      // ストップ済みの場合はended_atとの差
       if (log.ended_at) {
         const diff = Math.floor((new Date(log.ended_at) - new Date(log.logged_at)) / 1000 / 60);
         if (diff <= 0) return null;
@@ -20,7 +19,6 @@ export default function TodayHistory({ logs, activities, now, dashboard }) {
         const m = diff % 60;
         return h > 0 ? `${h}時間${m}分` : `${m}分`;
       }
-      // 計測中の場合はリアルタイム
       if (!currentLog || currentLog.id !== log.id) return null;
       const diff = Math.floor((currentNow - new Date(log.logged_at)) / 1000);
       const h = Math.floor(diff / 3600);
@@ -29,7 +27,6 @@ export default function TodayHistory({ logs, activities, now, dashboard }) {
       return h > 0 ? `${h}時間${m}分${s}秒` : `${m}分${s}秒`;
     }
 
-    // 過去のログは次のログとの差
     const diff = Math.floor((new Date(next.logged_at) - new Date(log.logged_at)) / 1000 / 60);
     if (diff <= 0) return null;
     const h = Math.floor(diff / 60);
@@ -92,15 +89,17 @@ export default function TodayHistory({ logs, activities, now, dashboard }) {
               }}>
                 <span style={{ fontSize: 11, color: "#94a3b8", fontFamily: "monospace", minWidth: 38 }}>{time}</span>
                 <span style={{ fontSize: 18 }}>{activity?.icon}</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#334155", flex: 1 }}>{log.activity.name}</span>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#334155" }}>{log.activity.name}</span>
+                    {log.memo && (
+                      <span style={{ fontSize: 11, color: "#64748b", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>
+                        💬 {log.memo}
+                      </span>
+                    )}
+                </div>
                 {duration && (
-                  <span style={{ fontSize: 11, color: isLive ? "#f43f5e" : "#6366f1", background: isLive ? "#fff1f2" : "#eef2ff", padding: "2px 8px", borderRadius: 20, fontWeight: 700, fontFamily: "monospace" }}>
+                  <span style={{ fontSize: 11, color: isLive ? "#f43f5e" : "#6366f1", background: isLive ? "#fff1f2" : "#eef2ff", padding: "2px 8px", borderRadius: 20, fontWeight: 700, fontFamily: "monospace", flexShrink: 0 }}>
                     {isLive ? "⏱ " : ""}{duration}
-                  </span>
-                )}
-                {log.memo && (
-                  <span style={{ fontSize: 11, color: "#94a3b8", background: "#f8fafc", padding: "2px 8px", borderRadius: 20, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 180 }}>
-                    {log.memo}
                   </span>
                 )}
               </div>
