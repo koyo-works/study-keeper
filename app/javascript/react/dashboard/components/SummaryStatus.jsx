@@ -66,15 +66,15 @@ export default function SummaryStatus({ dashboard, now }) {
       ) : (
         <>
           {/* 円グラフ＋レジェンド横並び */}
-          <div style={{ display: "flex", alignItems: "center", gap: 24, marginBottom: 16 }}>
+          <div className="summary-chart-row" style={{ display: "flex", alignItems: "center", gap: 24, marginBottom: 16 }}>
 
             {/* 円グラフ（中心に合計時間） */}
-            <div style={{ position: "relative", flexShrink: 0 }}>
+            <div className="summary-donut" style={{ position: "relative", flexShrink: 0 }}>
               <DonutChart
                 labels={liveSummaryFiltered.map((s) => s.activity_name)}
                 values={liveSummaryFiltered.map((s) => s.total_minutes)}
                 colors={liveSummaryFiltered.map((_, i) => COLORS[i % COLORS.length])}
-                size={200}
+                size={160}
               />
               <div style={{
                 position: "absolute", top: "50%", left: "50%",
@@ -87,7 +87,7 @@ export default function SummaryStatus({ dashboard, now }) {
             </div>
 
             {/* レジェンド */}
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
+            <div className="summary-legend" style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
               {liveSummary.map((s, i) => {
                 const h = Math.floor(s.total_minutes / 60);
                 const m = s.total_minutes % 60;

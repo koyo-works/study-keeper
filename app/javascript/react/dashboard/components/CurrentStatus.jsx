@@ -40,7 +40,7 @@ export default function CurrentStatus({ dashboard, activities, now, onStop }) {
         今日の推定時間
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div className="current-status-inner" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <div style={{ fontSize: 15, fontWeight: 800, color: "#1e293b" }}>
             現在：{activityName}中
