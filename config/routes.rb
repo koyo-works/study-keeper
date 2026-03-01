@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   get  'learning_path', to: 'study_records#new', as: :learning
   post 'learning_path', to: 'study_records#create'
 
+  get 'weekly', to: 'weekly#index', as: :weekly
+
   get 'analytics_path', to: 'records#analytics', as: 'analytics_records'
   resources :records
 
