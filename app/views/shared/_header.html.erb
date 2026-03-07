@@ -9,7 +9,7 @@
     <% if user_signed_in? %>
       <nav class="header-nav">
         <%= link_to "今日の記録", learning_path, class: "nav-link #{'active' if current_page?(learning_path)}" %>
-        <%= link_to "週次記録", "#", class: "nav-link" %>
+        <%= link_to "週次記録", weekly_path, class: "nav-link #{'active' if current_page?(weekly_path)}" %>
         <%= link_to "カレンダー", "#", class: "nav-link" %>
         <%= link_to "ユーザー設定", "#", class: "nav-link" %>
       </nav>
