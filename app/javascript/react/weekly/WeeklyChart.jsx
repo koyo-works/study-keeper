@@ -9,6 +9,7 @@ export default function WeeklyChart({ summary }) {
             labels={summary.map((s) => s.activity_name)}
             values={summary.map((s) => s.total_minutes)}
             colors={summary.map((_, i) => COLORS[i % COLORS.length])}
+            size={240}
         />
     );
 }
