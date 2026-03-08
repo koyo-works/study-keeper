@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchWeekly } from "./api";
 import WeeklyChart from "./WeeklyChart";
+import WeeklyTable from "./WeeklyTable";
 
 function formatMinutes(minutes) {
     const h = Math.floor(minutes / 60);
@@ -51,6 +52,8 @@ export default function WeeklyApp() {
             </ul>
             <p>今週の合計：{formatMinutes(data.total_minutes)}</p>
             <p>🔥 ストリーク：{data.streak_days}日</p>
+
+            <WeeklyTable summary={data.summary} formatMinutes={formatMinutes}/>
         </div>
     )
 }
