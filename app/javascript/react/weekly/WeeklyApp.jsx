@@ -11,6 +11,14 @@ function formatMinutes(minutes) {
     return h > 0 ? `${h}時間${m}分` : `${m}分`;
 }
 
+function buildWeeklyShareText(data) {
+    const total = formatMinutes(data.total_minutes);
+    const top = data.summary.slice(0,3)
+        .map((s) => `${s.activity_name}：${formatMinutes(s.total_minutes)}（${s.percentage}%）`)
+        .join("\n");
+    return `今週（${data.week_start} ～ ${data.week_end}）の勉強記録\n合計：${total}\n${top}\nストリーク：${data.streak_days}日\n#StudyKeeper\n`;
+}
+
 export default function WeeklyApp() {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
@@ -60,6 +68,13 @@ export default function WeeklyApp() {
                     </ul>
                     <p>● 今週の合計：{formatMinutes(data.total_minutes)}</p>
                     <p>🔥 ストリーク：{data.streak_days}日</p>
+
+                    <button className="weekly-share-btn" onClick={() => {
+                        const text = buildWeeklyShareText(data);
+                        const shareUrl = `${window.location.origin}/weekly?week=${data.week_start}`;
+                        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+                        window.open(url, "_blank");
+                    }}>𝕏 シェアする</button>
                 </div>
             </div>
 
