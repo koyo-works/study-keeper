@@ -225,3 +225,33 @@ html, body {
   }
 
 }
+
+@media (max-width: 576px) {
+  .weekly-wrap {
+    padding: 16px;
+  }
+
+  .weekly-nav {
+    gap: 8px;
+
+    button {
+      padding: 4px 10px;
+      font-size: 0.75rem;
+    }
+
+    span {
+      white-space: nowrap;
+      font-size: 0.8rem;
+    }
+  }
+
+  .weekly-card {
+    overflow-x: auto;
+  }
+
+  .weekly-card table {
+    th, td {
+      white-space: nowrap;
+    }
+  }
+}
