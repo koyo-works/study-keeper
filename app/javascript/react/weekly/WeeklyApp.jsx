@@ -36,7 +36,7 @@ export default function WeeklyApp() {
 
     return (
         <div className="weekly-wrap">
-            <div className="weekly-nav">
+            <div className="weekly-nav mb-3">
                 <button onClick={() => {
                     const d = new Date(data.week_start);
                     d.setDate(d.getDate() - 7);
