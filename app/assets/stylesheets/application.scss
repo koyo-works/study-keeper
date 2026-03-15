@@ -255,3 +255,107 @@ html, body {
     }
   }
 }
+
+// 月次記録
+.monthly-wrap {
+  padding: 24px 32px;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.monthly-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  button {
+    padding: 6px 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.875rem;
+    &:hover { background: #f5f5f5; }
+  }
+
+  span {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+}
+
+.monthly-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+.monthly-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.monthly-day-header {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #888;
+  padding: 6px 0;
+  background: #f5f5f5;
+  border-radius: 6px;
+
+  &:nth-child(6) { color: #3b82f6; background: #eff6ff; } // 土
+  &:nth-child(7) { color: #ef4444; background: #fef2f2; } // 日
+}
+
+.monthly-day {
+  background: white;
+  border-radius: 8px;
+  padding: 8px;
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+
+  &.empty {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  &.today {
+    border: 2px solid #818cf8;
+    background: #eef2ff;
+  }
+
+  &.has-log {
+    background: linear-gradient(135deg, #ede9fe, #fff);
+    border: 1px solid #c4b5fd;
+  }
+
+  &.saturday .monthly-day-num { color: #3b82f6; }
+  &.sunday .monthly-day-num { color: #ef4444; }
+}
+
+.monthly-day-num {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.monthly-day-category {
+  font-size: 0.7rem;
+  color: #818cf8;
+  word-break: break-all;
+}
+
+.monthly-day-empty {
+  font-size: 0.75rem;
+  color: #ccc;
+}
