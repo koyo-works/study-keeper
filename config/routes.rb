@@ -31,5 +31,6 @@ Rails.application.routes.draw do
     post "dashboard/stop", to: "dashboard_stop#create"
     get "weekly", to: "weekly#index"
     get "monthly", to: "monthly#index"
+    get "days/:date", to: "days#show"
   end
 end
