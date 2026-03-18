@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import DailyArchiveModal from "./DailyArchiveModal";
 
 function buildCalendarDays(monthStart, monthEnd) {
     const days = [];
@@ -23,6 +24,7 @@ export default function MonthlyApp() {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [currentMonth, setCurrentMonth] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
 
     useEffect(() => {
         const param = currentMonth ? `?month=${currentMonth}` : "";
@@ -56,38 +58,45 @@ export default function MonthlyApp() {
             </div>
 
             <div className="monthly-card">
-            <div className="monthly-calendar">
-                {["月", "火", "水", "木", "金", "土", "日"].map((d) => (
-                    <div key={d} className="monthly-day-header">{d}</div>
-                ))}
-                {days.map((date, i) => {
-                    if (!date) return <div key={`empty-${i}`} className="monthly-day empty"></div>;
-                    const summary = data.daily_summaries[date];
-                    const isToday = date === today;
-                    const dow = new Date(date).getUTCDay();
-                    const isSat = dow === 6;
-                    const isSun = dow === 0;
-                    const hasLog = !!summary;
-                    const classes = [
-                        "monthly-day",
-                        isToday ? "today" : "",
-                        isSat ? "saturday" : "",
-                        isSun ? "sunday" : "",
-                        hasLog ? "has-log" : "",
-                    ].filter(Boolean).join(" ");
-                    return (
-                        <div key={date} className={classes}>
-                            <span className="monthly-day-num">{parseInt(date.slice(8))}</span>
-                            {summary ? (
-                                <span className="monthly-day-category">{summary.dominant_category}</span>
-                            ) : (
-                                <span className="monthly-day-empty">-</span>
-                            )}
-                        </div>
-                    );
-                })}
+                <div className="monthly-calendar">
+                    {["月", "火", "水", "木", "金", "土", "日"].map((d) => (
+                        <div key={d} className="monthly-day-header">{d}</div>
+                    ))}
+                    {days.map((date, i) => {
+                        if (!date) return <div key={`empty-${i}`} className="monthly-day empty"></div>;
+                        const summary = data.daily_summaries[date];
+                        const isToday = date === today;
+                        const dow = new Date(date).getUTCDay();
+                        const isSat = dow === 6;
+                        const isSun = dow === 0;
+                        const hasLog = !!summary;
+                        const classes = [
+                            "monthly-day",
+                            isToday ? "today" : "",
+                            isSat ? "saturday" : "",
+                            isSun ? "sunday" : "",
+                            hasLog ? "has-log" : "",
+                        ].filter(Boolean).join(" ");
+                        return (
+                            <div key={date} className={classes} onClick={() => setSelectedDate(date)}>
+                                <span className="monthly-day-num">{parseInt(date.slice(8))}</span>
+                                {summary ? (
+                                    <span className="monthly-day-category">{summary.dominant_category}</span>
+                                ) : (
+                                    <span className="monthly-day-empty">-</span>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
-            </div>
+
+            {selectedDate && (
+                <DailyArchiveModal
+                    date={selectedDate}
+                    onClose={() => setSelectedDate(null)}
+                />
+            )}
         </div>
     );
 }
