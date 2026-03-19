@@ -389,3 +389,97 @@ html, body {
   color: #888;
   &:hover { color: #333; }
 }
+
+.daily-modal {
+  min-width: 560px;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.daily-modal-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #444;
+}
+
+.daily-modal-empty {
+  color: #aaa;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.daily-modal-body {
+  display: flex;
+  gap: 24px;
+}
+
+.daily-modal-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 200px;
+}
+
+.daily-modal-total {
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.daily-modal-legend {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+  }
+}
+
+.daily-modal-color {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.daily-modal-right {
+  flex: 1;
+}
+
+.daily-modal-section-title {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.daily-modal-logs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  li {
+    font-size: 0.8rem;
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.daily-modal-log-time {
+  color: #888;
+  flex-shrink: 0;
+}
