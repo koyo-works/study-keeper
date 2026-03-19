@@ -69,6 +69,12 @@ export default function DailyArchiveModal({ date, onClose }) {
                                     </li>
                                 ))}
                             </ul>
+                            <button
+                                className="weekly-share-btn mt-2"
+                                onClick={() => console.log("share clicked", date)}
+                            >
+                                𝕏 シェアする
+                            </button>    
                         </div>
 
                         <div className="daily-modal-right">
