@@ -296,7 +296,7 @@ html, body {
     padding: 12px 8px;
   }
 
-  .monthly-day-category,
+  .monthly-day-category span:last-child,
   .monthly-day-empty {
     display: none;
   }
@@ -386,6 +386,9 @@ html, body {
 }
 
 .monthly-day-category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-size: 0.7rem;
   color: #818cf8;
   overflow: hidden;
