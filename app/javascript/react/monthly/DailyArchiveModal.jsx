@@ -27,6 +27,17 @@ function formatTime(isoString) {
     return `${h}:${m}`;
 }
 
+function buildDailyShareText(date, data) {
+    if(!data || data.total_minutes === 0) return `${date}の記録はありませんでした\nStudyKeeper\n`;
+    const total = formatMinutes(data.total_minutes);
+    const top = data.per_category
+        .filter((c) => c.minutes > 0)
+        .slice(0, 3)
+        .map((c) => `${c.name} : ${formatMinutes(c.minutes)}`)
+        .join("\n");
+    return `${formatDateHeader(date)}の活動記録\n合計：${total}\n${top}\n#StudyKeeper\n`;
+}
+
 export default function DailyArchiveModal({ date, onClose }) {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
@@ -71,7 +82,12 @@ export default function DailyArchiveModal({ date, onClose }) {
                             </ul>
                             <button
                                 className="weekly-share-btn mt-2"
-                                onClick={() => console.log("share clicked", date)}
+                                onClick={() => {
+                                    const text = buildDailyShareText(date, data);
+                                    const shareUrl = `${window.location.origin}/monthly`;
+                                    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+                                    window.open(url, "_blank");
+                                }}
                             >
                                 𝕏 シェアする
                             </button>    
