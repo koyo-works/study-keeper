@@ -283,6 +283,13 @@ html, body {
   .monthly-calendar {
     gap: 2px;  // ← マス間の隙間を狭く
   }
+
+  .monthly-nav {
+    button {
+      padding: 8px 16px;
+      font-size: 0.875rem;
+    }
+  }
 }
 
 .monthly-nav {
