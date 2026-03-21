@@ -274,6 +274,7 @@ html, body {
   .monthly-day {
     padding: 4px;
     min-height: 48px;
+    min-width: 0; 
   }
 
   .monthly-day-num {
@@ -289,6 +290,15 @@ html, body {
       padding: 8px 16px;
       font-size: 0.875rem;
     }
+  }
+
+  .monthly-card {
+    padding: 12px 8px;
+  }
+
+  .monthly-day-category,
+  .monthly-day-empty {
+    display: none;
   }
 }
 
