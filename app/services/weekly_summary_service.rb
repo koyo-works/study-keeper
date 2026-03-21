@@ -28,6 +28,7 @@ class WeeklySummaryService
       sums[key][:count]         += 1
       sums[key][:activity_name] ||= log.activity.name
       sums[key][:activity_id]   ||= log.activity.public_id
+      sums[key][:icon] ||= log.activity.icon
     end
 
     total = sums.values.sum { |v| v[:total_minutes] }

@@ -14,6 +14,7 @@ class Api::MonthlyController < ApplicationController
       next if summary.empty?
       daily_summaries[date.iso8601] = {
         dominant_category: summary.first[:activity_name],
+        dominant_icon: summary.first[:icon],
         total_minutes: summary.sum { |s| s[:total_minutes]},
         per_category: summary
       }
