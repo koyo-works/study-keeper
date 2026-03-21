@@ -266,6 +266,25 @@ html, body {
   gap: 16px;
 }
 
+@media (max-width: 576px) {
+  .monthly-wrap {
+    padding: 8px 4px;
+  }
+
+  .monthly-day {
+    padding: 4px;
+    min-height: 48px;
+  }
+
+  .monthly-day-num {
+    font-size: 0.7rem;
+  }
+
+  .monthly-calendar {
+    gap: 2px;  // ← マス間の隙間を狭く
+  }
+}
+
 .monthly-nav {
   display: flex;
   align-items: center;
@@ -352,7 +371,10 @@ html, body {
 .monthly-day-category {
   font-size: 0.7rem;
   color: #818cf8;
-  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .monthly-day-empty {
