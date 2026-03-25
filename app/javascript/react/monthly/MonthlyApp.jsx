@@ -81,13 +81,8 @@ export default function MonthlyApp() {
                             <div key={date} className={classes} onClick={() => setSelectedDate(date)}>
                                 <span className="monthly-day-num">{parseInt(date.slice(8))}</span>
                                 {summary ? (
-                                    <span className="monthly-day-category">
-                                        <span>{summary.dominant_icon}</span>
-                                        <span>{summary.dominant_category}</span>
-                                    </span>
-                                ) : (
-                                    <span className="monthly-day-empty">-</span>
-                                )}
+                                    <span className="monthly-day-icon">{summary.dominant_icon}</span>
+                                ) : null}
                             </div>
                         );
                     })}

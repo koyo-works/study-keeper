@@ -273,7 +273,7 @@ html, body {
 
   .monthly-day {
     padding: 4px;
-    min-height: 48px;
+    min-height: 52px;
     min-width: 0; 
   }
 
@@ -316,6 +316,7 @@ html, body {
     cursor: pointer;
     font-size: 0.875rem;
     &:hover { background: #f5f5f5; }
+    &:active { transform: scale(0.95); }
   }
 
   span {
@@ -357,22 +358,38 @@ html, body {
   min-height: 64px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 4px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  cursor: pointer;
+  min-width: 0;
+
+  &:active {
+    opacity: 0.7;
+    transform: scale(0.97);
+  }
 
   &.empty {
     background: transparent;
     box-shadow: none;
+    cursor: default;
   }
 
   &.today {
-    border: 2px solid #818cf8;
-    background: #eef2ff;
+    background: #e0e7ff;
+    border: 2px solid #4f46e5;
+
+    .monthly-day-num { color: #4f46e5; }
   }
 
   &.has-log {
     background: linear-gradient(135deg, #ede9fe, #fff);
     border: 1px solid #c4b5fd;
+  }
+
+  &.today.has-log {
+    background: #3730a3;
+    border: none;
   }
 
   &.saturday .monthly-day-num { color: #3b82f6; }
@@ -523,5 +540,12 @@ html, body {
 
 .daily-modal-log-time {
   color: #888;
+  flex-shrink: 0;
+}
+
+.monthly-day-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
