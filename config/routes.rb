@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   get 'weekly', to: 'weekly#index', as: :weekly
   get 'monthly', to: 'monthly#index', as: :monthly
+  get 'settings', to: 'settings#index', as: :settings
 
   get 'analytics_path', to: 'records#analytics', as: 'analytics_records'
   resources :records
