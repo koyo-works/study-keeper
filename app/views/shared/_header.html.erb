@@ -11,7 +11,7 @@
         <%= link_to "今日の記録", learning_path, class: "nav-link #{'active' if current_page?(learning_path)}" %>
         <%= link_to "週次記録", weekly_path, class: "nav-link #{'active' if current_page?(weekly_path)}" %>
         <%= link_to "カレンダー", monthly_path, class: "nav-link" %>
-        <%= link_to "ユーザー設定", "#", class: "nav-link" %>
+        <%= link_to "ユーザー設定", settings_path, class: "nav-link #{'active' if current_page?(settings_path)}" %>
       </nav>
 
       <div class="header-right">
@@ -37,7 +37,7 @@
       <%= link_to "今日の記録", learning_path, class: "mobile-link #{'active' if current_page?(learning_path)}" %>
       <%= link_to "週次記録", weekly_path, class: "mobile-link" %>
       <%= link_to "カレンダー", monthly_path, class: "mobile-link" %>
-      <%= link_to "ユーザー設定", "#", class: "mobile-link" %>
+      <%= link_to "ユーザー設定", settings_path, class: "mobile-link #{'active' if current_page?(settings_path)}" %>
       <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "mobile-logout" %>
     <% else %>
       <%= link_to "ログイン", new_user_session_path, class: "mobile-link" %>
