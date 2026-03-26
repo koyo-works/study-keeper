@@ -534,14 +534,29 @@ html, body {
 
   li {
     font-size: 0.8rem;
-    display: flex;
-    gap: 8px;
+  }
+}
+
+.daily-modal-log-item {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-child {
+    border-bottom: none;
   }
 }
 
 .daily-modal-log-time {
   color: #888;
+  font-size: 0.75rem;
   flex-shrink: 0;
+}
+
+.daily-modal-log-name {
+  font-size: 0.875rem;
+  word-break: break-all;
 }
 
 .monthly-day-dot {

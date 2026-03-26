@@ -97,9 +97,9 @@ export default function DailyArchiveModal({ date, onClose }) {
                             <p className="daily-modal-section-title">今日の行動履歴</p>
                             <ul className="daily-modal-logs">
                                 {data.logs.map((log, i) => (
-                                    <li key={i}>
+                                    <li key={i} className="daily-modal-log-item">
                                         <span className="daily-modal-log-time">{formatTime(log.logged_at)}</span>
-                                        {log.activity_name}
+                                        <span className="daily-modal-log-name">{log.activity_name}</span>
                                     </li>
                                 ))}
                             </ul>
