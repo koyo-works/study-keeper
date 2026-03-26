@@ -84,7 +84,7 @@ export default function DailyArchiveModal({ date, onClose }) {
                                 className="weekly-share-btn mt-2"
                                 onClick={() => {
                                     const text = buildDailyShareText(date, data);
-                                    const shareUrl = `${window.location.origin}/monthly`;
+                                    const shareUrl = `${window.location.origin}/monthly?date=${date}`;
                                     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
                                     window.open(url, "_blank");
                                 }}
