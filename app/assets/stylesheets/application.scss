@@ -300,6 +300,7 @@ html, body {
   .monthly-day-empty {
     display: none;
   }
+
 }
 
 .monthly-nav {
@@ -548,4 +549,22 @@ html, body {
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
+}
+
+@media (max-width: 576px) {
+  .daily-modal {
+    min-width: unset;
+    width: 95vw;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .daily-modal-body {
+    flex-direction: column;
+  }
+
+  .daily-modal-left {
+    flex: none;
+    width: 100%;
+  }
 }
