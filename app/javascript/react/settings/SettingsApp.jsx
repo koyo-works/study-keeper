@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import CategoryList from "./CategoryList";
+import CategoryFormModal from "./CategoryFormModal";
 
 export default function SettingsApp() {
     const [data, setData] = useState(null);
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState(null);
+    const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
     useEffect(() => {
         fetch("/api/settings")
@@ -36,7 +38,16 @@ export default function SettingsApp() {
             <section className="settings-section">
                 <h2 className="settings-section-title">行動カテゴリ</h2>
                 <CategoryList categories={categories} onToggle={handleToggle} />
+                <button
+                    className="category-add-btn"
+                    onClick={() => setIsCategoryModalOpen(true)}
+                >
+                    + カテゴリ追加
+                </button>
             </section>
+            {isCategoryModalOpen && (
+                <CategoryFormModal onClose={() => setIsCategoryModalOpen(false)} />
+            )}
         </div>
-    )
+    );
 }
