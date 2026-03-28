@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import CategoryList from "./CategoryList";
 
 export default function SettingsApp() {
     const [data, setData] = useState(null);
+    const [categories, setCategories] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -10,18 +12,31 @@ export default function SettingsApp() {
                 if (!res.ok) throw new Error("取得失敗");
                 return res.json();
             })
-            .then((json) => setData(json))
-            .catch((err
-            ) => setError(err.message));
+            .then((json) => {
+                setData(json);
+                setCategories(json.categories);
+            })
+            .catch((err) => setError(err.message));
     }, []);
+
+    const handleToggle = (id) => {
+        setCategories((prev) =>
+            prev.map((cat) => 
+                cat.id === id ? { ...cat, active: !cat.active} : cat
+            )
+        );
+    };
 
     if (error) return <p>{error}</p>;
     if (!data) return <p>読み込み中…</p>;
 
     return (
-        <div>
-            <h1>ユーザー設定(仮)</h1>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
+        <div className="setting-wrap">
+            <h1 className="setting-title">ユーザー設定(仮)</h1>
+            <section className="settings-section">
+                <h2 className="settings-section-title">行動カテゴリ</h2>
+                <CategoryList categories={categories} onToggle={handleToggle} />
+            </section>
         </div>
     )
 }
