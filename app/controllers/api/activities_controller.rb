@@ -12,4 +12,19 @@ class Api::ActivitiesController < ApplicationController
       }
     }
   end
+
+  def create
+    activity = current_user.activities.build(activity_params)
+    if activity.save
+      render json: { id: activity.id, name: activity.name, icon: activity.icon, active: activity.active }, status: :created
+    else
+      render json: { errors: activity.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def activity_params
+    params.require(:activity).permit(:name, :icon)
+  end
 end
