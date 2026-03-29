@@ -29,6 +29,10 @@ export default function SettingsApp() {
         );
     };
 
+    const handleAdd = (newCategory) => {
+        setCategories((prev) => [...prev, newCategory]);
+    };
+
     if (error) return <p>{error}</p>;
     if (!data) return <p>読み込み中…</p>;
 
@@ -46,7 +50,7 @@ export default function SettingsApp() {
                 </button>
             </section>
             {isCategoryModalOpen && (
-                <CategoryFormModal onClose={() => setIsCategoryModalOpen(false)} />
+                <CategoryFormModal onClose={() => setIsCategoryModalOpen(false)} onAdd={handleAdd} />
             )}
         </div>
     );
