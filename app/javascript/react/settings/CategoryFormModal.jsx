@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
 
-const COLORS = ["#818cf8", "#fb923c", "#34d399", "#f43f5e", "#900ce9"];
+const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.content;
 
 export default function CategoryFormModal({ onClose, onAdd }) {
     const [name, setName] = useState("");
     const [icon, setIcon] = useState("");
+    const [showPicker, setShowPicker] = useState(false);
     const [error, setError] = useState(null);
 
     const handleSubmit = (e) => {
@@ -13,22 +16,21 @@ export default function CategoryFormModal({ onClose, onAdd }) {
             setError("カテゴリ名を入力してください");
             return;
         }
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
         fetch("/api/activities", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRF-Token": csrfToken,
+                "X-CSRF-Token": csrfToken(),
             },
             body: JSON.stringify({ activity: { name, icon } }),
         })
-            .then((res) => res.json().then((data) => ({ ok: res.ok, data})))
-            .then(({ ok, data }) => {
+            .then((res) => res.json().then((json) => ({ ok: res.ok, json })))
+            .then(({ ok, json }) => {
                 if (!ok) {
-                    setError(data.errors?.join(", ") || "登録失敗");
+                    setError(json.errors?.join(", ") || "登録失敗");
                     return;
                 }
-                onAdd(data);
+                onAdd(json);
                 onClose();
             })
             .catch(() => setError("通信エラーが発生しました"));
@@ -43,13 +45,23 @@ export default function CategoryFormModal({ onClose, onAdd }) {
                 <form onSubmit={handleSubmit}>
                     <div className="modal-field">
                         <label>アイコン(絵文字)</label>
-                        <input
-                            type="text"
-                            value={icon}
-                            onChange={(e) => setIcon(e.target.value)}
-                            placeholder="例：📚"
-                            maxLength={2}
-                        />
+                        <button
+                            type="button"
+                            className="icon-preview-btn"
+                            onClick={() => setShowPicker(!showPicker)}
+                        >
+                            {icon || "＋ 選択"}
+                        </button>
+                        {showPicker && (
+                            <Picker
+                                data={data}
+                                locale="ja"
+                                onEmojiSelect={(e) => {
+                                    setIcon(e.native);
+                                    setShowPicker(false);
+                                }}
+                            />
+                            )}
                     </div>
                     <div className="modal-field">
                         <label>カテゴリ名</label>
