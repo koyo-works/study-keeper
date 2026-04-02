@@ -11,15 +11,20 @@ class Api::WeeklyController < ApplicationController
     streak  = StreakService.new(current_user).call
 
     total_minutes = summary.sum { |s| s[:total_minutes] }
+    weekly_goal = current_user.weekly_goals.find_by(week_start: week_start)
+
+    goal_activity = weekly_goal ? Activity.find_by(id: weekly_goal.activity_id) : nil
 
     render json: {
-      week_start:    week_start.iso8601,
-      week_end:      week_end.iso8601,
-      total_minutes: total_minutes,
-      summary:       summary,
-      streak_days:   streak,
-      goal_activity_id:    current_user.goal_activity_id,
-      goal_percentage:     current_user.goal_percentage
+      week_start:           week_start.iso8601,
+      week_end:             week_end.iso8601,
+      total_minutes:        total_minutes,
+      summary:              summary,
+      streak_days:          streak,
+      goal_activity_id:     weekly_goal&.activity_id,
+      goal_activity_name:   goal_activity&.name,
+      goal_activity_icon:   goal_activity&.icon,
+      goal_percentage:      weekly_goal&.percentage || 50
     }
   end
 end
