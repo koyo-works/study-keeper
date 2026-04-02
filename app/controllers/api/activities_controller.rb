@@ -31,6 +31,12 @@ class Api::ActivitiesController < ApplicationController
     end
   end
 
+  def destroy
+    activity = current_user.activities.find(params[:id])
+    activity.destroy
+    render json: { message: "削除しました" }
+  end
+
   private
 
   def activity_params

@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     get "activities", to: "activities#index"
     post "activities", to: "activities#create"
     patch "activities/:id", to: "activities#update"
+    delete "activities/:id", to: "activities#destroy"
     post "dashboard/logs", to: "dashboard_logs#create"
     post "dashboard/stop", to: "dashboard_stop#create"
     get "weekly", to: "weekly#index"
