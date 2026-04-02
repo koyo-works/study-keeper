@@ -9,7 +9,15 @@ class Api::SettingsController < ApplicationController
       name:       current_user.name,
       email:      current_user.email,
       categories: categories,
-      default_page: "daily"
+      default_page: current_user.default_page || "daily"
     }
+  end
+
+  def update
+    if current_user.update(default_page: params[:default_page])
+      render json: { default_page: current_user.default_page }
+    else
+      render json: { errors: current_user.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 end

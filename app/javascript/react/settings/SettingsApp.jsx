@@ -63,6 +63,23 @@ export default function SettingsApp() {
             .catch(() => alert("削除に失敗しました"));
     }
 
+    const handleSave = () => {
+        fetch("/api/settings", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content,
+            },
+            body: JSON.stringify({ default_page: defaultPage }),
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error("保存失敗");
+                alert("保存しました");
+            })
+            .catch(() => alert("保存に失敗しました"));
+    };
+
+
     if (error) return <p>{error}</p>;
     if (!data) return <p>読み込み中…</p>;
 
@@ -97,6 +114,7 @@ export default function SettingsApp() {
                         {label}
                     </label>
                 ))}
+                <button className="default-page-save-btn" onClick={handleSave}>保存する</button>
             </section>
             {isCategoryModalOpen && (
                 <CategoryFormModal onClose={() => setIsCategoryModalOpen(false)} onAdd={handleAdd} />
