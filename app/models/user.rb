@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :activities, dependent: :destroy
   has_many :weekly_goals, dependent: :destroy
 
+  store_accessor :settings, :default_page
   validates :name, presence: true, length: { maximum: 20 }
   
 end
