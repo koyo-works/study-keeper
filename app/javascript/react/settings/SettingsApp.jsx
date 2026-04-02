@@ -7,6 +7,7 @@ export default function SettingsApp() {
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState(null);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+    const [defaultPage, setDefaultPage] = useState("daily");
 
     useEffect(() => {
         fetch("/api/settings")
@@ -17,6 +18,7 @@ export default function SettingsApp() {
             .then((json) => {
                 setData(json);
                 setCategories(json.categories);
+                setDefaultPage(json.default_page || "daily");
             })
             .catch((err) => setError(err.message));
     }, []);
@@ -76,6 +78,25 @@ export default function SettingsApp() {
                 >
                     + カテゴリ追加
                 </button>
+            </section>
+            <section className="settings-section">
+                <h2 className="settings-section-title">起動時のデフォルト画面</h2>
+                {[
+                    { value: "daily",   label: "今日の記録" },
+                    { value: "weekly",  label: "週次記録" },
+                    { value: "monthly", label: "月次記録" },
+                ].map(({ value, label }) => (
+                    <label key={value} className="default-page-radio">
+                        <input
+                            type="radio"
+                            name="defaultPage"
+                            value={value}
+                            checked={defaultPage === value}
+                            onChange={() => setDefaultPage(value)}
+                        />
+                        {label}
+                    </label>
+                ))}
             </section>
             {isCategoryModalOpen && (
                 <CategoryFormModal onClose={() => setIsCategoryModalOpen(false)} onAdd={handleAdd} />
