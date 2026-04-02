@@ -46,6 +46,21 @@ export default function SettingsApp() {
         setCategories((prev) => [...prev, newCategory]);
     };
 
+    const handleDelete = (id) => {
+        if(!confirm("削除しますか？")) return;
+        fetch(`/api/activities/${id}`, {
+            method: "DELETE",
+            headers: {
+                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content,
+            },
+        })
+            .then((res) => {
+                if(!res.ok) throw new Error("削除失敗");
+                setCategories((prev) => prev.filter((c) => c.id !== id));
+            })
+            .catch(() => alert("削除に失敗しました"));
+    }
+
     if (error) return <p>{error}</p>;
     if (!data) return <p>読み込み中…</p>;
 
@@ -54,7 +69,7 @@ export default function SettingsApp() {
             <h1 className="setting-title">ユーザー設定(仮)</h1>
             <section className="settings-section">
                 <h2 className="settings-section-title">行動カテゴリ</h2>
-                <CategoryList categories={categories} onToggle={handleToggle} />
+                <CategoryList categories={categories} onToggle={handleToggle} onDelete={handleDelete} />
                 <button
                     className="category-add-btn"
                     onClick={() => setIsCategoryModalOpen(true)}
