@@ -38,5 +38,6 @@ Rails.application.routes.draw do
     get "days/:date", to: "days#show"
     get "settings", to: "settings#show"
     patch "settings", to: "settings#update"
+    post "weekly_goals/upsert", to: "weekly_goals#upsert"
   end
 end

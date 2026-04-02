@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchWeekly } from "./api";
 import WeeklyChart from "./WeeklyChart";
 import WeeklyTable from "./WeeklyTable";
+import WeeklyGoalModal from "./WeeklyGoalModal";
 
 const COLORS = ["#818cf8", "#fb923c", "#818cf8", "#f43f5e", "#900ce9"];
 
@@ -23,12 +24,20 @@ export default function WeeklyApp() {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [currentWeekStart, setCurrentWeekStart] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
 
     useEffect(() => {
         fetchWeekly(currentWeekStart)
             .then((json) => setData(json))
             .catch((e) => setError(e.message));
     }, [currentWeekStart]);
+
+    useEffect(() => {
+        fetch("/api/activities")
+            .then((res) => res.json())
+            .then((json) => setCategories(json));
+    }, []);
 
     if (error) return <p>{error}</p>
 
@@ -69,6 +78,15 @@ export default function WeeklyApp() {
                     <p>● 今週の合計：{formatMinutes(data.total_minutes)}</p>
                     <p>🔥 ストリーク：{data.streak_days}日</p>
 
+                    <button className="weekly-goal-btn" onClick={() => setIsGoalModalOpen(true)}>
+                        🎯 今週の目標を設定
+                    </button>
+                    {data.goal_activity_id && (
+                        <p className="weekly-goal-current">
+                            現在：{data.goal_activity_icon || ""} {data.goal_activity_name} {data.goal_percentage}%
+                        </p>
+                    )}
+
                     {data.goal_activity_id && (() => {
                         const goal = data.summary.find((s) => s.db_id === data.goal_activity_id);
                         const actual = goal ? goal.percentage : 0;
@@ -79,7 +97,7 @@ export default function WeeklyApp() {
                             <div className="weekly-goal">
                                 <p className="weekly-goal-title">目標達成状況</p>
                                 <p className="weekly-goal-label">
-                                    {goal ? `${goal.icon || ""} ${goal.activity_name}` : "未記録"}　目標：{data.goal_percentage}%
+                                    {data.goal_activity_icon || ""} {data.goal_activity_name}　目標：{data.goal_percentage}%
                                 </p>
                                 <div className="weekly-goal-bar-wrap">
                                     <div
@@ -110,6 +128,23 @@ export default function WeeklyApp() {
                 <p className="weekly-card-title">カテゴリ別詳細（表形式）</p>
                 <WeeklyTable summary={data.summary} formatMinutes={formatMinutes}/>
             </div>
+        {isGoalModalOpen && (
+            <WeeklyGoalModal
+                weekStart={data.week_start}
+                categories={categories}
+                currentGoal={data.goal_activity_id ? { activity_id: data.goal_activity_id, percentage: data.goal_percentage } : null}
+                onClose={() => setIsGoalModalOpen(false)}
+                onSave={(saved) => {
+                    setData((prev) => ({
+                        ...prev,
+                        goal_activity_id:   saved.activity_id,
+                        goal_activity_name: saved.activity_name,
+                        goal_activity_icon: saved.activity_icon,
+                        goal_percentage:    saved.percentage,
+                    }));
+                }}
+            />
+        )}
         </div>
     )
 }
