@@ -22,11 +22,24 @@ export default function SettingsApp() {
     }, []);
 
     const handleToggle = (id) => {
-        setCategories((prev) =>
-            prev.map((cat) => 
-                cat.id === id ? { ...cat, active: !cat.active} : cat
-            )
-        );
+        const cat = categories.find((c) => c.id === id);
+        const newActive = !cat.active;
+
+        fetch(`/api/activities/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content,
+            },
+            body: JSON.stringify({ active: newActive }),
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error("更新失敗");
+                setCategories((prev) =>
+                    prev.map((c) => c.id === id ? { ...c, active: newActive } : c)
+                );
+            })
+            .catch(() => alert("更新に失敗しました"));
     };
 
     const handleAdd = (newCategory) => {

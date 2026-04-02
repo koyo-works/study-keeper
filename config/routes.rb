@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     get "dashboard/today", to: "dashboard#today"
     get "activities", to: "activities#index"
     post "activities", to: "activities#create"
+    patch "activities/:id", to: "activities#update"
     post "dashboard/logs", to: "dashboard_logs#create"
     post "dashboard/stop", to: "dashboard_stop#create"
     get "weekly", to: "weekly#index"
