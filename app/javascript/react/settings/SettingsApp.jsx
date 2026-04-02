@@ -116,6 +116,10 @@ export default function SettingsApp() {
                 ))}
                 <button className="default-page-save-btn" onClick={handleSave}>保存する</button>
             </section>
+            <section className="settings-section">
+                <h2 className="settings-section-title">セキュリティ</h2>
+                <a href="/users/edit" className="password-change-btn">パスワードを変更する</a>
+            </section>
             {isCategoryModalOpen && (
                 <CategoryFormModal onClose={() => setIsCategoryModalOpen(false)} onAdd={handleAdd} />
             )}
