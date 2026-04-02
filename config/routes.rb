@@ -37,5 +37,6 @@ Rails.application.routes.draw do
     get "monthly", to: "monthly#index"
     get "days/:date", to: "days#show"
     get "settings", to: "settings#show"
+    patch "settings", to: "settings#update"
   end
 end
