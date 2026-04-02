@@ -17,7 +17,9 @@ class Api::WeeklyController < ApplicationController
       week_end:      week_end.iso8601,
       total_minutes: total_minutes,
       summary:       summary,
-      streak_days:   streak
+      streak_days:   streak,
+      goal_activity_id:    current_user.goal_activity_id,
+      goal_percentage:     current_user.goal_percentage
     }
   end
 end

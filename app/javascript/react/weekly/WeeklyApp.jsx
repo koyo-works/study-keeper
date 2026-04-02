@@ -3,7 +3,7 @@ import { fetchWeekly } from "./api";
 import WeeklyChart from "./WeeklyChart";
 import WeeklyTable from "./WeeklyTable";
 
-const COLORS = ["#818cf8", "#fb923c", "#34d399", "#f43f5e", "#900ce9"];
+const COLORS = ["#818cf8", "#fb923c", "#818cf8", "#f43f5e", "#900ce9"];
 
 function formatMinutes(minutes) {
     const h = Math.floor(minutes / 60);
@@ -68,6 +68,34 @@ export default function WeeklyApp() {
                     </ul>
                     <p>● 今週の合計：{formatMinutes(data.total_minutes)}</p>
                     <p>🔥 ストリーク：{data.streak_days}日</p>
+
+                    {data.goal_activity_id && (() => {
+                        const goal = data.summary.find((s) => s.db_id === data.goal_activity_id);
+                        const actual = goal ? goal.percentage : 0;
+                        const diff = actual - data.goal_percentage;
+                        const achieved = diff >= 0;
+                        const barWidth = Math.min(actual, 100);
+                        return (
+                            <div className="weekly-goal">
+                                <p className="weekly-goal-title">目標達成状況</p>
+                                <p className="weekly-goal-label">
+                                    {goal ? `${goal.icon || ""} ${goal.activity_name}` : "未記録"}　目標：{data.goal_percentage}%
+                                </p>
+                                <div className="weekly-goal-bar-wrap">
+                                    <div
+                                        className="weekly-goal-bar"
+                                        style={{
+                                            width: `${barWidth}%`,
+                                            backgroundColor: achieved ? "#818cf8" : "#f43f5e",
+                                        }}
+                                    ></div>
+                                </div>
+                                <p className="weekly-goal-result" style={{ color: achieved ? "#818cf8" : "#f43f5e" }}>
+                                    {achieved ? "🎉 目標達成！" : "💪 もう少し！"}　実績：{actual}%　{achieved ? `+${diff}%` : `▼${Math.abs(diff)}%`}
+                                </p>
+                            </div>
+                        );
+                    })()}
 
                     <button className="weekly-share-btn" onClick={() => {
                         const text = buildWeeklyShareText(data);
