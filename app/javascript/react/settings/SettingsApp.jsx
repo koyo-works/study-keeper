@@ -7,6 +7,8 @@ export default function SettingsApp() {
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState(null);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+    const [goalActivityId, setGoalActivityId] = useState("");
+    const [goalPercentage, setGoalPercentage] = useState(50);
 
     useEffect(() => {
         fetch("/api/settings")
@@ -17,6 +19,8 @@ export default function SettingsApp() {
             .then((json) => {
                 setData(json);
                 setCategories(json.categories);
+                setGoalActivityId(json.goal_activity_id || "");
+                setGoalPercentage(json.goal_percentage ?? 50);
             })
             .catch((err) => setError(err.message));
     }, []);
@@ -44,6 +48,22 @@ export default function SettingsApp() {
 
     const handleAdd = (newCategory) => {
         setCategories((prev) => [...prev, newCategory]);
+    };
+
+    const handleGoalSave = () => {
+        fetch("/api/settings", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content,
+            },
+            body: JSON.stringify({ goal_activity_id: goalActivityId || null, goal_percentage: goalPercentage }),
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error("保存失敗");
+                alert("保存しました");
+            })
+            .catch(() => alert("保存に失敗しました"));
     };
 
     const handleDelete = (id) => {
@@ -76,6 +96,34 @@ export default function SettingsApp() {
                 >
                     + カテゴリ追加
                 </button>
+            </section>
+            <section className="settings-section">
+                <h2 className="settings-section-title">目標設定</h2>
+                <div className="modal-field">
+                    <label>目標カテゴリ</label>
+                    <select
+                        value={goalActivityId}
+                        onChange={(e) => setGoalActivityId(e.target.value)}
+                    >
+                        <option value="">未設定</option>
+                        {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>
+                                {cat.icon} {cat.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="modal-field">
+                    <label>目標割合</label>
+                    <input
+                        type="number"
+                        min={0}
+                        max={100}
+                        value={goalPercentage}
+                        onChange={(e) => setGoalPercentage(Number(e.target.value))}
+                    /> %
+                </div>
+                <button className="goal-save-btn" onClick={handleGoalSave}>保存する</button>
             </section>
             {isCategoryModalOpen && (
                 <CategoryFormModal onClose={() => setIsCategoryModalOpen(false)} onAdd={handleAdd} />
