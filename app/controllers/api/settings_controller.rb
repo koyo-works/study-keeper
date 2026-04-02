@@ -8,7 +8,8 @@ class Api::SettingsController < ApplicationController
     render json: {
       name:       current_user.name,
       email:      current_user.email,
-      categories: categories
+      categories: categories,
+      default_page: "daily"
     }
   end
 end
