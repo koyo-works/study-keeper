@@ -6,6 +6,7 @@ class User < ApplicationRecord
   
   has_many :records, dependent: :destroy
   has_many :activities, dependent: :destroy
+  has_many :weekly_goals, dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 20 }
   
