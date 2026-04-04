@@ -85,7 +85,7 @@ export default function SettingsApp() {
 
     return (
         <div className="setting-wrap">
-            <h1 className="setting-title">ユーザー設定(仮)</h1>
+            <h1 className="setting-title">ユーザー設定</h1>
             <section className="settings-section">
                 <h2 className="settings-section-title">行動カテゴリ</h2>
                 <CategoryList categories={categories} onToggle={handleToggle} onDelete={handleDelete} />
