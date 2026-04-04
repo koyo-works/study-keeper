@@ -629,6 +629,170 @@ html, body {
   }
 }
 
+// ユーザー設定画面
+.setting-wrap {
+  padding: 24px 32px;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.setting-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1e1b4b;
+  margin: 0;
+}
+
+.settings-section {
+  background: white;
+  border-radius: 16px;
+  padding: 28px 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-section-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #444;
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.category-add-btn {
+  align-self: flex-start;
+  padding: 8px 20px;
+  background: #818cf8;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover { background: #6366f1; }
+}
+
+.default-page-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: #444;
+  cursor: pointer;
+
+  input[type="radio"] {
+    accent-color: #818cf8;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.default-page-save-btn {
+  align-self: flex-start;
+  padding: 8px 24px;
+  background: #818cf8;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover { background: #6366f1; }
+}
+
+.password-change-btn {
+  align-self: flex-start;
+  padding: 10px 24px;
+  border: 1.5px solid #818cf8;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #818cf8;
+  text-decoration: none;
+  background: white;
+  &:hover {
+    background: #818cf8;
+    color: white;
+  }
+}
+
+.category-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #f9f9ff;
+  border-radius: 10px;
+}
+
+.category-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.category-name {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.category-delete-btn {
+  padding: 5px 14px;
+  border: 1.5px solid #fca5a5;
+  border-radius: 20px;
+  background: white;
+  color: #ef4444;
+  font-size: 0.8rem;
+  cursor: pointer;
+  &:hover { background: #fef2f2; }
+}
+
+.category-toggle {
+  padding: 5px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+
+  &.on {
+    background: #818cf8;
+    color: white;
+  }
+  &.off {
+    background: #e5e7eb;
+    color: #888;
+  }
+}
+
+@media (max-width: 576px) {
+  .setting-wrap {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .settings-section {
+    padding: 20px 16px;
+    border-radius: 12px;
+  }
+}
+
 // パスワード変更画面
 .password-edit-wrap {
   padding: 24px 32px;
