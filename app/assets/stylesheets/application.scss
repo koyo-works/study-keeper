@@ -628,3 +628,214 @@ html, body {
     width: 100%;
   }
 }
+
+// パスワード変更画面
+.password-edit-wrap {
+  padding: 24px 32px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.password-edit-breadcrumb {
+  margin-bottom: 12px;
+
+  .breadcrumb-link {
+    font-size: 0.8rem;
+    color: #818cf8;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.password-edit-card {
+  background: white;
+  border-radius: 20px;
+  padding: 48px 40px;
+  box-shadow: 0 4px 20px rgba(129, 140, 248, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.password-edit-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.password-edit-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1e1b4b;
+  margin: 0;
+}
+
+.password-edit-subtitle {
+  font-size: 0.825rem;
+  color: #888;
+  margin: 0;
+}
+
+.password-edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.password-edit-label {
+  font-size: 0.825rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-edit-input {
+  padding: 11px 44px 11px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  &:focus {
+    outline: none;
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+  }
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  &:hover { color: #818cf8; }
+}
+
+.password-strength-bar-wrap {
+  height: 6px;
+  background: #f0f0f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.password-strength-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.password-strength-label {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.password-edit-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.password-edit-submit-btn {
+  padding: 11px 32px;
+  background: linear-gradient(135deg, #818cf8, #6366f1);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  &:hover { opacity: 0.88; }
+}
+
+.password-edit-cancel-btn {
+  padding: 11px 24px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  color: #555;
+  text-decoration: none;
+  &:hover { background: #f9f9f9; }
+}
+
+.password-edit-hint-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #ede9fe;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  color: #5b21b6;
+  line-height: 1.5;
+
+  svg { flex-shrink: 0; margin-top: 1px; }
+}
+
+// トースト通知
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: nowrap;
+
+  &.toast-show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &.toast-error   { background: #fef2f2; color: #b91c1c; }
+  &.toast-notice  { background: #f0fdf4; color: #15803d; }
+  &.toast-alert   { background: #fef2f2; color: #b91c1c; }
+}
+
+@media (max-width: 576px) {
+  .password-edit-wrap {
+    padding: 12px;
+  }
+
+  .password-edit-card {
+    padding: 24px 16px;
+    border-radius: 16px;
+  }
+
+  .password-edit-actions {
+    flex-direction: column;
+
+    .password-edit-submit-btn,
+    .password-edit-cancel-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

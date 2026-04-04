@@ -1,43 +1,146 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<div class="password-edit-wrap">
+  <div class="password-edit-breadcrumb">
+    <%= link_to "アカウント設定", settings_path, class: "breadcrumb-link" %>
   </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+  <div class="password-edit-card">
+    <div class="password-edit-header">
+      <h1 class="password-edit-title">パスワード変更</h1>
+      <p class="password-edit-subtitle">セキュリティのため、定期的なパスワード変更をおすすめします。</p>
+    </div>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <div class="password-edit-field">
+        <%= f.label :current_password, "現在のパスワード", class: "password-edit-label" %>
+        <div class="password-input-wrap">
+          <%= f.password_field :current_password, autocomplete: "current-password", class: "password-edit-input", placeholder: "現在のパスワードを入力", id: "current_password_field" %>
+          <button type="button" class="password-toggle-btn" data-target="current_password_field">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="password-edit-field">
+        <%= f.label :password, "新しいパスワード", class: "password-edit-label" %>
+        <div class="password-input-wrap">
+          <%= f.password_field :password, autocomplete: "new-password", class: "password-edit-input", placeholder: "6文字以上で入力", id: "new_password_field" %>
+          <button type="button" class="password-toggle-btn" data-target="new_password_field">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="password-strength-bar-wrap">
+          <div class="password-strength-bar" id="strength-bar"></div>
+        </div>
+        <span class="password-strength-label" id="strength-label">パスワード強度</span>
+      </div>
+
+      <div class="password-edit-field">
+        <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "password-edit-label" %>
+        <div class="password-input-wrap">
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "password-edit-input", placeholder: "もう一度入力してください", id: "confirm_password_field" %>
+          <button type="button" class="password-toggle-btn" data-target="confirm_password_field">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="password-edit-actions">
+        <%= f.submit "変更する", class: "password-edit-submit-btn" %>
+        <%= link_to "キャンセル", settings_path, class: "password-edit-cancel-btn" %>
+      </div>
     <% end %>
+
+    <div class="password-edit-hint-box">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>パスワードは8文字以上、英数字と記号を含めると安全性が高まります。</span>
+    </div>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+<div class="toast-container" id="toast-container">
+  <% flash.each do |type, message| %>
+    <div class="toast toast-<%= type %>" data-message="<%= message %>"></div>
+  <% end %>
+</div>
 
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
+<script>
+  // パスワード表示/非表示
+  document.querySelectorAll('.password-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      const icon = btn.querySelector('svg');
+      if (target.type === 'password') {
+        target.type = 'text';
+        icon.style.opacity = '1';
+        btn.style.color = '#818cf8';
+      } else {
+        target.type = 'password';
+        icon.style.opacity = '0.4';
+        btn.style.color = '';
+      }
+    });
+  });
 
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
+  // パスワード強度バー
+  const newPasswordField = document.getElementById('new_password_field');
+  const strengthBar = document.getElementById('strength-bar');
+  const strengthLabel = document.getElementById('strength-label');
 
-<h3>Cancel my account</h3>
+  newPasswordField.addEventListener('input', () => {
+    const val = newPasswordField.value;
+    let score = 0;
+    if (val.length >= 6) score++;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+    if (val.length === 0) {
+      strengthBar.style.width = '0%';
+      strengthBar.style.background = '';
+      strengthLabel.textContent = 'パスワード強度';
+      strengthLabel.style.color = '#999';
+    } else if (score <= 1) {
+      strengthBar.style.width = '33%';
+      strengthBar.style.background = '#ef4444';
+      strengthLabel.textContent = '弱い';
+      strengthLabel.style.color = '#ef4444';
+    } else if (score <= 3) {
+      strengthBar.style.width = '66%';
+      strengthBar.style.background = '#f97316';
+      strengthLabel.textContent = '普通';
+      strengthLabel.style.color = '#f97316';
+    } else {
+      strengthBar.style.width = '100%';
+      strengthBar.style.background = '#22c55e';
+      strengthLabel.textContent = '強い';
+      strengthLabel.style.color = '#22c55e';
+    }
+  });
 
-<%= link_to "Back", :back %>
+  // トースト通知
+  function showToast(message, type) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'toast toast-' + type;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add('toast-show'), 10);
+    setTimeout(() => {
+      toast.classList.remove('toast-show');
+      setTimeout(() => toast.remove(), 400);
+    }, 3500);
+  }
+
+  // Railsエラーをトーストで表示
+  document.querySelectorAll('#error_explanation li').forEach(li => {
+    showToast(li.textContent, 'error');
+  });
+
+  // flashメッセージをトーストで表示
+  document.querySelectorAll('.toast[data-message]').forEach(el => {
+    const type = el.classList.contains('toast-notice') ? 'notice' : 'error';
+    showToast(el.dataset.message, type);
+    el.remove();
+  });
+</script>
