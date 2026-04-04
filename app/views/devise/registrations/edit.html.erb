@@ -50,6 +50,10 @@
       </div>
     <% end %>
 
+    <% resource.errors.full_messages.each do |msg| %>
+      <div class="app-toast app-toast-alert" data-turbo-cache="false"><%= msg %></div>
+    <% end %>
+
     <div class="password-edit-hint-box">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       <span>パスワードは8文字以上、英数字と記号を含めると安全性が高まります。</span>
@@ -57,90 +61,64 @@
   </div>
 </div>
 
-<div class="toast-container" id="toast-container">
-  <% flash.each do |type, message| %>
-    <div class="toast toast-<%= type %>" data-message="<%= message %>"></div>
-  <% end %>
-</div>
-
 <script>
-  // パスワード表示/非表示
-  document.querySelectorAll('.password-toggle-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+  if (!window._passwordPageListenersSet) {
+    window._passwordPageListenersSet = true;
+
+    // パスワード表示/非表示（イベント委譲）
+    document.addEventListener('click', function(e) {
+      const btn = e.target.closest('.password-toggle-btn');
+      if (!btn) return;
       const target = document.getElementById(btn.dataset.target);
+      if (!target) return;
       const icon = btn.querySelector('svg');
       if (target.type === 'password') {
         target.type = 'text';
-        icon.style.opacity = '1';
+        if (icon) icon.style.opacity = '1';
         btn.style.color = '#818cf8';
       } else {
         target.type = 'password';
-        icon.style.opacity = '0.4';
+        if (icon) icon.style.opacity = '0.4';
         btn.style.color = '';
       }
     });
-  });
 
-  // パスワード強度バー
-  const newPasswordField = document.getElementById('new_password_field');
-  const strengthBar = document.getElementById('strength-bar');
-  const strengthLabel = document.getElementById('strength-label');
+    // パスワード強度バー（イベント委譲）
+    document.addEventListener('input', function(e) {
+      if (e.target.id !== 'new_password_field') return;
+      const val = e.target.value;
+      const strengthBar = document.getElementById('strength-bar');
+      const strengthLabel = document.getElementById('strength-label');
+      if (!strengthBar || !strengthLabel) return;
 
-  newPasswordField.addEventListener('input', () => {
-    const val = newPasswordField.value;
-    let score = 0;
-    if (val.length >= 6) score++;
-    if (val.length >= 8) score++;
-    if (/[A-Z]/.test(val)) score++;
-    if (/[0-9]/.test(val)) score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
+      let score = 0;
+      if (val.length >= 6) score++;
+      if (val.length >= 8) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
 
-    if (val.length === 0) {
-      strengthBar.style.width = '0%';
-      strengthBar.style.background = '';
-      strengthLabel.textContent = 'パスワード強度';
-      strengthLabel.style.color = '#999';
-    } else if (score <= 1) {
-      strengthBar.style.width = '33%';
-      strengthBar.style.background = '#ef4444';
-      strengthLabel.textContent = '弱い';
-      strengthLabel.style.color = '#ef4444';
-    } else if (score <= 3) {
-      strengthBar.style.width = '66%';
-      strengthBar.style.background = '#f97316';
-      strengthLabel.textContent = '普通';
-      strengthLabel.style.color = '#f97316';
-    } else {
-      strengthBar.style.width = '100%';
-      strengthBar.style.background = '#22c55e';
-      strengthLabel.textContent = '強い';
-      strengthLabel.style.color = '#22c55e';
-    }
-  });
-
-  // トースト通知
-  function showToast(message, type) {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    toast.className = 'toast toast-' + type;
-    toast.textContent = message;
-    container.appendChild(toast);
-    setTimeout(() => toast.classList.add('toast-show'), 10);
-    setTimeout(() => {
-      toast.classList.remove('toast-show');
-      setTimeout(() => toast.remove(), 400);
-    }, 3500);
+      if (val.length === 0) {
+        strengthBar.style.width = '0%';
+        strengthBar.style.background = '';
+        strengthLabel.textContent = 'パスワード強度';
+        strengthLabel.style.color = '#999';
+      } else if (score <= 1) {
+        strengthBar.style.width = '33%';
+        strengthBar.style.background = '#ef4444';
+        strengthLabel.textContent = '弱い';
+        strengthLabel.style.color = '#ef4444';
+      } else if (score <= 3) {
+        strengthBar.style.width = '66%';
+        strengthBar.style.background = '#f97316';
+        strengthLabel.textContent = '普通';
+        strengthLabel.style.color = '#f97316';
+      } else {
+        strengthBar.style.width = '100%';
+        strengthBar.style.background = '#22c55e';
+        strengthLabel.textContent = '強い';
+        strengthLabel.style.color = '#22c55e';
+      }
+    });
   }
-
-  // Railsエラーをトーストで表示
-  document.querySelectorAll('#error_explanation li').forEach(li => {
-    showToast(li.textContent, 'error');
-  });
-
-  // flashメッセージをトーストで表示
-  document.querySelectorAll('.toast[data-message]').forEach(el => {
-    const type = el.classList.contains('toast-notice') ? 'notice' : 'error';
-    showToast(el.dataset.message, type);
-    el.remove();
-  });
 </script>

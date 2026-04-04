@@ -1,14 +1,6 @@
-<% flash.each do |key, message| %>
+<% flash.each do |type, message| %>
   <% next if message.blank? %>
-
-  <% bootstrap_class =
-      case key.to_sym
-      when :notice then "alert alert-success"
-      when :alert  then "alert alert-danger"
-      else "alert alert-info"
-      end %>
-
-  <div class="<%= bootstrap_class %>" data-turbo-cache="false">
-    <%= message.html_safe %>
+  <div class="app-toast app-toast-<%= type %>" data-turbo-cache="false">
+    <%= message %>
   </div>
 <% end %>
