@@ -6,5 +6,5 @@ ja:
       invalid: "メールアドレスかパスワードが違います"
     registrations:
       signed_up: "ユーザー登録が完了しました！"
-      updated: "アカウント情報を更新しました"
+      updated: "パスワードを変更しました"
       destroyed: "アカウントを削除しました"

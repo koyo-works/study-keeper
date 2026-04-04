@@ -1,0 +1,23 @@
+ja:
+  errors:
+    messages:
+      not_saved:
+        one: "1件のエラーが発生したため保存できませんでした"
+        other: "%{count}件のエラーが発生したため保存できませんでした"
+  activerecord:
+    attributes:
+      user:
+        email:                 "メールアドレス"
+        password:              "パスワード"
+        password_confirmation: "パスワード（確認用）"
+        current_password:      "現在のパスワード"
+    errors:
+      models:
+        user:
+          attributes:
+            current_password:
+              invalid: "が正しくありません"
+            password:
+              too_short: "は%{count}文字以上で入力してください"
+            password_confirmation:
+              confirmation: "とパスワードが一致しません"
