@@ -1,25 +1,47 @@
-<h2>Change your password</h2>
+<div class="password-edit-wrap">
+  <div class="password-edit-card">
+    <div class="password-edit-header">
+      <h1 class="password-edit-title">パスワード再設定</h1>
+      <p class="password-edit-subtitle">新しいパスワードを入力してください。</p>
+    </div>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <%= f.hidden_field :reset_password_token %>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+      <%= f.hidden_field :reset_password_token %>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+      <div class="password-edit-field">
+        <%= f.label :password, "新しいパスワード", class: "password-edit-label" %>
+        <div class="password-input-wrap">
+          <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "password-edit-input", placeholder: "6文字以上で入力", id: "new_password_field" %>
+          <button type="button" class="password-toggle-btn" data-target="new_password_field">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="password-strength-bar-wrap">
+          <div class="password-strength-bar" id="strength-bar"></div>
+        </div>
+        <span class="password-strength-label" id="strength-label">パスワード強度</span>
+        <% if @minimum_password_length %>
+          <small class="password-edit-hint"><%= @minimum_password_length %>文字以上</small>
+        <% end %>
+      </div>
+
+      <div class="password-edit-field">
+        <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "password-edit-label" %>
+        <div class="password-input-wrap">
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "password-edit-input", placeholder: "もう一度入力してください", id: "confirm_password_field" %>
+          <button type="button" class="password-toggle-btn" data-target="confirm_password_field">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="password-edit-actions">
+        <%= f.submit "パスワードを変更する", class: "password-edit-submit-btn" %>
+      </div>
+
+      <% resource.errors.full_messages.each do |msg| %>
+        <div class="app-toast app-toast-alert" data-turbo-cache="false"><%= msg %></div>
+      <% end %>
     <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
   </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
