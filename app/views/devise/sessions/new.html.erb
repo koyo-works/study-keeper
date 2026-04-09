@@ -18,7 +18,8 @@
         <%= f.submit "ログイン", class: "btn btn-success btn-lg" %>
       </div>
       <div class="links">
-       <%= link_to "新規登録はこちら", new_user_registration_path, class: "signup-link-btn" %>
+        <%= link_to "新規登録はこちら", new_user_registration_path, class: "signup-link-btn" %>
+        <%= link_to "パスワードをお忘れですか？", new_user_password_path, class: "forgot-password-link" %>
       </div>
     <% end %>
   </div>
