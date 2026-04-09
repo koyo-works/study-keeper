@@ -1,16 +1,27 @@
-<h2>Forgot your password?</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<div class="password-edit-wrap">
+  <div class="password-edit-breadcrumb">
+    <%= link_to "ログインに戻る", new_user_session_path, class: "breadcrumb-link" %>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
+  <div class="password-edit-card">
+    <div class="password-edit-header">
+      <h1 class="password-edit-title">パスワードをリセット</h1>
+      <p class="password-edit-subtitle">登録済みのメールアドレスにリセット用リンクを送信します。</p>
+    </div>
 
-<%= render "devise/shared/links" %>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <% resource.errors.full_messages.each do |msg| %>
+        <div class="app-toast app-toast-alert" data-turbo-cache="false"><%= msg %></div>
+      <% end %>
+
+      <div class="password-edit-field">
+        <%= f.label :email, "メールアドレス", class: "password-edit-label" %>
+        <input type="email" name="user[email]" class="password-edit-input" placeholder="例：example@email.com" autofocus autocomplete="email" />
+      </div>
+
+      <div class="password-edit-actions">
+        <%= f.submit "リセットメールを送信", class: "password-edit-submit-btn" %>
+      </div>
+    <% end %>
+  </div>
+</div>
