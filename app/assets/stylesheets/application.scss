@@ -1054,7 +1054,7 @@ html, body {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   z-index: 9999;
   white-space: nowrap;
-  animation: toastIn 0.3s ease forwards, toastOut 0.4s ease 3.5s forwards;
+  animation: toastIn 0.3s ease forwards, toastOut 0.4s ease 6s forwards;
 
   &.app-toast-notice { background: #f0fdf4; color: #15803d; }
   &.app-toast-error  { background: #fef2f2; color: #b91c1c; }
