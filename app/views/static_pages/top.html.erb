@@ -1,14 +1,128 @@
-<div class="top-wrapper">
-  <div class="top-inner-text">
-    <h1>Study-keeper</h1>
-    <p>あなたの行動を記録して振り返りをサポート<br>あなた専用の勉強トラッカー</p>
-  </div>
-  <div class="top-button">
-    <%= link_to "今すぐ始める", new_user_registration_path, class: "start-btn" %>
+<div id="lp-root">
 
-    <p class="login-link">
-      登録済みの方は
-      <%= link_to "こちらからログイン", new_user_session_path %>
-    </p>
+  <%# ヒーローセクション %>
+  <div class="lp-hero">
+    <div class="lp-hero-inner">
+      <p class="lp-hero-eyebrow lp-hero-anim" style="animation-delay: 0s">つい他のことをしてしまう人へ</p>
+      <h1 class="lp-hero-title lp-hero-anim" style="animation-delay: 0.15s">行動を選んで、<br>習慣を変える。</h1>
+      <p class="lp-hero-desc lp-hero-anim" style="animation-delay: 0.3s">Study-keeperは、今何をするかを"選んで記録"するアプリです。無意識のサボりを可視化して、続けられる自分に変わるサポートをします。</p>
+      <div class="lp-hero-actions lp-hero-anim" style="animation-delay: 0.45s">
+        <%= link_to "無料でアカウントを作成", new_user_registration_path, class: "lp-btn-primary" %>
+        <p class="lp-hero-login">登録済みの方は <%= link_to "こちらからログイン", new_user_session_path %></p>
+      </div>
+    </div>
   </div>
+
+  <%# 3つのハイライト %>
+  <div class="lp-highlights">
+    <div class="lp-highlight-item" data-animate="fade-up">
+      <span class="lp-highlight-icon">👆</span>
+      <p>選ぶだけで行動が記録される</p>
+    </div>
+    <div class="lp-highlight-item" data-animate="fade-up" style="transition-delay: 0.1s">
+      <span class="lp-highlight-icon">📊</span>
+      <p>サボりグセを客観的に把握できる</p>
+    </div>
+    <div class="lp-highlight-item" data-animate="fade-up" style="transition-delay: 0.2s">
+      <span class="lp-highlight-icon">🔥</span>
+      <p>続けることで習慣が変わっていく</p>
+    </div>
+  </div>
+
+  <%# フィーチャーセクション %>
+  <div class="lp-features">
+    <div class="lp-features-inner">
+      <p class="lp-section-label" data-animate="fade-up">FEATURES</p>
+      <h2 class="lp-section-title" data-animate="fade-up" style="transition-delay: 0.05s">必要な機能が、すべて揃っている</h2>
+      <p class="lp-section-desc" data-animate="fade-up" style="transition-delay: 0.1s">行動の選択・記録・振り返りがひとつに。続けられる習慣をつくるための機能を揃えました。</p>
+      <div class="lp-feature-grid">
+        <div class="lp-feature-card" data-animate="fade-up" style="transition-delay: 0.0s">
+          <div class="lp-feature-icon">👆</div>
+          <h3>行動を選んで記録</h3>
+          <p>「勉強する」「SNSを見る」など、今何をするかをボタンで選ぶだけ。迷った瞬間を記録します。</p>
+        </div>
+        <div class="lp-feature-card" data-animate="fade-up" style="transition-delay: 0.1s">
+          <div class="lp-feature-icon">🗂️</div>
+          <h3>カテゴリ管理</h3>
+          <p>行動の種類をカテゴリとして自由に設定。自分の生活に合わせて整理できます。</p>
+        </div>
+        <div class="lp-feature-card" data-animate="fade-up" style="transition-delay: 0.2s">
+          <div class="lp-feature-icon">📊</div>
+          <h3>週次・月次レポート</h3>
+          <p>行動の傾向をグラフで可視化。どの行動を選びがちか客観的に把握できます。</p>
+        </div>
+        <div class="lp-feature-card" data-animate="fade-up" style="transition-delay: 0.3s">
+          <div class="lp-feature-icon">🔥</div>
+          <h3>連続記録ストリーク</h3>
+          <p>何日連続で記録できているかを表示。継続のモチベーションを維持できます。</p>
+        </div>
+        <div class="lp-feature-card" data-animate="fade-up" style="transition-delay: 0.4s">
+          <div class="lp-feature-icon">⚙️</div>
+          <h3>カスタマイズ設定</h3>
+          <p>ログイン後のデフォルト画面を設定可能。自分の使い方に合わせて調整できます。</p>
+        </div>
+        <div class="lp-feature-card" data-animate="fade-up" style="transition-delay: 0.5s">
+          <div class="lp-feature-icon">📱</div>
+          <h3>マルチデバイス対応</h3>
+          <p>PC・スマートフォンどちらからでも快適に利用できます。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%# ステップセクション %>
+  <div class="lp-steps">
+    <div class="lp-steps-inner">
+      <p class="lp-section-label lp-section-label--light" data-animate="fade-up">HOW IT WORKS</p>
+      <h2 class="lp-section-title lp-section-title--light" data-animate="fade-up" style="transition-delay: 0.05s">3ステップで今日から始められる</h2>
+      <div class="lp-step-list">
+        <div class="lp-step-item" data-animate="fade-up" style="transition-delay: 0.1s">
+          <div class="lp-step-number">1</div>
+          <h3>アカウント登録</h3>
+          <p>メールアドレスとパスワードだけで登録完了。クレジットカード不要、ずっと無料です。</p>
+        </div>
+        <div class="lp-step-item" data-animate="fade-up" style="transition-delay: 0.2s">
+          <div class="lp-step-number">2</div>
+          <h3>カテゴリを作る</h3>
+          <p>「勉強」「SNS」「動画」など、記録したい行動をカテゴリとして登録します。</p>
+        </div>
+        <div class="lp-step-item" data-animate="fade-up" style="transition-delay: 0.3s">
+          <div class="lp-step-number">3</div>
+          <h3>行動を選んで振り返る</h3>
+          <p>何かするたびに行動を選んで記録。週次・月次レポートで自分のパターンを確認しましょう。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%# フッターCTA %>
+  <div class="lp-cta">
+    <div class="lp-cta-inner">
+      <h2 class="lp-cta-title" data-animate="fade-up">今日から、学習を記録しよう。</h2>
+      <p class="lp-cta-desc" data-animate="fade-up" style="transition-delay: 0.1s">登録は無料。クレジットカード不要、今すぐ始められます。</p>
+      <div data-animate="fade-up" style="transition-delay: 0.2s">
+        <%= link_to "無料でアカウントを作成", new_user_registration_path, class: "lp-btn-primary lp-btn-large" %>
+      </div>
+      <p class="lp-hero-login" data-animate="fade-up" style="transition-delay: 0.3s">登録済みの方は <%= link_to "こちらからログイン", new_user_session_path %></p>
+    </div>
+  </div>
+
 </div>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    const targets = document.querySelectorAll("[data-animate='fade-up']");
+    if (!targets.length) return;
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    targets.forEach(function(el) { observer.observe(el); });
+  });
+</script>
