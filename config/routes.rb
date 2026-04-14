@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root 'static_pages#top'
+  get 'terms', to: 'static_pages#terms', as: :terms
 
   get  'learning_path', to: 'study_records#new', as: :learning
   post 'learning_path', to: 'study_records#create'
