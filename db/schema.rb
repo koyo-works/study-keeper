@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_02_141810) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_14_121606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -41,6 +41,17 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_02_141810) do
     t.index ["user_id"], name: "index_records_on_user_id"
   end
 
+  create_table "share_links", force: :cascade do |t|
+    t.string "token", null: false
+    t.bigint "user_id", null: false
+    t.string "share_type", null: false
+    t.date "target_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_share_links_on_token", unique: true
+    t.index ["user_id"], name: "index_share_links_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -68,4 +79,5 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_02_141810) do
 
   add_foreign_key "records", "activities"
   add_foreign_key "records", "users"
+  add_foreign_key "share_links", "users"
 end

@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   get 'analytics_path', to: 'records#analytics', as: 'analytics_records'
   resources :records
 
+  get 'share/daily/:token', to: 'share#daily', as: :share_daily
+
   namespace :api do
     get "dashboard/today", to: "dashboard#today"
     get "activities", to: "activities#index"
