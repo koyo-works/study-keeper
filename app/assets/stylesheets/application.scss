@@ -1081,3 +1081,56 @@ html, body {
     }
   }
 }
+
+// 利用規約ページ
+.terms-wrap {
+  padding: 48px 24px;
+}
+
+.terms-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 48px 40px;
+  box-shadow: 0 4px 20px rgba(129, 140, 248, 0.1);
+
+  @media (max-width: 576px) {
+    padding: 24px 16px;
+  }
+}
+
+.terms-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #1e1b4b;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.terms-section {
+  margin-bottom: 32px;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #1e1b4b;
+    margin-bottom: 8px;
+  }
+
+  p, ul {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  ul {
+    padding-left: 1.5rem;
+
+    li {
+      margin-bottom: 4px;
+    }
+  }
+}
