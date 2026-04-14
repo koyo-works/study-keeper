@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   # root "posts#index"
   root 'static_pages#top'
   get 'terms', to: 'static_pages#terms', as: :terms
+  get 'privacy', to: 'static_pages#privacy', as: :privacy
 
   get  'learning_path', to: 'study_records#new', as: :learning
   post 'learning_path', to: 'study_records#create'
