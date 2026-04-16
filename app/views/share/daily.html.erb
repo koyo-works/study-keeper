@@ -1,3 +1,13 @@
+<% content_for :og_tags do %>
+  <meta property="og:title" content="<%= @og_title %>" />
+  <meta property="og:description" content="<%= @og_desc %>" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="<%= request.original_url %>" />
+  <meta property="og:image" content="<%= root_url %>ogp.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+<% end %>
+
+
 <div class="share-wrap">
   <div class="share-card">
     <div class="share-header">
