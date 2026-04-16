@@ -28,14 +28,14 @@ function formatTime(isoString) {
 }
 
 function buildDailyShareText(date, data) {
-    if(!data || data.total_minutes === 0) return `${date}の記録はありませんでした\nStudyKeeper\n`;
+    if(!data || data.total_minutes === 0) return `${date}の記録はありませんでした\n#StudyKeeper\n`;
     const total = formatMinutes(data.total_minutes);
     const top = data.per_category
         .filter((c) => c.minutes > 0)
         .slice(0, 3)
-        .map((c) => `${c.name} : ${formatMinutes(c.minutes)}`)
+        .map((c) => `${c.icon} ${c.name} : ${formatMinutes(c.minutes)}`)
         .join("\n");
-    return `${formatDateHeader(date)}の活動記録\n合計：${total}\n${top}\n#StudyKeeper\n`;
+    return `⭐ ${formatDateHeader(date)}の活動記録\n⏱ 合計：${total}\n${top}\n#StudyKeeper\n`;
 }
 
 export default function DailyArchiveModal({ date, onClose }) {
