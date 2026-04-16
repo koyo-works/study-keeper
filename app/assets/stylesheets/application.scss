@@ -1082,6 +1082,124 @@ html, body {
   }
 }
 
+// 日別共有ページ
+.share-wrap {
+  padding: 48px 24px;
+}
+
+.share-card {
+  max-width: 560px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 36px;
+  box-shadow: 0 4px 20px rgba(129, 140, 248, 0.12);
+
+  @media (max-width: 576px) {
+    padding: 24px 16px;
+  }
+}
+
+.share-header {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.share-label {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #818cf8;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.share-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1e1b4b;
+  margin: 0;
+}
+
+.share-empty {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.share-total {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.share-total-label {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.share-total-value {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #1e1b4b;
+}
+
+.share-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.share-category-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.share-category-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.share-category-icon {
+  font-size: 1.1rem;
+}
+
+.share-category-name {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.share-category-bar-wrap {
+  flex: 1;
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.share-category-bar {
+  height: 100%;
+  background: #818cf8;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.share-category-time {
+  font-size: 0.8rem;
+  color: #666;
+  width: 80px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
 // 利用規約ページ
 .terms-wrap {
   padding: 48px 24px;
