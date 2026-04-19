@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   resources :records
 
   get 'share/daily/:token', to: 'share#daily', as: :share_daily
+  get 'share/weekly/:token', to: 'share#weekly', as: :share_weekly
 
   namespace :api do
     get "dashboard/today", to: "dashboard#today"

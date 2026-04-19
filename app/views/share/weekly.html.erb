@@ -1,0 +1,42 @@
+<% content_for :og_tags do %>
+  <meta property="og:title" content="<%= @og_title %>" />
+  <meta property="og:description" content="<%= @og_desc %>" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="<%= request.original_url %>" />
+  <meta property="og:image" content="<%= root_url %>ogp.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+<% end %>
+
+
+<div class="share-wrap">
+  <div class="share-card">
+    <div class="share-header">
+      <p class="share-label">Study-keeper</p>
+      <h1 class="share-title"><%= @week_start.strftime('%Y年%-m月%-d日') %> 〜 <%= @week_end.strftime('%-m月%-d日') %> の記録</h1>
+    </div>
+
+    <% if @summary.empty? %>
+      <p class="share-empty">この週の記録はありません。</p>
+    <% else %>
+      <div class="share-total">
+        <span class="share-total-label">合計時間</span>
+        <span class="share-total-value"><%= @total_minutes / 60 %>時間 <%= @total_minutes % 60 %>分</span>
+      </div>
+
+      <div class="share-categories">
+        <% @summary.each do |s| %>
+          <div class="share-category-item">
+            <div class="share-category-info">
+              <span class="share-category-icon"><%= s[:icon] %></span>
+              <span class="share-category-name"><%= s[:activity_name] %></span>
+            </div>
+            <div class="share-category-bar-wrap">
+              <div class="share-category-bar" style="width: <%= s[:percentage] %>%"></div>
+            </div>
+            <span class="share-category-time"><%= s[:total_minutes] %>分（<%= s[:percentage] %>%）</span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
