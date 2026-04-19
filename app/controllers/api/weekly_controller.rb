@@ -15,6 +15,12 @@ class Api::WeeklyController < ApplicationController
 
     goal_activity = weekly_goal ? Activity.find_by(id: weekly_goal.activity_id) : nil
 
+    share_link = ShareLink.find_or_create_by(
+      user: current_user,
+      share_type: :weekly,
+      target_date: week_start
+    )
+
     render json: {
       week_start:           week_start.iso8601,
       week_end:             week_end.iso8601,
@@ -24,7 +30,8 @@ class Api::WeeklyController < ApplicationController
       goal_activity_id:     weekly_goal&.activity_id,
       goal_activity_name:   goal_activity&.name,
       goal_activity_icon:   goal_activity&.icon,
-      goal_percentage:      weekly_goal&.percentage || 50
+      goal_percentage:      weekly_goal&.percentage || 50,
+      share_token:          share_link.token
     }
   end
 end
