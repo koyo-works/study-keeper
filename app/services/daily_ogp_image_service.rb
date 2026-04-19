@@ -1,5 +1,5 @@
 class DailyOgpImageService
-  FONT = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"
+  FONT = Rails.root.join("vendor/fonts/NotoSansCJK-Regular.ttc").to_s
   WIDTH = 1200
   HEIGHT = 630
   BG_COLOR = "#1e1b4b"
