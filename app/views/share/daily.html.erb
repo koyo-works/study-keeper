@@ -3,7 +3,7 @@
   <meta property="og:description" content="<%= @og_desc %>" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="<%= request.original_url %>" />
-  <meta property="og:image" content="<%= root_url %>ogp.png" />
+  <meta property="og:image" content="<%= ogp_daily_url(@share_link.token) %>" />
   <meta name="twitter:card" content="summary_large_image" />
 <% end %>
 

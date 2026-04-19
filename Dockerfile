@@ -7,6 +7,9 @@ RUN apt-get update -qq && apt-get install -y \
   nodejs \
   npm \
   postgresql-client \
+  imagemagick \
+  libmagickwand-dev \
+  fonts-noto-cjk \
 && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
