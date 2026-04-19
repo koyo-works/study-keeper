@@ -1200,6 +1200,87 @@ html, body {
   flex-shrink: 0;
 }
 
+.share-goal {
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: #f5f3ff;
+  border-radius: 12px;
+  border-left: 3px solid #818cf8;
+}
+
+.share-goal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.share-goal-label {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #6366f1;
+}
+
+.share-goal-badge {
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 999px;
+
+  &.achieved {
+    background: #dcfce7;
+    color: #16a34a;
+  }
+
+  &.unachieved {
+    background: #fef9c3;
+    color: #a16207;
+  }
+}
+
+.share-goal-body {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.share-goal-activity {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #1e1b4b;
+}
+
+.share-goal-numbers {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.share-streak {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 12px 16px;
+  background: #fff7ed;
+  border-radius: 12px;
+  border-left: 3px solid #f97316;
+}
+
+.share-streak-icon {
+  font-size: 1.1rem;
+}
+
+.share-streak-value {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #c2410c;
+}
+
+.share-streak-label {
+  font-size: 0.75rem;
+  color: #9a3412;
+}
+
 // 利用規約ページ
 .terms-wrap {
   padding: 48px 24px;
