@@ -5,16 +5,18 @@ RUN apt-get update -qq && apt-get install -y \
   build-essential \
   libpq-dev \
   nodejs \
-  yarn \
-  postgresql-client
-  && rm -rf /var/lib/apt/lists/*
+  npm \
+  postgresql-client \
+&& rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Gemfile を先にコピー
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile Gemfile.lock package.json package-lock.json ./
 RUN gem install bundler
 RUN bundle install --without development test
+RUN npm install -g yarn
+RUN npm install --legacy-peer-deps
 
 # アプリ全体をコピー
 COPY . .
