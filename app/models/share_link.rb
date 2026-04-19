@@ -1,7 +1,7 @@
 class ShareLink < ApplicationRecord
   belongs_to :user
 
-  enum share_type: { daily: 'daily' }
+  enum share_type: { daily: 'daily', weekly: 'weekly' }
 
   before_create :generate_token
 
