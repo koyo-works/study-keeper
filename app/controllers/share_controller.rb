@@ -50,7 +50,7 @@ class ShareController < ApplicationController
 
     week_range = "#{@week_start.strftime('%-m/%-d')} - #{@week_end.strftime('%-m/%-d')}"
     @og_title = "#{week_range}の記録 - Study-keeper"
-    desc_parts = @top_categories.map { |s| "#{s[:activity_name]} #{s[:total_minutes]}分" }
+    desc_parts = @top_categories.map { |s| "#{s[:activity_name]} #{s[:total_minutes] / 60}時間#{s[:total_minutes] % 60}分(#{s[:percentage]}%)" }
     @og_desc = @summary.empty? ? "この週の記録はありません" : "合計#{@total_minutes / 60}時間#{@total_minutes % 60}分 / #{desc_parts.join(' / ')}"
   end
 
