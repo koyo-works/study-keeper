@@ -24,7 +24,7 @@
       </div>
 
       <div class="share-categories">
-        <% @summary.each do |s| %>
+        <% @top_categories.each do |s| %>
           <div class="share-category-item">
             <div class="share-category-info">
               <span class="share-category-icon"><%= s[:icon] %></span>
@@ -37,6 +37,30 @@
           </div>
         <% end %>
       </div>
+
+      <% if @goal %>
+        <% achieved = @goal[:actual_percentage] >= @goal[:target_percentage] %>
+        <div class="share-goal">
+          <div class="share-goal-header">
+            <span class="share-goal-label">週次目標</span>
+            <span class="share-goal-badge <%= achieved ? 'achieved' : 'unachieved' %>">
+              <%= achieved ? '達成' : '未達' %>
+            </span>
+          </div>
+          <div class="share-goal-body">
+            <span class="share-goal-activity"><%= @goal[:activity_name] %></span>
+            <span class="share-goal-numbers">目標 <%= @goal[:target_percentage] %>% → 実績 <%= @goal[:actual_percentage] %>%</span>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @streak > 0 %>
+        <div class="share-streak">
+          <span class="share-streak-icon">🔥</span>
+          <span class="share-streak-value"><%= @streak %>日連続</span>
+          <span class="share-streak-label">継続中</span>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>
