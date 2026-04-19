@@ -11,6 +11,9 @@ RUN apt-get update -qq && apt-get install -y \
   git \
   curl \
   vim \
+  imagemagick \
+  libmagickwand-dev \
+  fonts-noto-cjk \
 && rm -rf /var/lib/apt/lists/*
 
 # 作業ディレクトリ

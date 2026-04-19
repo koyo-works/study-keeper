@@ -34,6 +34,8 @@ Rails.application.routes.draw do
   get 'share/daily/:token', to: 'share#daily', as: :share_daily
   get 'share/weekly/:token', to: 'share#weekly', as: :share_weekly
 
+  get 'ogp/daily/:token', to: 'ogp#daily', as: :ogp_daily
+
   namespace :api do
     get "dashboard/today", to: "dashboard#today"
     get "activities", to: "activities#index"
