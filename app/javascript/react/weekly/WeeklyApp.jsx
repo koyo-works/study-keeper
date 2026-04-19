@@ -117,7 +117,7 @@ export default function WeeklyApp() {
 
                     <button className="weekly-share-btn" onClick={() => {
                         const text = buildWeeklyShareText(data);
-                        const shareUrl = `${window.location.origin}/weekly?week=${data.week_start}`;
+                        const shareUrl = `${window.location.origin}/share/weekly/${data.share_token}`;
                         const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
                         window.open(url, "_blank");
                     }}>𝕏 シェアする</button>
