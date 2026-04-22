@@ -83,3 +83,6 @@ gem 'devise-i18n'
 gem "jsbundling-rails", "~> 1.3"
 
 gem "mini_magick"
+
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
