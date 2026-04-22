@@ -2,7 +2,7 @@
   <div class="oauth-divider">
     <span>または</span>
   </div>
-  <%= link_to user_google_oauth2_omniauth_authorize_path,
+  <%= button_to user_google_oauth2_omniauth_authorize_path,
         method: :post,
         class: "btn btn-outline-dark w-100 oauth-google-btn",
         data: { turbo: false } do %>
