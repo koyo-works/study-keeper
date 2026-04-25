@@ -85,4 +85,5 @@ gem "jsbundling-rails", "~> 1.3"
 gem "mini_magick"
 
 gem "omniauth-google-oauth2"
+gem "omniauth-github"
 gem "omniauth-rails_csrf_protection"
