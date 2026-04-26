@@ -16,17 +16,21 @@ class User < ApplicationRecord
     user = find_by(provider: auth.provider, uid: auth.uid)
     return user if user
 
-    user = find_by(email: auth.info.email)
+    email = auth.info.email.presence || "#{auth.provider}_#{auth.uid}@example.invalid"
+
+    user = find_by(email: email)
     if user
       user.update(provider: auth.provider, uid: auth.uid)
       return user
     end
 
+    name = (auth.info.name.presence || auth.info.nickname.to_s).slice(0, 20)
+
     create(
       provider: auth.provider,
       uid: auth.uid,
-      email: auth.info.email,
-      name: auth.info.name.to_s.slice(0, 20),
+      email: email,
+      name: name,
       password: Devise.friendly_token[0, 20]
     )
   end
