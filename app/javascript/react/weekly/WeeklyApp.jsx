@@ -75,8 +75,16 @@ export default function WeeklyApp() {
                             </li>
                         ))}
                     </ul>
-                    <p>● 今週の合計：{formatMinutes(data.total_minutes)}</p>
-                    <p>🔥 ストリーク：{data.streak_days}日</p>
+                    <div className="weekly-summary-cards">
+                        <div className="weekly-summary-card">
+                            <span className="weekly-summary-label">今週の合計</span>
+                            <span className="weekly-summary-value">{formatMinutes(data.total_minutes)}</span>
+                        </div>
+                        <div className="weekly-summary-card">
+                            <span className="weekly-summary-label">🔥 ストリーク</span>
+                            <span className="weekly-summary-value">{data.streak_days}日</span>
+                        </div>
+                    </div>
 
                     <button className="weekly-goal-btn" onClick={() => setIsGoalModalOpen(true)}>
                         🎯 今週の目標を設定
