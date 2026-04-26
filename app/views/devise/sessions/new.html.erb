@@ -14,8 +14,8 @@
         <%= f.label :password, "パスワード", class: "form-label"  %>
         <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
       </div>
-      <div class="actions">
-        <%= f.submit "ログイン", class: "btn btn-success btn-lg" %>
+      <div class="actions d-grid">
+        <%= f.submit "ログイン", class: "btn btn-success btn-lg w-100" %>
       </div>
       <div class="links">
         <%= link_to "新規登録はこちら", new_user_registration_path, class: "signup-link-btn" %>
