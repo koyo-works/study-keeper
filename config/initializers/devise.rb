@@ -278,6 +278,9 @@ Devise.setup do |config|
   config.omniauth :github,
                   ENV.fetch("GITHUB_CLIENT_ID", nil),
                   ENV.fetch("GITHUB_CLIENT_SECRET", nil)
+  config.omniauth :twitter,
+                  ENV.fetch("X_API_KEY", nil),
+                  ENV.fetch("X_API_SECRET", nil)
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
