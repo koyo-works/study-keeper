@@ -39,6 +39,8 @@ Rails.application.routes.draw do
   get 'ogp/weekly/:token', to: 'ogp#weekly', as: :ogp_weekly
 
   namespace :api do
+    post   "push_subscriptions", to: "push_subscriptions#create"
+    delete "push_subscriptions", to: "push_subscriptions#destroy"
     get "dashboard/today", to: "dashboard#today"
     get "activities", to: "activities#index"
     post "activities", to: "activities#create"

@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:google_oauth2, :github, :twitter]
   
   has_many :records, dependent: :destroy
+  has_many :push_subscriptions, dependent: :destroy
   has_many :activities, dependent: :destroy
   has_many :weekly_goals, dependent: :destroy
 
