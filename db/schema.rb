@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_22_094334) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_26_150605) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -25,6 +25,16 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_22_094334) do
     t.boolean "active", default: true, null: false
     t.index ["public_id"], name: "index_activities_on_public_id", unique: true
     t.index ["user_id"], name: "index_activities_on_user_id"
+  end
+
+  create_table "push_subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "endpoint"
+    t.string "p256dh"
+    t.string "auth"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_push_subscriptions_on_user_id"
   end
 
   create_table "records", force: :cascade do |t|
@@ -80,6 +90,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_22_094334) do
     t.index ["user_id", "week_start"], name: "index_weekly_goals_on_user_id_and_week_start", unique: true
   end
 
+  add_foreign_key "push_subscriptions", "users"
   add_foreign_key "records", "activities"
   add_foreign_key "records", "users"
   add_foreign_key "share_links", "users"

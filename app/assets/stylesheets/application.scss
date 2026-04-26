@@ -829,6 +829,45 @@ html, body {
   &:hover { background: #6366f1; }
 }
 
+.notif-enabled-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.notif-enable-btn {
+  align-self: flex-start;
+  padding: 8px 24px;
+  background: #818cf8;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover { background: #6366f1; }
+}
+
+.notif-disable-btn {
+  align-self: flex-start;
+  padding: 6px 18px;
+  background: white;
+  color: #ef4444;
+  border: 1.5px solid #ef4444;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover { background: #ef4444; color: white; }
+}
+
+.notif-status-text {
+  color: #6366f1;
+  font-size: 0.875rem;
+  font-weight: bold;
+  margin: 0;
+}
+
 .password-change-btn {
   align-self: flex-start;
   padding: 10px 24px;

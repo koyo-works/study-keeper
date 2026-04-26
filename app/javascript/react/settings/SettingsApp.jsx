@@ -2,12 +2,62 @@ import React, { useEffect, useState } from "react";
 import CategoryList from "./CategoryList";
 import CategoryFormModal from "./CategoryFormModal";
 
+async function unsubscribePush() {
+    if (!("serviceWorker" in navigator)) return false;
+    const reg = await navigator.serviceWorker.getRegistration("/service_worker.js");
+    if (!reg) return false;
+    const subscription = await reg.pushManager.getSubscription();
+    if (!subscription) return false;
+
+    const endpoint = subscription.endpoint;
+    await subscription.unsubscribe();
+
+    const csrfToken = document.querySelector("meta[name='csrf-token']")?.content;
+    await fetch("/api/push_subscriptions", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json", "X-CSRF-Token": csrfToken },
+        body: JSON.stringify({ endpoint }),
+    });
+    return true;
+}
+
+async function subscribePush() {
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+        alert("このブラウザはプッシュ通知に対応していません");
+        return false;
+    }
+    const vapidKey = document.querySelector("meta[name='vapid-public-key']")?.content;
+    if (!vapidKey) return false;
+
+    const reg = await navigator.serviceWorker.register("/service_worker.js");
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") return false;
+
+    const padding = "=".repeat((4 - (vapidKey.length % 4)) % 4);
+    const base64 = (vapidKey + padding).replace(/-/g, "+").replace(/_/g, "/");
+    const applicationServerKey = Uint8Array.from([...atob(base64)].map((c) => c.charCodeAt(0)));
+
+    const subscription = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey });
+    const json = subscription.toJSON();
+    const csrfToken = document.querySelector("meta[name='csrf-token']")?.content;
+
+    await fetch("/api/push_subscriptions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-CSRF-Token": csrfToken },
+        body: JSON.stringify({ endpoint: json.endpoint, p256dh: json.keys.p256dh, auth: json.keys.auth }),
+    });
+    return true;
+}
+
 export default function SettingsApp() {
     const [data, setData] = useState(null);
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState(null);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
     const [defaultPage, setDefaultPage] = useState("daily");
+    const [notifStatus, setNotifStatus] = useState(
+        typeof Notification !== "undefined" ? Notification.permission : "default"
+    );
 
     useEffect(() => {
         fetch("/api/settings")
@@ -115,6 +165,33 @@ export default function SettingsApp() {
                     </label>
                 ))}
                 <button className="default-page-save-btn" onClick={handleSave}>保存する</button>
+            </section>
+            <section className="settings-section">
+                <h2 className="settings-section-title">プッシュ通知</h2>
+                {notifStatus === "granted" ? (
+                    <>
+                        <p className="notif-status-text">通知は有効です</p>
+                        <button
+                            className="notif-disable-btn"
+                            onClick={async () => {
+                                const ok = await unsubscribePush();
+                                if (ok) setNotifStatus("default");
+                            }}
+                        >
+                            通知を無効にする
+                        </button>
+                    </>
+                ) : (
+                    <button
+                        className="notif-enable-btn"
+                        onClick={async () => {
+                            const ok = await subscribePush();
+                            if (ok) setNotifStatus("granted");
+                        }}
+                    >
+                        通知を有効にする
+                    </button>
+                )}
             </section>
             <section className="settings-section">
                 <h2 className="settings-section-title">セキュリティ</h2>
