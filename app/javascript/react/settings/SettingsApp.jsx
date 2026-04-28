@@ -4,20 +4,19 @@ import CategoryFormModal from "./CategoryFormModal";
 
 async function unsubscribePush() {
     if (!("serviceWorker" in navigator)) return false;
-    const reg = await navigator.serviceWorker.getRegistration("/service_worker.js");
-    if (!reg) return false;
-    const subscription = await reg.pushManager.getSubscription();
-    if (!subscription) return false;
+    const regs = await navigator.serviceWorker.getRegistrations();
+    const subscription = regs.length > 0 ? await regs[0].pushManager.getSubscription() : null;
 
-    const endpoint = subscription.endpoint;
-    await subscription.unsubscribe();
-
-    const csrfToken = document.querySelector("meta[name='csrf-token']")?.content;
-    await fetch("/api/push_subscriptions", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json", "X-CSRF-Token": csrfToken },
-        body: JSON.stringify({ endpoint }),
-    });
+    if (subscription) {
+        const endpoint = subscription.endpoint;
+        await subscription.unsubscribe();
+        const csrfToken = document.querySelector("meta[name='csrf-token']")?.content;
+        await fetch("/api/push_subscriptions", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json", "X-CSRF-Token": csrfToken },
+            body: JSON.stringify({ endpoint }),
+        });
+    }
     return true;
 }
 
@@ -55,9 +54,18 @@ export default function SettingsApp() {
     const [error, setError] = useState(null);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
     const [defaultPage, setDefaultPage] = useState("daily");
-    const [notifStatus, setNotifStatus] = useState(
-        typeof Notification !== "undefined" ? Notification.permission : "default"
-    );
+    const [notifStatus, setNotifStatus] = useState("default");
+
+    useEffect(() => {
+        if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
+        if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
+        navigator.serviceWorker.getRegistration("/").then((reg) => {
+            if (!reg) return;
+            reg.pushManager.getSubscription().then((sub) => {
+                if (sub) setNotifStatus("granted");
+            });
+        });
+    }, []);
 
     useEffect(() => {
         fetch("/api/settings")
@@ -174,8 +182,13 @@ export default function SettingsApp() {
                         <button
                             className="notif-disable-btn"
                             onClick={async () => {
-                                const ok = await unsubscribePush();
-                                if (ok) setNotifStatus("default");
+                                try {
+                                    const ok = await unsubscribePush();
+                                    if (ok) setNotifStatus("default");
+                                } catch (e) {
+                                    console.error("unsubscribePush error:", e);
+                                    alert("無効化に失敗しました: " + e.message);
+                                }
                             }}
                         >
                             通知を無効にする
