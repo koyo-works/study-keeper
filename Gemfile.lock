@@ -124,6 +124,13 @@ GEM
     drb (2.2.3)
     erb (6.0.0)
     erubi (1.13.1)
+    factory_bot (6.5.6)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.1)
+      factory_bot (~> 6.5)
+      railties (>= 6.1.0)
+    faker (3.8.0)
+      i18n (>= 1.8.11, < 2)
     faraday (2.14.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -416,6 +423,8 @@ DEPENDENCIES
   debug
   devise
   devise-i18n
+  factory_bot_rails
+  faker
   importmap-rails
   jbuilder
   jsbundling-rails (~> 1.3)
