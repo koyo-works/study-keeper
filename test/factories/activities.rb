@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :activity do
     association :user
-    name   { Faker::Hobby.activity.slice(0, 20) }
+    sequence(:name) { |n| "Activity #{n}" }
     active { true }
   end
 end
