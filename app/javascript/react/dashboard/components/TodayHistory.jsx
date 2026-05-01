@@ -7,31 +7,38 @@ export default function TodayHistory({ logs, activities, now, dashboard }) {
   const sorted = [...logs].sort((a, b) => new Date(b.logged_at) - new Date(a.logged_at));
   const chronological = [...logs].sort((a, b) => new Date(a.logged_at) - new Date(b.logged_at));
 
+  function formatSeconds(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    if (h > 0) return `${h}時間${m}分`;
+    if (m > 0) return s > 0 ? `${m}分${s}秒` : `${m}分`;
+    return `${s}秒`;
+  }
+
   function getDuration(log) {
+    // ended_at が設定済みなら必ずそれを使う（next.logged_at より正確）
+    if (log.ended_at) {
+      const diff = Math.floor((new Date(log.ended_at) - new Date(log.logged_at)) / 1000);
+      if (diff <= 0) return null;
+      return formatSeconds(diff);
+    }
+
     const idx = chronological.findIndex((l) => l.id === log.id);
     const next = chronological[idx + 1];
 
     if (!next) {
-      if (log.ended_at) {
-        const diff = Math.floor((new Date(log.ended_at) - new Date(log.logged_at)) / 1000 / 60);
-        if (diff <= 0) return null;
-        const h = Math.floor(diff / 60);
-        const m = diff % 60;
-        return h > 0 ? `${h}時間${m}分` : `${m}分`;
-      }
       if (!currentLog || currentLog.id !== log.id) return null;
-      const diff = Math.floor((currentNow - new Date(log.logged_at)) / 1000);
+      const diff = Math.max(0, Math.floor((currentNow - new Date(log.logged_at)) / 1000));
       const h = Math.floor(diff / 3600);
       const m = Math.floor((diff % 3600) / 60);
       const s = diff % 60;
-      return h > 0 ? `${h}時間${m}分${s}秒` : `${m}分${s}秒`;
+      return h > 0 ? `${h}時間${m}分${s}秒` : m > 0 ? `${m}分${s}秒` : `${s}秒`;
     }
 
-    const diff = Math.floor((new Date(next.logged_at) - new Date(log.logged_at)) / 1000 / 60);
+    const diff = Math.floor((new Date(next.logged_at) - new Date(log.logged_at)) / 1000);
     if (diff <= 0) return null;
-    const h = Math.floor(diff / 60);
-    const m = diff % 60;
-    return h > 0 ? `${h}時間${m}分` : `${m}分`;
+    return formatSeconds(diff);
   }
 
   return (
