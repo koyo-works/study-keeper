@@ -1,7 +1,19 @@
 import React from "react";
 import DonutChart from "./charts/DonutChart";
 
-const COLORS = ["#818cf8", "#fb923c", "#34d399", "#f43f5e", "#900ce9"];
+// ゴールデンアングル(137.508°)で並べると隣り合う番号でも色相が大きく離れる
+const COLORS = Array.from({ length: 30 }, (_, i) =>
+  `hsl(${Math.round((i * 137.508) % 360)}, 65%, 52%)`
+);
+
+function activityColor(activityId) {
+  let hash = 0;
+  for (let i = 0; i < activityId.length; i++) {
+    hash = ((hash << 5) - hash) + activityId.charCodeAt(i);
+    hash |= 0;
+  }
+  return COLORS[Math.abs(hash) % COLORS.length];
+}
 
 const MESSAGES = ["ナイスペース！", "いい調子だよ！", "継続は力なり！", "今日もお疲れ様！"];
 
@@ -13,16 +25,29 @@ function getMessage(logs) {
 
 function buildLiveSummary(summary, currentLog, now) {
   if (!currentLog || !summary.length) return summary;
-  const elapsedMinutes = Math.min(
-    Math.floor((now - new Date(currentLog.logged_at)) / 1000 / 60),
-    360
+  const startOfToday = new Date(now);
+  startOfToday.setHours(0, 0, 0, 0);
+  const logStart = new Date(currentLog.logged_at);
+  const effectiveStart = logStart > startOfToday ? logStart : startOfToday;
+  const elapsedSeconds = Math.min(
+    Math.floor((now - effectiveStart) / 1000),
+    43200
   );
   return summary.map((s) => {
     if (s.activity_id === currentLog.activity.id) {
-      return { ...s, total_minutes: s.total_minutes + elapsedMinutes };
+      return { ...s, total_seconds: s.total_seconds + elapsedSeconds };
     }
     return s;
   });
+}
+
+function formatSeconds(seconds) {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  if (h > 0) return `${h}時間${m}分`;
+  if (m > 0) return s > 0 ? `${m}分${s}秒` : `${m}分`;
+  return `${s}秒`;
 }
 
 export default function SummaryStatus({ dashboard, now }) {
@@ -32,13 +57,13 @@ export default function SummaryStatus({ dashboard, now }) {
   const currentNow = now ?? new Date();
 
   const liveSummary = buildLiveSummary(summary, currentLog, currentNow);
-  const total = liveSummary.reduce((acc, x) => acc + x.total_minutes, 0);
-  const liveSummaryFiltered = liveSummary.filter((s) => s.total_minutes > 0);
+  const total = liveSummary.reduce((acc, x) => acc + x.total_seconds, 0);
+  const liveSummaryFiltered = liveSummary.filter((s) => s.total_seconds > 0);
 
-  // 中心に表示する合計時間
-  const totalH = Math.floor(total / 60);
-  const totalM = total % 60;
-  const totalStr = totalH > 0 ? `${totalH}h${totalM}m` : `${totalM}m`;
+  const totalH = Math.floor(total / 3600);
+  const totalM = Math.floor((total % 3600) / 60);
+  const totalS = total % 60;
+  const totalStr = totalH > 0 ? `${totalH}h${totalM}m` : totalM > 0 ? `${totalM}m${totalS > 0 ? `${totalS}s` : ""}` : `${totalS}s`;
 
   return (
     <div style={{
@@ -72,8 +97,8 @@ export default function SummaryStatus({ dashboard, now }) {
             <div className="summary-donut" style={{ position: "relative", flexShrink: 0 }}>
               <DonutChart
                 labels={liveSummaryFiltered.map((s) => s.activity_name)}
-                values={liveSummaryFiltered.map((s) => s.total_minutes)}
-                colors={liveSummaryFiltered.map((_, i) => COLORS[i % COLORS.length])}
+                values={liveSummaryFiltered.map((s) => s.total_seconds)}
+                colors={liveSummaryFiltered.map((s) => activityColor(s.activity_id))}
                 size={160}
               />
               <div style={{
@@ -88,17 +113,15 @@ export default function SummaryStatus({ dashboard, now }) {
 
             {/* レジェンド */}
             <div className="summary-legend" style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
-              {liveSummary.map((s, i) => {
-                const h = Math.floor(s.total_minutes / 60);
-                const m = s.total_minutes % 60;
-                const timeStr = h > 0 ? `${h}時間${m}分` : `${m}分`;
-                const pct = total > 0 ? Math.round((s.total_minutes / total) * 100) : 0;
+              {liveSummary.map((s) => {
+                const timeStr = formatSeconds(s.total_seconds);
+                const pct = total > 0 ? Math.round((s.total_seconds / total) * 100) : 0;
                 return (
                   <div key={s.activity_id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 10px", borderRadius: 10, transition: "background 0.15s" }}
                     onMouseEnter={(e) => e.currentTarget.style.background = "rgba(238,242,255,0.6)"}
                     onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
                   >
-                    <div style={{ width: 10, height: 10, borderRadius: "50%", background: COLORS[i % COLORS.length], flexShrink: 0, boxShadow: "0 2px 4px rgba(0,0,0,0.15)" }} />
+                    <div style={{ width: 10, height: 10, borderRadius: "50%", background: activityColor(s.activity_id), flexShrink: 0, boxShadow: "0 2px 4px rgba(0,0,0,0.15)" }} />
                     <span style={{ fontSize: 12, color: "#334155", flex: 1, fontWeight: 700 }}>{s.activity_name}</span>
                     <span style={{ fontSize: 11, color: "#64748b", fontFamily: "monospace" }}>{timeStr}</span>
                     <span style={{ fontSize: 11, color: "#6366f1", background: "#eef2ff", padding: "2px 6px", borderRadius: 20, fontWeight: 700 }}>{pct}%</span>

@@ -39,12 +39,26 @@ export default function DashboardApp() {
   }, [dashboard?.current_log]);
 
   async function handleSubmit({ activityId, memo, onSuccess }) {
+    // 計測中はタイマーと同じ now を使い、停止後は new Date()（now が凍結しているため）
+    const loggedAt = dashboard?.current_log ? now.toISOString() : new Date().toISOString();
+
+    // APIを待たず即座に前のログを終了・タイマーを止める
+    setDashboard((prev) => {
+      if (!prev?.current_log) return prev;
+      return {
+        ...prev,
+        logs: (prev?.logs ?? []).map((l) =>
+          l.id === prev.current_log.id ? { ...l, ended_at: loggedAt } : l
+        ),
+        current_log: null,
+      };
+    });
+
     setError(null);
     try {
       setIsSubmitting(true);
-      const data = await postLog({ activityId, memo });
+      const data = await postLog({ activityId, memo, loggedAt });
 
-      // POSTレスポンスで直接stateを更新（loadAll不要）
       setDashboard((prev) => ({
         ...prev,
         logs: [...(prev?.logs ?? []), data.record],
@@ -53,8 +67,7 @@ export default function DashboardApp() {
         now: data.now,
       }));
 
-      setNow(new Date()); // タイマーリセット
-
+      setNow(new Date());
       onSuccess?.();
     } catch (e) {
       console.error(e);
@@ -65,10 +78,13 @@ export default function DashboardApp() {
   }
 
   async function handleStopTimer() {
+    const endedAt = now.toISOString();
     try {
-      await stopLog();
+      const data = await stopLog({ endedAt });
       setDashboard((prev) => ({
         ...prev,
+        logs: (prev?.logs ?? []).map((l) => l.id === data.record.id ? data.record : l),
+        summary_per_category: data.summary_per_category,
         current_log: null,
       }));
     } catch (e) {

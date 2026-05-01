@@ -11,10 +11,19 @@ class Api::DashboardController < ApplicationController
                        .where(logged_at: start_at..end_at)
                        .order(:logged_at)
 
+    # 日付をまたいだ直後も表示できるよう、今日の開始と6時間前の早い方を起点にする
+    current_log_cutoff = [now.beginning_of_day, now - 6.hours].min
+    current_log = current_user.records
+                               .includes(:activity)
+                               .where(ended_at: nil)
+                               .where("logged_at >= ?", current_log_cutoff)
+                               .order(logged_at: :desc)
+                               .first
+
     render json: {
       logs: build_logs_json(logs),
       summary_per_category: summarize_per_activity(logs, now),
-      current_log: logs.select { |l| l.ended_at.nil? }.last&.then { |l| build_record_json(l) },
+      current_log: current_log&.then { |l| build_record_json(l) },
       now: now.iso8601
     }
   end
@@ -41,18 +50,18 @@ class Api::DashboardController < ApplicationController
   def summarize_per_activity(logs, now)
     return [] if logs.empty?
 
-    sums = Hash.new { |h, k| h[k] = { total_minutes: 0, count: 0, activity_name: nil } }
+    sums = Hash.new { |h, k| h[k] = { total_seconds: 0, count: 0, activity_name: nil } }
 
     logs.each_with_index do |log, i|
-      next_time = logs[i + 1]&.logged_at || now
+      # ended_atなし・次のログもない場合は進行中とみなし0秒（フロントのbuildLiveSummaryが加算）
+      end_time = log.ended_at || logs[i + 1]&.logged_at || log.logged_at
 
-      diff_minutes = ((next_time - log.logged_at) / 60).floor
-      diff_minutes = 0 if diff_minutes.negative?
-      diff_minutes = [diff_minutes, 360].min
+      diff_seconds = [(end_time - log.logged_at).to_i, 0].max
+      diff_seconds = [diff_seconds, 43200].min
 
       key = log.activity.public_id
 
-      sums[key][:total_minutes] += diff_minutes
+      sums[key][:total_seconds] += diff_seconds
       sums[key][:count] += 1
       sums[key][:activity_name] ||= log.activity.name
     end
@@ -61,9 +70,9 @@ class Api::DashboardController < ApplicationController
       {
         activity_id: activity_id,
         activity_name: v[:activity_name],
-        total_minutes: v[:total_minutes],
+        total_seconds: v[:total_seconds],
         count: v[:count]
       }
-    end.sort_by { |h| -h[:total_minutes] }
+    end.sort_by { |h| -h[:total_seconds] }
   end
 end

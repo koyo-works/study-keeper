@@ -11,7 +11,7 @@ export default function CurrentStatus({ dashboard, activities, now, onStop }) {
     ? Math.max(0, Math.floor((currentNow - new Date(currentLog.logged_at)) / 1000))
     : 0;
 
-  const cappedSeconds = Math.min(elapsedSeconds, 21600);
+  const cappedSeconds = Math.min(elapsedSeconds, 43200);
   const hours = Math.floor(cappedSeconds / 3600);
   const minutes = Math.floor((cappedSeconds % 3600) / 60);
   const seconds = cappedSeconds % 60;

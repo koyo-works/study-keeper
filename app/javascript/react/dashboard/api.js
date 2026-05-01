@@ -19,7 +19,7 @@ export async function fetchActivities() {
   return await res.json();
 }
 
-export async function postLog({ activityId, memo }) {
+export async function postLog({ activityId, memo, loggedAt }) {
   const res = await fetch("/api/dashboard/logs", {
     method: "POST",
     headers: {
@@ -28,8 +28,9 @@ export async function postLog({ activityId, memo }) {
       "X-CSRF-Token": csrfToken(),
     },
     body: JSON.stringify({
-      activity_id: activityId, // ← ここは snake_case
+      activity_id: activityId,
       memo,
+      logged_at: loggedAt,
     }),
   });
 
@@ -42,7 +43,7 @@ export async function postLog({ activityId, memo }) {
   return data;
 }
 
-export async function stopLog() {
+export async function stopLog({ endedAt } = {}) {
   const res = await fetch("/api/dashboard/stop", {
     method: "POST",
     headers: {
@@ -50,6 +51,7 @@ export async function stopLog() {
       Accept: "application/json",
       "X-CSRF-Token": csrfToken(),
     },
+    body: JSON.stringify({ ended_at: endedAt }),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok || data.ok === false) {
