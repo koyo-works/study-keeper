@@ -20,7 +20,7 @@
     <% else %>
       <div class="share-total">
         <span class="share-total-label">合計時間</span>
-        <span class="share-total-value"><%= @total_minutes / 60 %>時間 <%= @total_minutes % 60 %>分</span>
+        <span class="share-total-value"><%= @total_seconds / 3600 %>時間 <%= (@total_seconds % 3600) / 60 %>分</span>
       </div>
 
       <div class="share-categories">
@@ -33,7 +33,7 @@
             <div class="share-category-bar-wrap">
               <div class="share-category-bar" style="width: <%= s[:percentage] %>%"></div>
             </div>
-            <span class="share-category-time"><%= s[:total_minutes] %>分（<%= s[:percentage] %>%）</span>
+            <span class="share-category-time"><%= s[:total_seconds] / 60 %>分（<%= s[:percentage] %>%）</span>
           </div>
         <% end %>
       </div>

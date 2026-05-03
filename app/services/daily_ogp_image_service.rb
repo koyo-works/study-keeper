@@ -8,10 +8,10 @@ class DailyOgpImageService
   BAR_BG_COLOR = "#2d2a5e"
   BAR_MAX_WIDTH = 700
 
-  def initialize(date:, summary:, total_minutes:)
+  def initialize(date:, summary:, total_seconds:)
     @date = date
     @summary = summary
-    @total_minutes = total_minutes
+    @total_seconds = total_seconds
   end
 
   def call
@@ -46,11 +46,11 @@ class DailyOgpImageService
     # 区切り線
     args += ["-fill", ACCENT_COLOR, "-draw", "rectangle 60,175 #{WIDTH - 60},178"]
 
-    if @total_minutes == 0
+    if @total_seconds == 0
       args += ["-fill", "#aaaacc", "-pointsize", "40", "-draw", "text 60,280 'この日の記録はありません'"]
     else
-      h = @total_minutes / 60
-      m = @total_minutes % 60
+      h = @total_seconds / 3600
+      m = (@total_seconds % 3600) / 60
       total_text = h > 0 ? "#{h}時間#{m}分" : "#{m}分"
 
       args += ["-fill", "#aaaacc", "-pointsize", "30", "-draw", "text 60,240 '合計時間'"]
@@ -60,7 +60,7 @@ class DailyOgpImageService
         y_base = 400 + i * 70
         bar_width = (s[:percentage].to_f / 100 * BAR_MAX_WIDTH).round.clamp(4, BAR_MAX_WIDTH)
         name = s[:activity_name].to_s.slice(0, 10)
-        time_text = "#{s[:total_minutes] / 60}時間#{s[:total_minutes] % 60}分 (#{s[:percentage]}%)"
+        time_text = "#{s[:total_seconds] / 3600}時間#{(s[:total_seconds] % 3600) / 60}分 (#{s[:percentage]}%)"
 
         args += ["-fill", BAR_BG_COLOR, "-draw", "rectangle 60,#{y_base} #{60 + BAR_MAX_WIDTH},#{y_base + 28}"]
         args += ["-fill", BAR_COLOR,    "-draw", "rectangle 60,#{y_base} #{60 + bar_width},#{y_base + 28}"]

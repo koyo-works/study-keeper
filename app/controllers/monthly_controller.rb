@@ -14,7 +14,7 @@ class MonthlyController < ApplicationController
       dominant = summary.first
       @daily_summaries[date] = {
         dominant_category: dominant[:activity_name],
-        total_minutes: summary.sum { |s| s[:total_minutes] },
+        total_seconds: summary.sum { |s| s[:total_seconds] },
         per_category: summary
       }
     end
