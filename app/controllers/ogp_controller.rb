@@ -11,12 +11,12 @@ class OgpController < ApplicationController
                      .includes(:activity)
 
     summary = WeeklySummaryService.new(logs).call
-    total_minutes = summary.sum { |s| s[:total_minutes] }
+    total_seconds = summary.sum { |s| s[:total_seconds] }
 
     tmpfile = DailyOgpImageService.new(
       date: date,
       summary: summary,
-      total_minutes: total_minutes
+      total_seconds: total_seconds
     ).call
 
     data = File.binread(tmpfile.path)
@@ -38,13 +38,13 @@ class OgpController < ApplicationController
                      .includes(:activity)
 
     summary = WeeklySummaryService.new(logs).call
-    total_minutes = summary.sum { |s| s[:total_minutes] }
+    total_seconds = summary.sum { |s| s[:total_seconds] }
 
     tmpfile = WeeklyOgpImageService.new(
       week_start: week_start,
       week_end: week_end,
       summary: summary,
-      total_minutes: total_minutes
+      total_seconds: total_seconds
     ).call
 
     data = File.binread(tmpfile.path)

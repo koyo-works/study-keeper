@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import DonutChart from "../dashboard/components/charts/DonutChart";
-
-const COLORS = ["#818cf8", "#fb923c", "#34d399", "#f43f5e", "#900ce9"];
+import { activityColor } from "../activityColor";
 
 const DAY_NAMES = ["日", "月", "火", "水", "木", "金", "土"];
 
-function formatMinutes(minutes) {
-    const h = Math.floor(minutes / 60);
-    const m = minutes % 60;
-    return h > 0 ? `${h}時間${m}分` : `${m}分`;
+function formatSeconds(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    if (h > 0) return `${h}時間${m}分`;
+    if (m > 0) return s > 0 ? `${m}分${s}秒` : `${m}分`;
+    return `${s}秒`;
 }
 
 function formatDateHeader(dateStr) {
@@ -28,12 +30,12 @@ function formatTime(isoString) {
 }
 
 function buildDailyShareText(date, data) {
-    if(!data || data.total_minutes === 0) return `${date}の記録はありませんでした\n#StudyKeeper\n`;
-    const total = formatMinutes(data.total_minutes);
+    if(!data || data.total_seconds === 0) return `${date}の記録はありませんでした\n#StudyKeeper\n`;
+    const total = formatSeconds(data.total_seconds);
     const top = data.per_category
-        .filter((c) => c.minutes > 0)
+        .filter((c) => c.seconds > 0)
         .slice(0, 3)
-        .map((c) => `${c.icon} ${c.name} : ${formatMinutes(c.minutes)}`)
+        .map((c) => `${c.icon} ${c.name} : ${formatSeconds(c.seconds)}`)
         .join("\n");
     return `⭐ ${formatDateHeader(date)}の活動記録\n⏱ 合計：${total}\n${top}\n#StudyKeeper\n`;
 }
@@ -58,25 +60,25 @@ export default function DailyArchiveModal({ date, onClose }) {
                 {error && <p>エラーが発生しました</p>}
                 {!data && !error && <p>読み込み中…</p>}
 
-                {data && data.total_minutes === 0 && (
+                {data && data.total_seconds === 0 && (
                     <p className="daily-modal-empty">この日は記録がありません</p>
                 )}
 
-                {data && data.total_minutes > 0 && (
+                {data && data.total_seconds > 0 && (
                     <div className="daily-modal-body">
                         <div className="daily-modal-left">
                             <DonutChart
                                 labels={data.per_category.map((c) => c.name)}
-                                values={data.per_category.map((c) => c.minutes)}
-                                colors={data.per_category.map((_, i) => COLORS[i % COLORS.length])}
+                                values={data.per_category.map((c) => c.seconds)}
+                                colors={data.per_category.map((c) => activityColor(c.activity_id))}
                                 size={180}
                             />
-                            <p className="daily-modal-total">合計：{formatMinutes(data.total_minutes)}</p>
+                            <p className="daily-modal-total">合計：{formatSeconds(data.total_seconds)}</p>
                             <ul className="daily-modal-legend">
-                                {data.per_category.filter((c) => c.minutes > 0).map((c, i) => (
+                                {data.per_category.filter((c) => c.seconds > 0).map((c) => (
                                     <li key={c.name}>
-                                        <span className="daily-modal-color" style={{ backgroundColor: COLORS[i % COLORS.length] }}></span>
-                                        {c.name}：{formatMinutes(c.minutes)}
+                                        <span className="daily-modal-color" style={{ backgroundColor: activityColor(c.activity_id) }}></span>
+                                        {c.name}：{formatSeconds(c.seconds)}
                                     </li>
                                 ))}
                             </ul>
@@ -90,7 +92,7 @@ export default function DailyArchiveModal({ date, onClose }) {
                                 }}
                             >
                                 𝕏 シェアする
-                            </button>    
+                            </button>
                         </div>
 
                         <div className="daily-modal-right">
