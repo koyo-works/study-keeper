@@ -98,12 +98,23 @@ export default function DailyArchiveModal({ date, onClose }) {
                         <div className="daily-modal-right">
                             <p className="daily-modal-section-title">今日の行動履歴</p>
                             <ul className="daily-modal-logs">
-                                {data.logs.map((log, i) => (
-                                    <li key={i} className="daily-modal-log-item">
-                                        <span className="daily-modal-log-time">{formatTime(log.logged_at)}</span>
-                                        <span className="daily-modal-log-name">{log.activity_name}</span>
-                                    </li>
-                                ))}
+                                {data.logs.map((log, i) => {
+                                    const color = activityColor(log.activity_id);
+                                    const duration = log.ended_at
+                                        ? formatSeconds(Math.max(0, Math.floor((new Date(log.ended_at) - new Date(log.logged_at)) / 1000)))
+                                        : null;
+                                    return (
+                                        <li key={i} className="daily-modal-log-item">
+                                            <span className="daily-modal-log-dot" style={{ backgroundColor: color }} />
+                                            <span className="daily-modal-log-time">{formatTime(log.logged_at)}</span>
+                                            <span className="daily-modal-log-icon">{log.icon}</span>
+                                            <span className="daily-modal-log-name">{log.activity_name}</span>
+                                            {duration && (
+                                                <span className="daily-modal-log-duration" style={{ color }}>{duration}</span>
+                                            )}
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </div>
                     </div>
