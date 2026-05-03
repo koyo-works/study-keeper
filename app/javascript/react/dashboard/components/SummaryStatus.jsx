@@ -1,19 +1,6 @@
 import React from "react";
 import DonutChart from "./charts/DonutChart";
-
-// ゴールデンアングル(137.508°)で並べると隣り合う番号でも色相が大きく離れる
-const COLORS = Array.from({ length: 30 }, (_, i) =>
-  `hsl(${Math.round((i * 137.508) % 360)}, 65%, 52%)`
-);
-
-function activityColor(activityId) {
-  let hash = 0;
-  for (let i = 0; i < activityId.length; i++) {
-    hash = ((hash << 5) - hash) + activityId.charCodeAt(i);
-    hash |= 0;
-  }
-  return COLORS[Math.abs(hash) % COLORS.length];
-}
+import { activityColor } from "../../activityColor";
 
 const MESSAGES = ["ナイスペース！", "いい調子だよ！", "継続は力なり！", "今日もお疲れ様！"];
 

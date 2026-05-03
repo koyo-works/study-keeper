@@ -1,6 +1,7 @@
 class StreakService
-  def initialize(user)
-    @user = user
+  def initialize(user, as_of: Date.current)
+    @user  = user
+    @as_of = as_of
   end
 
   def call
@@ -12,10 +13,9 @@ class StreakService
 
     return 0 if recorded_dates.empty?
 
-    # 今日記録があれば今日から、なければ昨日からカウント開始
-    check_date = recorded_dates.include?(Date.current) ? Date.current : Date.current - 1
+    # as_of日に記録があればそこから、なければ前日からカウント開始
+    check_date = recorded_dates.include?(@as_of) ? @as_of : @as_of - 1
 
-    # 昨日も記録がなければストリーク0
     return 0 unless recorded_dates.include?(check_date)
 
     streak = 0

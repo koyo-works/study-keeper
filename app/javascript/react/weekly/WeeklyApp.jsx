@@ -3,19 +3,21 @@ import { fetchWeekly } from "./api";
 import WeeklyChart from "./WeeklyChart";
 import WeeklyTable from "./WeeklyTable";
 import WeeklyGoalModal from "./WeeklyGoalModal";
+import { activityColor } from "../activityColor";
 
-const COLORS = ["#818cf8", "#fb923c", "#818cf8", "#f43f5e", "#900ce9"];
-
-function formatMinutes(minutes) {
-    const h = Math.floor(minutes / 60);
-    const m = minutes % 60;
-    return h > 0 ? `${h}時間${m}分` : `${m}分`;
+function formatSeconds(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    if (h > 0) return `${h}時間${m}分`;
+    if (m > 0) return s > 0 ? `${m}分${s}秒` : `${m}分`;
+    return `${s}秒`;
 }
 
 function buildWeeklyShareText(data) {
-    const total = formatMinutes(data.total_minutes);
+    const total = formatSeconds(data.total_seconds);
     const top = data.summary.slice(0,3)
-        .map((s) => `${s.activity_name}：${formatMinutes(s.total_minutes)}（${s.percentage}%）`)
+        .map((s) => `${s.activity_name}：${formatSeconds(s.total_seconds)}（${s.percentage}%）`)
         .join("\n");
     return `今週（${data.week_start} ～ ${data.week_end}）の勉強記録\n合計：${total}\n${top}\nストリーク：${data.streak_days}日\n#StudyKeeper\n`;
 }
@@ -68,17 +70,17 @@ export default function WeeklyApp() {
                     )}
                     <p className="weekly-card-title">今週の勉強時間の割合</p>
                     <ul className="weekly-legend">
-                        {data.summary.map((s, i) => (
+                        {data.summary.map((s) => (
                             <li key={s.activity_id} className="weekly-legend-item">
-                                <span className="weekly-legend-color" style={{ backgroundColor: COLORS[i % COLORS.length] }}></span>
-                                {s.activity_name}：{formatMinutes(s.total_minutes)}
+                                <span className="weekly-legend-color" style={{ backgroundColor: activityColor(s.activity_id) }}></span>
+                                {s.activity_name}：{formatSeconds(s.total_seconds)}
                             </li>
                         ))}
                     </ul>
                     <div className="weekly-summary-cards">
                         <div className="weekly-summary-card">
                             <span className="weekly-summary-label">今週の合計</span>
-                            <span className="weekly-summary-value">{formatMinutes(data.total_minutes)}</span>
+                            <span className="weekly-summary-value">{formatSeconds(data.total_seconds)}</span>
                         </div>
                         <div className="weekly-summary-card">
                             <span className="weekly-summary-label">🔥 ストリーク</span>
@@ -134,7 +136,7 @@ export default function WeeklyApp() {
 
             <div className="weekly-card">
                 <p className="weekly-card-title">カテゴリ別詳細（表形式）</p>
-                <WeeklyTable summary={data.summary} formatMinutes={formatMinutes}/>
+                <WeeklyTable summary={data.summary} prevSummary={data.prev_summary} formatSeconds={formatSeconds}/>
             </div>
         {isGoalModalOpen && (
             <WeeklyGoalModal

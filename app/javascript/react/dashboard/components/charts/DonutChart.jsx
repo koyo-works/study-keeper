@@ -35,9 +35,10 @@ export default function DonutChart({ labels, values, colors, size = 160 }) {
                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
                 const value = context.parsed;
                 const pct = Math.round((value / total) * 100);
-                const h = Math.floor(value / 60);
-                const m = value % 60;
-                const timeStr = h > 0 ? `${h}時間${m}分` : `${m}分`;
+                const h = Math.floor(value / 3600);
+                const m = Math.floor((value % 3600) / 60);
+                const s = value % 60;
+                const timeStr = h > 0 ? `${h}時間${m}分` : m > 0 ? `${m}分${s > 0 ? `${s}秒` : ""}` : `${s}秒`;
                 return ` ${timeStr}（${pct}%）`;
               },
             },
