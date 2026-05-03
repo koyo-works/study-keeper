@@ -17,8 +17,8 @@ class Api::DaysController < ApplicationController
 
     render json: {
       date: date.iso8601,
-      total_minutes: summary.sum { |s| s[:total_minutes] },
-      per_category: summary.map { |s| { name: s[:activity_name], minutes: s[:total_minutes], ratio: s[:percentage], icon: s[:icon] } },
+      total_seconds: summary.sum { |s| s[:total_seconds] },
+      per_category: summary.map { |s| { name: s[:activity_name], seconds: s[:total_seconds], ratio: s[:percentage], icon: s[:icon] } },
       logs: logs.map { |log| { activity_name: log.activity.name, logged_at: log.logged_at, ended_at: log.ended_at } },
       share_token: share_link.token
     }

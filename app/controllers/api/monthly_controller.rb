@@ -15,7 +15,7 @@ class Api::MonthlyController < ApplicationController
       daily_summaries[date.iso8601] = {
         dominant_category: summary.first[:activity_name],
         dominant_icon: summary.first[:icon],
-        total_minutes: summary.sum { |s| s[:total_minutes]},
+        total_seconds: summary.sum { |s| s[:total_seconds] },
         per_category: summary
       }
     end
