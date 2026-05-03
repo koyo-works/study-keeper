@@ -8,9 +8,12 @@ class Api::WeeklyController < ApplicationController
 
     logs    = current_user.records.in_week(base_date).includes(:activity).order(:logged_at)
     summary = WeeklySummaryService.new(logs).call
-    streak  = StreakService.new(current_user).call
+    streak  = StreakService.new(current_user, as_of: [week_end, Date.current].min).call
 
-    total_minutes = summary.sum { |s| s[:total_minutes] }
+    prev_logs    = current_user.records.in_week(week_start - 1.week).includes(:activity).order(:logged_at)
+    prev_summary = WeeklySummaryService.new(prev_logs).call
+
+    total_seconds = summary.sum { |s| s[:total_seconds] }
     weekly_goal = current_user.weekly_goals.find_by(week_start: week_start)
 
     goal_activity = weekly_goal ? Activity.find_by(id: weekly_goal.activity_id) : nil
@@ -24,8 +27,9 @@ class Api::WeeklyController < ApplicationController
     render json: {
       week_start:           week_start.iso8601,
       week_end:             week_end.iso8601,
-      total_minutes:        total_minutes,
+      total_seconds:        total_seconds,
       summary:              summary,
+      prev_summary:         prev_summary,
       streak_days:          streak,
       goal_activity_id:     weekly_goal&.activity_id,
       goal_activity_name:   goal_activity&.name,
