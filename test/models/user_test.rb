@@ -64,6 +64,31 @@ class UserTest < ActiveSupport::TestCase
     assert_difference('User.count', 1) { User.from_omniauth(auth) }
   end
 
+  test 'from_omniauth generates fallback email when provider has no email' do
+    auth = mock_auth('twitter', 'tw999', nil, 'twitteruser')
+    user = User.from_omniauth(auth)
+    assert user.persisted?
+    assert_match /twitter_tw999@example\.invalid/, user.email
+  end
+
+  test 'from_omniauth uses nickname as name when name is blank' do
+    auth = OpenStruct.new(
+      provider: 'github',
+      uid: 'gh001',
+      info: OpenStruct.new(email: nil, name: nil, nickname: 'octocat')
+    )
+    user = User.from_omniauth(auth)
+    assert_equal 'octocat', user.name
+  end
+
+  test 'from_omniauth truncates name to 20 characters' do
+    long_name = 'a' * 30
+    auth = mock_auth('google_oauth2', 'g001', 'long@example.com', long_name)
+    user = User.from_omniauth(auth)
+    assert user.persisted?
+    assert user.name.length <= 20
+  end
+
   private
 
   def mock_auth(provider, uid, email, name = 'Test User')
