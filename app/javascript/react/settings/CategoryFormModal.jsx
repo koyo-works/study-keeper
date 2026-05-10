@@ -43,7 +43,7 @@ export default function CategoryFormModal({ onClose, onAdd }) {
                 <h2 className="modal-title">カテゴリを追加</h2>
                 {error && <p className="modal-error">{error}</p>}
                 <form onSubmit={handleSubmit}>
-                    <div className="modal-field">
+                    <div className="modal-field" style={{ position: "relative" }}>
                         <label>アイコン(絵文字)</label>
                         <button
                             type="button"
@@ -53,15 +53,23 @@ export default function CategoryFormModal({ onClose, onAdd }) {
                             {icon || "＋ 選択"}
                         </button>
                         {showPicker && (
-                            <Picker
-                                data={data}
-                                locale="ja"
-                                onEmojiSelect={(e) => {
-                                    setIcon(e.native);
-                                    setShowPicker(false);
-                                }}
-                            />
-                            )}
+                            <>
+                                <div
+                                    style={{ position: "fixed", inset: 0, zIndex: 9998 }}
+                                    onClick={() => setShowPicker(false)}
+                                />
+                                <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 9999 }}>
+                                    <Picker
+                                        data={data}
+                                        locale="ja"
+                                        onEmojiSelect={(e) => {
+                                            setIcon(e.native);
+                                            setShowPicker(false);
+                                        }}
+                                    />
+                                </div>
+                            </>
+                        )}
                     </div>
                     <div className="modal-field">
                         <label>カテゴリ名</label>
