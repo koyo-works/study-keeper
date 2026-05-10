@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import CategoryFormModal from "../../settings/CategoryFormModal";
 
-export default function LogForm({ activities, onSubmit, isSubmitting }) {
+export default function LogForm({ activities, onSubmit, isSubmitting, onActivityAdded }) {
   const [selectedId, setSelectedId] = useState(null);
   const [memo, setMemo] = useState("");
   const [hoveredId, setHoveredId] = useState(null);
   const [btnHover, setBtnHover] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -88,6 +90,32 @@ export default function LogForm({ activities, onSubmit, isSubmitting }) {
               </button>
             );
           })}
+
+          {/* カテゴリ追加ボタン */}
+          <button
+            type="button"
+            onClick={() => setShowAddModal(true)}
+            onMouseEnter={() => setHoveredId("__add__")}
+            onMouseLeave={() => setHoveredId(null)}
+            style={{
+              border: "2px dashed",
+              borderColor: hoveredId === "__add__" ? "#818cf8" : "#cbd5e1",
+              borderRadius: 16,
+              padding: "14px 8px",
+              cursor: "pointer",
+              background: hoveredId === "__add__" ? "rgba(238,242,255,0.9)" : "rgba(255,255,255,0.4)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 6,
+              transition: "all 0.2s",
+              transform: hoveredId === "__add__" ? "translateY(-4px)" : "none",
+              boxShadow: hoveredId === "__add__" ? "0 8px 20px rgba(99,102,241,0.2)" : "none",
+            }}
+          >
+            <span style={{ fontSize: 26, color: hoveredId === "__add__" ? "#818cf8" : "#94a3b8" }}>＋</span>
+            <span style={{ color: hoveredId === "__add__" ? "#4f46e5" : "#94a3b8", fontSize: 11, fontWeight: 700 }}>追加</span>
+          </button>
         </div>
 
         {/* メモ欄 */}
@@ -142,6 +170,16 @@ export default function LogForm({ activities, onSubmit, isSubmitting }) {
           {isSubmitting ? "記録中..." : "記録する"}
         </button>
       </form>
+
+      {showAddModal && (
+        <CategoryFormModal
+          onClose={() => setShowAddModal(false)}
+          onAdd={(newActivity) => {
+            onActivityAdded?.(newActivity);
+            setShowAddModal(false);
+          }}
+        />
+      )}
     </div>
   );
 }

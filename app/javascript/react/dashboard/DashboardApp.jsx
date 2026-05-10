@@ -105,6 +105,7 @@ export default function DashboardApp() {
             activities={activities}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
+            onActivityAdded={() => loadAll()}
           />
         </div>
         <div className="dashboard-right-col">
