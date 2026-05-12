@@ -53,22 +53,14 @@ export default function CategoryFormModal({ onClose, onAdd }) {
                             {icon || "＋ 選択"}
                         </button>
                         {showPicker && (
-                            <>
-                                <div
-                                    style={{ position: "fixed", inset: 0, zIndex: 9998 }}
-                                    onClick={() => setShowPicker(false)}
-                                />
-                                <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 9999 }}>
-                                    <Picker
-                                        data={data}
-                                        locale="ja"
-                                        onEmojiSelect={(e) => {
-                                            setIcon(e.native);
-                                            setShowPicker(false);
-                                        }}
-                                    />
-                                </div>
-                            </>
+                            <Picker
+                                data={data}
+                                locale="ja"
+                                onEmojiSelect={(e) => {
+                                    setIcon(e.native);
+                                    setShowPicker(false);
+                                }}
+                            />
                         )}
                     </div>
                     <div className="modal-field">

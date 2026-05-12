@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import CategoryFormModal from "../../settings/CategoryFormModal";
 
-export default function LogForm({ activities, onSubmit, isSubmitting, onActivityAdded }) {
+export default function LogForm({ activities, onSubmit, isSubmitting, onShowAddModal }) {
   const [selectedId, setSelectedId] = useState(null);
   const [memo, setMemo] = useState("");
   const [hoveredId, setHoveredId] = useState(null);
   const [btnHover, setBtnHover] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -94,7 +92,7 @@ export default function LogForm({ activities, onSubmit, isSubmitting, onActivity
           {/* カテゴリ追加ボタン */}
           <button
             type="button"
-            onClick={() => setShowAddModal(true)}
+            onClick={() => onShowAddModal?.()}
             onMouseEnter={() => setHoveredId("__add__")}
             onMouseLeave={() => setHoveredId(null)}
             style={{
@@ -171,15 +169,6 @@ export default function LogForm({ activities, onSubmit, isSubmitting, onActivity
         </button>
       </form>
 
-      {showAddModal && (
-        <CategoryFormModal
-          onClose={() => setShowAddModal(false)}
-          onAdd={(newActivity) => {
-            onActivityAdded?.(newActivity);
-            setShowAddModal(false);
-          }}
-        />
-      )}
     </div>
   );
 }
