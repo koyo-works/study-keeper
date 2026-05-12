@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import LogForm from "./components/LogForm";
 import TodayHistory from "./components/TodayHistory";
-import CurrentStatus from "./components/CurrentStatus"; 
+import CurrentStatus from "./components/CurrentStatus";
 import SummaryStatus from "./components/SummaryStatus";
+import CategoryFormModal from "../settings/CategoryFormModal";
 import { fetchToday, fetchActivities, postLog, stopLog } from "./api";
 
 export default function DashboardApp() {
@@ -11,6 +12,7 @@ export default function DashboardApp() {
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [now, setNow] = useState(new Date());
+  const [showAddModal, setShowAddModal] = useState(false);
 
   async function loadAll() {
     setError(null);
@@ -105,7 +107,7 @@ export default function DashboardApp() {
             activities={activities}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
-            onActivityAdded={() => loadAll()}
+            onShowAddModal={() => setShowAddModal(true)}
           />
         </div>
         <div className="dashboard-right-col">
@@ -120,6 +122,13 @@ export default function DashboardApp() {
       </div>
 
       <TodayHistory logs={logs} activities={activities} now={now} dashboard={dashboard} />
+
+      {showAddModal && (
+        <CategoryFormModal
+          onClose={() => setShowAddModal(false)}
+          onAdd={() => { loadAll(); setShowAddModal(false); }}
+        />
+      )}
     </div>
   );
 }
