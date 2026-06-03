@@ -28,6 +28,15 @@ export default function DashboardApp() {
 
   useEffect(() => { loadAll(); }, []);
 
+  // 日付が変わったらページをリロード
+  useEffect(() => {
+    const tomorrow = new Date();
+    tomorrow.setHours(24, 0, 0, 0);
+    const msUntilMidnight = tomorrow - Date.now();
+    const timer = setTimeout(() => { window.location.reload(); }, msUntilMidnight);
+    return () => clearTimeout(timer);
+  }, []);
+
   // 1秒ごとにnowを更新
   useEffect(() => {
     const currentLog = dashboard?.current_log;
