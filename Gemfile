@@ -73,6 +73,8 @@ group :test do
   gem 'selenium-webdriver'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'rspec-rails', '~> 6.0'
+  gem 'shoulda-matchers', '~> 5.0'
 end
 
 gem 'bootstrap', '~> 5.3.0'
