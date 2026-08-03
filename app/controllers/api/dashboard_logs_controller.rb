@@ -2,7 +2,7 @@ class Api::DashboardLogsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    activity = Activity.find_by!(public_id: params[:activity_id])
+    activity = current_user.activities.find_by!(public_id: params[:activity_id])
     now = trusted_client_time(params[:logged_at])
 
     cutoff = [now.beginning_of_day, now - 6.hours].min

@@ -3,7 +3,7 @@ class Api::WeeklyGoalsController < ApplicationController
 
   def upsert
     week_start = Date.parse(params[:week_start])
-    activity = Activity.find_by(public_id: params[:activity_id])
+    activity = current_user.activities.find_by(public_id: params[:activity_id])
     return render json: { errors: ["カテゴリが見つかりません"] }, status: :not_found unless activity
 
     goal = current_user.weekly_goals.find_or_initialize_by(week_start: week_start)
